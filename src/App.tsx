@@ -5,6 +5,66 @@ import BlogPost from './pages/BlogPost'
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Contact']
 
+const IMPORTANT_LINKS = [
+  { name: 'FBR', full: 'Federal Board of Revenue', url: 'https://www.fbr.gov.pk', desc: 'Tax filing, NTN, ATL status', color: '#1a5276' },
+  { name: 'SECP', full: 'Securities & Exchange Commission', url: 'https://www.secp.gov.pk', desc: 'Company registration & compliance', color: '#1e8449' },
+  { name: 'PRA', full: 'Punjab Revenue Authority', url: 'https://pra.punjab.gov.pk', desc: 'Punjab sales tax portal', color: '#6e2fa0' },
+  { name: 'SRB', full: 'Sindh Revenue Board', url: 'https://srb.gos.pk', desc: 'Sindh sales tax services', color: '#b7950b' },
+  { name: 'KPRA', full: 'KP Revenue Authority', url: 'https://kpra.kp.gov.pk', desc: 'KPK sales tax portal', color: '#1a5276' },
+  { name: 'BRA', full: 'Balochistan Revenue Authority', url: 'https://bra.gob.pk', desc: 'Balochistan revenue services', color: '#922b21' },
+  { name: 'NADRA', full: 'National Database & Registration Authority', url: 'https://www.nadra.gov.pk', desc: 'CNIC, NICOP, Pakistan Origin Card', color: '#1e8449' },
+  { name: 'IPO', full: 'Intellectual Property Organization', url: 'https://ipo.gov.pk', desc: 'Trademark & patent registration', color: '#6e2fa0' },
+  { name: 'PLRA', full: 'Punjab Land Records Authority', url: 'https://www.plra.punjab.gov.pk', desc: 'Land records & fard verification', color: '#b7950b' },
+  { name: 'LHC', full: 'Lahore High Court', url: 'https://lhc.gov.pk', desc: 'Case status & cause lists', color: '#922b21' },
+  { name: 'SCP', full: 'Supreme Court of Pakistan', url: 'https://www.supremecourt.gov.pk', desc: 'Apex court case information', color: '#1a5276' },
+  { name: 'FIA', full: 'Federal Investigation Agency', url: 'https://www.fia.gov.pk', desc: 'Cybercrime & FIA matters', color: '#1e8449' },
+]
+
+const FAQS = [
+  { q: 'Do you work with individuals and corporations?', a: 'Yes. We advise individuals, AOPs, SMEs, and large corporate groups across Pakistan. From salaried persons to multinational companies, we tailor our services to your specific needs.' },
+  { q: 'Can you represent us for FBR notices and appeals?', a: 'Absolutely. We prepare detailed replies, represent clients during audits, and handle appeals before Commissioner Inland Revenue, ATIR, High Court, and Supreme Court.' },
+  { q: 'How quickly can you review a tax notice?', a: 'Initial notice review is usually completed within 24 to 48 hours, depending on document completeness and urgency. We prioritize time-sensitive matters.' },
+  { q: 'Do you handle provincial sales tax matters?', a: 'Yes. We handle registration, filing, notices, and compliance support for PRA (Punjab), SRB (Sindh), KPRA (KPK), and BRA (Balochistan) matters.' },
+  { q: 'Can you help with ATL status restoration?', a: 'Yes. We review the reason for exclusion from the Active Taxpayers List, correct filing gaps, and process the required steps for ATL restoration with FBR.' },
+  { q: 'Do you support company registration and SECP filings?', a: 'Yes. We provide end-to-end SECP support including incorporations, SMC formation, changes in directors/shareholding, statutory filings, and corporate governance documentation.' },
+  { q: 'Can your team assist overseas Pakistanis?', a: 'Yes. We advise overseas Pakistanis on filing obligations, NICOP/POC matters, property-related tax concerns, inheritance issues, and legal representation in Pakistan.' },
+  { q: 'What documents should I prepare before consultation?', a: 'Please share your NTN details, recent tax returns, any FBR/court notices, business profile, and relevant bank or withholding records. This helps us give you precise advice.' },
+  { q: 'Do you handle cybercrime and FIA cases?', a: 'Yes. Rai Afraz specializes in FIA cybercrime defense under PECA 2016. We handle complaints, pre-arrest bail, trial defense, and appeals in cybercrime matters.' },
+  { q: 'What are your consultation charges?', a: 'We offer a free initial consultation. Detailed advisory and representation fees are discussed transparently based on the nature and complexity of your matter.' },
+]
+
+const TRUST_REASONS = [
+  { icon: '⚖️', title: 'Specialized Tax Expertise', desc: 'Member of Lahore Tax Bar Association with deep expertise in FBR disputes, tax tribunals, and income tax litigation.' },
+  { icon: '🏛️', title: 'High Court Experience', desc: 'Extensive experience before Lahore High Court and Supreme Court of Pakistan on constitutional, tax, and civil matters.' },
+  { icon: '📋', title: 'Clear Documentation', desc: 'Every engagement is supported by clear documentation, transparent timelines, and a compliance-first mindset.' },
+  { icon: '⚡', title: '24-48 Hour Response', desc: 'We review notices and provide initial guidance within 24 to 48 hours — because time matters in legal matters.' },
+  { icon: '🔒', title: 'Strict Confidentiality', desc: 'All client information is handled with absolute confidentiality. Your legal matters stay between you and us.' },
+  { icon: '🌐', title: 'Nationwide Coverage', desc: 'We represent clients before federal and provincial forums across Pakistan — from Karachi to Peshawar.' },
+]
+
+const HOW_WE_WORK = [
+  { num: '01', title: 'Discovery', desc: 'We map your current compliance position, filing history, notices, and legal risks through a detailed initial consultation.' },
+  { num: '02', title: 'Strategy', desc: 'We build a tailored legal plan and a defensible documentation roadmap specific to your situation.' },
+  { num: '03', title: 'Execution', desc: 'Our team handles submissions, court appearances, reconciliations, and all regulatory communications on your behalf.' },
+  { num: '04', title: 'Ongoing Care', desc: 'Regular check-ins, compliance reminders, and proactive legal updates keep you protected and ahead of deadlines.' },
+]
+
+const SIGNATURE_SERVICES = [
+  { title: 'Returns & Filings', icon: '📑', items: ['Annual income tax return filing', 'Wealth statement preparation', 'Statement of assets and liabilities', 'Withholding statements & reconciliations'] },
+  { title: 'Audit & Notices', icon: '🔍', items: ['Notice reviews and replies', 'Audit representation & coordination', 'Demand and assessment management', 'Settlement and dispute resolution'] },
+  { title: 'Corporate & SECP', icon: '🏢', items: ['Company incorporation and filings', 'Change of directors & shareholding', 'Corporate tax health checks', 'Regulatory compliance reporting'] },
+  { title: 'Provincial Sales Tax', icon: '📊', items: ['PRA, SRB, KPRA, BRA registrations', 'Monthly & quarterly sales tax filings', 'Withholding and exemptions guidance', 'Provincial audits and notices'] },
+]
+
+const GALLERY_IMAGES = [
+  { src: '/images/gallery-1.jpg', caption: 'Lahore High Court' },
+  { src: '/images/gallery-2.jpg', caption: 'Courtroom Advocacy' },
+  { src: '/images/gallery-3.jpg', caption: 'Legal Expertise' },
+  { src: '/images/gallery-4.jpg', caption: 'Tax Documentation' },
+  { src: '/images/gallery-5.jpg', caption: 'Corporate Advisory' },
+  { src: '/images/gallery-6.jpg', caption: 'Client Consultation' },
+]
+
 const SERVICES = [
   { icon: '⚖️', title: 'Tax Law', desc: 'Comprehensive tax advisory, planning, and litigation services for individuals and corporations. We navigate complex tax codes to protect your financial interests.' },
   { icon: '🏛️', title: 'Civil Litigation', desc: 'Skilled representation in civil disputes, contract matters, property conflicts, and commercial litigation before all courts of Pakistan.' },
@@ -53,6 +113,7 @@ export default function App() {
   const [reviews, setReviews] = useState<any[]>([])
   const [reviewsLoading, setReviewsLoading] = useState(true)
   const [activeReview, setActiveReview] = useState(0)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   useEffect(() => {
     fetch('/api/blog').then(r => r.json()).then(d => { setPosts(Array.isArray(d) ? d : []); setPostsLoading(false) }).catch(() => setPostsLoading(false))
@@ -272,7 +333,7 @@ export default function App() {
             </div>
             <div className="ra-about__text-col">
               <div className="ra-section__label">About Our Firm</div>
-              <h2 className="ra-section__title">Welcome to Rai & Associates ⚖️</h2>
+              <h2 className="ra-section__title">Welcome to <span className="ra-brand-caps">RAI & ASSOCIATES</span> ⚖️</h2>
               <p className="ra-about__tagline">Legal Solutions for the Modern World</p>
               <div className="ra-divider" />
               <p className="ra-about__para">We are a <strong>Professional Law Firm</strong> based in Lahore, offering expert legal services designed for the complexities of today's world. From corporate disputes to digital crimes, we provide legal clarity and protection at every step.</p>
@@ -363,7 +424,7 @@ export default function App() {
                 <span>🏛️ Punjab Bar Reg. No. 144840</span>
               </div>
               <p className="ra-expert-solo__bio">
-                Rai Afraz is the CEO and Founding Partner of Rai & Associates Law Firm. 
+                Rai Afraz is the CEO and Founding Partner of RAI & ASSOCIATES Law Firm. 
                 Specialized in Tax Law Litigation and FIA Cases, he brings deep expertise 
                 in navigating Pakistan's complex legal landscape. As a registered member of 
                 the Lahore Tax Bar Association, he has successfully represented hundreds of 
@@ -385,7 +446,7 @@ export default function App() {
             <div className="ra-section__label">Knowledge Hub</div>
             <h2 className="ra-section__title">Legal Insights</h2>
             <div className="ra-divider ra-divider--center" />
-            <p className="ra-section__subtitle">Expert legal articles and updates from Rai & Associates</p>
+            <p className="ra-section__subtitle">Expert legal articles and updates from <strong>RAI & ASSOCIATES</strong></p>
           </div>
           <div className="ra-blog__filters">
             {categories.map(cat => (
@@ -484,6 +545,26 @@ export default function App() {
                 </div>
                 <div className="ra-reviews__overall-badge">⚖️ Verified Clients</div>
               </div>
+
+              {/* IMPORTANT LINKS */}
+              <div className="ra-imp-links">
+                <div className="ra-imp-links__header">
+                  <h3 className="ra-imp-links__title">🔗 Important Legal Portals</h3>
+                  <p className="ra-imp-links__sub">Quick access to Pakistan's key legal & regulatory websites</p>
+                </div>
+                <div className="ra-imp-links__grid">
+                  {IMPORTANT_LINKS.map((lnk, i) => (
+                    <a key={i} href={lnk.url} target="_blank" rel="noopener noreferrer"
+                      className="ra-imp-link-card"
+                      style={{ '--lc': lnk.color } as React.CSSProperties}>
+                      <div className="ra-imp-link-card__badge">{lnk.name}</div>
+                      <div className="ra-imp-link-card__full">{lnk.full}</div>
+                      <div className="ra-imp-link-card__desc">{lnk.desc}</div>
+                      <div className="ra-imp-link-card__arrow">→</div>
+                    </a>
+                  ))}
+                </div>
+              </div>
             </>
           )}
         </div>
@@ -538,6 +619,162 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* WHY CLIENTS TRUST US */}
+      <section className="ra-section ra-trust">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Our Promise</div>
+            <h2 className="ra-section__title">Why Clients Trust Us</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Our firm combines the precision of tax advisors with the rigour of litigation counsel</p>
+          </div>
+          <div className="ra-trust__grid">
+            {TRUST_REASONS.map((t, i) => (
+              <div key={i} className="ra-trust-card">
+                <div className="ra-trust-card__icon">{t.icon}</div>
+                <h3 className="ra-trust-card__title">{t.title}</h3>
+                <p className="ra-trust-card__desc">{t.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SIGNATURE SERVICE LINES */}
+      <section className="ra-section ra-signature">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Core Offerings</div>
+            <h2 className="ra-section__title">Signature Service Lines</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Comprehensive legal and tax support aligned with your business lifecycle</p>
+          </div>
+          <div className="ra-signature__grid">
+            {SIGNATURE_SERVICES.map((s, i) => (
+              <div key={i} className="ra-sig-card">
+                <div className="ra-sig-card__header">
+                  <span className="ra-sig-card__icon">{s.icon}</span>
+                  <h3 className="ra-sig-card__title">{s.title}</h3>
+                  <span className="ra-sig-card__team">Dedicated team</span>
+                </div>
+                <ul className="ra-sig-card__list">
+                  {s.items.map((item, j) => (
+                    <li key={j}><span className="ra-sig-card__dot">▸</span>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          {/* Full service list */}
+          <div className="ra-signature__all">
+            {['Income tax return filing for individuals and companies','Wealth statement preparation and reconciliation','FBR registration, profile updates, and ATL matters','Sales tax registration (federal and provincial)','FBR notices drafting and representation','Audit support, settlements, and dispute management','Corporate tax compliance and advisory','SECP filings and corporate governance support','Tax planning and exemption claims','Capital gains tax calculation and filing','Cybercrime & FIA defense under PECA 2016','Trademark & IPO registration','Civil, criminal & constitutional litigation','Revenue law & land record disputes'].map((item, i) => (
+              <div key={i} className="ra-signature__item"><span>✓</span>{item}</div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW WE WORK */}
+      <section className="ra-section ra-howwork">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Our Process</div>
+            <h2 className="ra-section__title">How We Work</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">A clear, structured approach from first consultation to final resolution</p>
+          </div>
+          <div className="ra-howwork__steps">
+            {HOW_WE_WORK.map((s, i) => (
+              <div key={i} className="ra-step">
+                <div className="ra-step__num">{s.num}</div>
+                <div className="ra-step__connector" />
+                <div className="ra-step__content">
+                  <h3 className="ra-step__title">{s.title}</h3>
+                  <p className="ra-step__desc">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* IMPORTANT LINKS */}
+      <section className="ra-section ra-links">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Quick Access</div>
+            <h2 className="ra-section__title">Important Links</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Direct access to Pakistan's key legal and regulatory portals</p>
+          </div>
+          <div className="ra-links__grid">
+            {IMPORTANT_LINKS.map((l, i) => (
+              <a key={i} href={l.url} target="_blank" rel="noopener noreferrer" className="ra-link-card" style={{'--lc': l.color} as React.CSSProperties}>
+                <div className="ra-link-card__name">{l.name}</div>
+                <div className="ra-link-card__full">{l.full}</div>
+                <div className="ra-link-card__desc">{l.desc}</div>
+                <div className="ra-link-card__arrow">→</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="ra-section ra-faq">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Common Questions</div>
+            <h2 className="ra-section__title">Frequently Asked Questions</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Everything you need to know before getting started</p>
+          </div>
+          <div className="ra-faq__list">
+            {FAQS.map((faq, i) => (
+              <div key={i} className={`ra-faq-item ${openFaq === i ? 'open' : ''}`}>
+                <button className="ra-faq-item__q" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                  <span>{faq.q}</span>
+                  <span className="ra-faq-item__icon">{openFaq === i ? '▲' : '▾'}</span>
+                </button>
+                {openFaq === i && <div className="ra-faq-item__a">{faq.a}</div>}
+              </div>
+            ))}
+          </div>
+          <div className="ra-faq__cta">
+            <p>Still have questions? We're here to help.</p>
+            <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Ask Us Directly →</button>
+          </div>
+        </div>
+      </section>
+
+      {/* PHOTO GALLERY */}
+      <section className="ra-section ra-gallery">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Our World</div>
+            <h2 className="ra-section__title">Inside <span className="ra-brand-caps">RAI & ASSOCIATES</span></h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">A glimpse into our legal practice and expertise</p>
+          </div>
+          <div className="ra-gallery__grid">
+            {GALLERY_IMAGES.map((img, i) => (
+              <div key={i} className={`ra-gallery-item ra-gallery-item--${i+1}`}>
+                <img src={img.src} alt={img.caption} />
+                <div className="ra-gallery-item__caption">{img.caption}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHATSAPP FLOATING BUTTON */}
+      <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float" title="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" className="ra-wa-float__icon">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span className="ra-wa-float__text">Chat with Us</span>
+      </a>
 
       {/* FOOTER */}
       <footer className="ra-footer">
@@ -596,7 +833,7 @@ export default function App() {
             </a>
           </div>
           <div className="ra-footer__bottom">
-            <span>© {new Date().getFullYear()} RAI & Associates Law Firm. All Rights Reserved.</span>
+            <span>© {new Date().getFullYear()} <span className="ra-brand-caps">RAI & ASSOCIATES</span> Law Firm. All Rights Reserved.</span>
             <span><a href="https://www.raiandassociates.com.pk" target="_blank" rel="noopener noreferrer" className="ra-footer__web">🌐 www.raiandassociates.com.pk</a> · Est. 1993 — Lahore, Pakistan</span>
           </div>
         </div>
