@@ -58,11 +58,11 @@ const SIGNATURE_SERVICES = [
 
 const GALLERY_IMAGES = [
   { src: '/images/gallery-1.jpg', caption: 'Lahore High Court' },
-  { src: '/images/gallery-2.jpg', caption: 'Courtroom Advocacy' },
-  { src: '/images/gallery-3.jpg', caption: 'Legal Expertise' },
-  { src: '/images/gallery-4.jpg', caption: 'Tax Documentation' },
-  { src: '/images/gallery-5.jpg', caption: 'Corporate Advisory' },
-  { src: '/images/gallery-6.jpg', caption: 'Client Consultation' },
+  { src: '/images/gallery-2.jpg', caption: 'FBR — Federal Board of Revenue' },
+  { src: '/images/gallery-3.jpg', caption: 'SECP — Company Registration' },
+  { src: '/images/gallery-4.jpg', caption: 'SBP — State Bank of Pakistan' },
+  { src: '/images/gallery-5.jpg', caption: 'Supreme Court of Pakistan' },
+  { src: '/images/gallery-6.jpg', caption: 'Legal Excellence' },
 ]
 
 const SERVICES = [
@@ -165,7 +165,7 @@ export default function App() {
             <div className="ra-nav__logo" onClick={() => setOpenPost(null)} style={{ cursor: 'pointer' }}>
               <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
               <div className="ra-nav__logo-text">
-                <span className="ra-nav__logo-name">RAI & Associates</span>
+                <span className="ra-nav__logo-name">RAI & ASSOCIATES</span>
                 <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
               </div>
             </div>
@@ -184,7 +184,7 @@ export default function App() {
           <div className="ra-nav__logo" onClick={() => scrollTo('home')}>
             <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
             <div className="ra-nav__logo-text">
-              <span className="ra-nav__logo-name">RAI & Associates</span>
+              <span className="ra-nav__logo-name">RAI & ASSOCIATES</span>
               <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
             </div>
           </div>
@@ -546,25 +546,7 @@ export default function App() {
                 <div className="ra-reviews__overall-badge">⚖️ Verified Clients</div>
               </div>
 
-              {/* IMPORTANT LINKS */}
-              <div className="ra-imp-links">
-                <div className="ra-imp-links__header">
-                  <h3 className="ra-imp-links__title">🔗 Important Legal Portals</h3>
-                  <p className="ra-imp-links__sub">Quick access to Pakistan's key legal & regulatory websites</p>
-                </div>
-                <div className="ra-imp-links__grid">
-                  {IMPORTANT_LINKS.map((lnk, i) => (
-                    <a key={i} href={lnk.url} target="_blank" rel="noopener noreferrer"
-                      className="ra-imp-link-card"
-                      style={{ '--lc': lnk.color } as React.CSSProperties}>
-                      <div className="ra-imp-link-card__badge">{lnk.name}</div>
-                      <div className="ra-imp-link-card__full">{lnk.full}</div>
-                      <div className="ra-imp-link-card__desc">{lnk.desc}</div>
-                      <div className="ra-imp-link-card__arrow">→</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
+
             </>
           )}
         </div>
