@@ -259,9 +259,25 @@ export default function App() {
           <h1 className="ra-hero__title"><span className="ra-hero__title-gold">RAI & Associates</span><br />Law Firm</h1>
           <p className="ra-hero__tagline">Committed to Justice — R & A</p>
           <p className="ra-hero__desc">Three decades of trusted legal excellence in Lahore. Specializing in Tax Law, Civil Litigation, Corporate Law, and Constitutional matters before all courts of Pakistan.</p>
-          <div className="ra-hero__actions">
-            <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Book Consultation</button>
-            <button className="ra-btn ra-btn--outline" onClick={() => scrollTo('services')}>Our Services</button>
+          <div className="ra-hero__actions-row">
+            <div className="ra-hero__side-brand">
+              <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-hero__side-logo" />
+              <div className="ra-hero__side-text">
+                <span className="ra-hero__side-name">R&A LAW FIRM</span>
+                <span className="ra-hero__side-est">Est. 1993</span>
+              </div>
+            </div>
+            <div className="ra-hero__actions">
+              <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Book Consultation</button>
+              <button className="ra-btn ra-btn--outline" onClick={() => scrollTo('services')}>Our Services</button>
+            </div>
+            <div className="ra-hero__side-brand ra-hero__side-brand--right">
+              <div className="ra-hero__side-text ra-hero__side-text--right">
+                <span className="ra-hero__side-name">R&A LAW FIRM</span>
+                <span className="ra-hero__side-est">Lahore, Pakistan</span>
+              </div>
+              <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-hero__side-logo" />
+            </div>
           </div>
           <div className="ra-hero__bar">
             <span>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</span>
