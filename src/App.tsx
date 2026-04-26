@@ -5,6 +5,66 @@ import BlogPost from './pages/BlogPost'
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Contact']
 
+const IMPORTANT_LINKS = [
+  { name: 'FBR', full: 'Federal Board of Revenue', url: 'https://www.fbr.gov.pk', desc: 'Tax filing, NTN, ATL status', color: '#1a5276' },
+  { name: 'SECP', full: 'Securities & Exchange Commission', url: 'https://www.secp.gov.pk', desc: 'Company registration & compliance', color: '#1e8449' },
+  { name: 'PRA', full: 'Punjab Revenue Authority', url: 'https://pra.punjab.gov.pk', desc: 'Punjab sales tax portal', color: '#6e2fa0' },
+  { name: 'SRB', full: 'Sindh Revenue Board', url: 'https://srb.gos.pk', desc: 'Sindh sales tax services', color: '#b7950b' },
+  { name: 'KPRA', full: 'KP Revenue Authority', url: 'https://kpra.kp.gov.pk', desc: 'KPK sales tax portal', color: '#1a5276' },
+  { name: 'BRA', full: 'Balochistan Revenue Authority', url: 'https://bra.gob.pk', desc: 'Balochistan revenue services', color: '#922b21' },
+  { name: 'NADRA', full: 'National Database & Registration Authority', url: 'https://www.nadra.gov.pk', desc: 'CNIC, NICOP, Pakistan Origin Card', color: '#1e8449' },
+  { name: 'IPO', full: 'Intellectual Property Organization', url: 'https://ipo.gov.pk', desc: 'Trademark & patent registration', color: '#6e2fa0' },
+  { name: 'PLRA', full: 'Punjab Land Records Authority', url: 'https://www.plra.punjab.gov.pk', desc: 'Land records & fard verification', color: '#b7950b' },
+  { name: 'LHC', full: 'Lahore High Court', url: 'https://lhc.gov.pk', desc: 'Case status & cause lists', color: '#922b21' },
+  { name: 'SCP', full: 'Supreme Court of Pakistan', url: 'https://www.supremecourt.gov.pk', desc: 'Apex court case information', color: '#1a5276' },
+  { name: 'FIA', full: 'Federal Investigation Agency', url: 'https://www.fia.gov.pk', desc: 'Cybercrime & FIA matters', color: '#1e8449' },
+]
+
+const FAQS = [
+  { q: 'Do you work with individuals and corporations?', a: 'Yes. We advise individuals, AOPs, SMEs, and large corporate groups across Pakistan. From salaried persons to multinational companies, we tailor our services to your specific needs.' },
+  { q: 'Can you represent us for FBR notices and appeals?', a: 'Absolutely. We prepare detailed replies, represent clients during audits, and handle appeals before Commissioner Inland Revenue, ATIR, High Court, and Supreme Court.' },
+  { q: 'How quickly can you review a tax notice?', a: 'Initial notice review is usually completed within 24 to 48 hours, depending on document completeness and urgency. We prioritize time-sensitive matters.' },
+  { q: 'Do you handle provincial sales tax matters?', a: 'Yes. We handle registration, filing, notices, and compliance support for PRA (Punjab), SRB (Sindh), KPRA (KPK), and BRA (Balochistan) matters.' },
+  { q: 'Can you help with ATL status restoration?', a: 'Yes. We review the reason for exclusion from the Active Taxpayers List, correct filing gaps, and process the required steps for ATL restoration with FBR.' },
+  { q: 'Do you support company registration and SECP filings?', a: 'Yes. We provide end-to-end SECP support including incorporations, SMC formation, changes in directors/shareholding, statutory filings, and corporate governance documentation.' },
+  { q: 'Can your team assist overseas Pakistanis?', a: 'Yes. We advise overseas Pakistanis on filing obligations, NICOP/POC matters, property-related tax concerns, inheritance issues, and legal representation in Pakistan.' },
+  { q: 'What documents should I prepare before consultation?', a: 'Please share your NTN details, recent tax returns, any FBR/court notices, business profile, and relevant bank or withholding records. This helps us give you precise advice.' },
+  { q: 'Do you handle cybercrime and FIA cases?', a: 'Yes. Rai Afraz specializes in FIA cybercrime defense under PECA 2016. We handle complaints, pre-arrest bail, trial defense, and appeals in cybercrime matters.' },
+  { q: 'What are your consultation charges?', a: 'We offer a free initial consultation. Detailed advisory and representation fees are discussed transparently based on the nature and complexity of your matter.' },
+]
+
+const TRUST_REASONS = [
+  { icon: '⚖️', title: 'Specialized Tax Expertise', desc: 'Member of Lahore Tax Bar Association with deep expertise in FBR disputes, tax tribunals, and income tax litigation.' },
+  { icon: '🏛️', title: 'High Court Experience', desc: 'Extensive experience before Lahore High Court and Supreme Court of Pakistan on constitutional, tax, and civil matters.' },
+  { icon: '📋', title: 'Clear Documentation', desc: 'Every engagement is supported by clear documentation, transparent timelines, and a compliance-first mindset.' },
+  { icon: '⚡', title: '24-48 Hour Response', desc: 'We review notices and provide initial guidance within 24 to 48 hours — because time matters in legal matters.' },
+  { icon: '🔒', title: 'Strict Confidentiality', desc: 'All client information is handled with absolute confidentiality. Your legal matters stay between you and us.' },
+  { icon: '🌐', title: 'Nationwide Coverage', desc: 'We represent clients before federal and provincial forums across Pakistan — from Karachi to Peshawar.' },
+]
+
+const HOW_WE_WORK = [
+  { num: '01', title: 'Discovery', desc: 'We map your current compliance position, filing history, notices, and legal risks through a detailed initial consultation.' },
+  { num: '02', title: 'Strategy', desc: 'We build a tailored legal plan and a defensible documentation roadmap specific to your situation.' },
+  { num: '03', title: 'Execution', desc: 'Our team handles submissions, court appearances, reconciliations, and all regulatory communications on your behalf.' },
+  { num: '04', title: 'Ongoing Care', desc: 'Regular check-ins, compliance reminders, and proactive legal updates keep you protected and ahead of deadlines.' },
+]
+
+const SIGNATURE_SERVICES = [
+  { title: 'Returns & Filings', icon: '📑', items: ['Annual income tax return filing', 'Wealth statement preparation', 'Statement of assets and liabilities', 'Withholding statements & reconciliations'] },
+  { title: 'Audit & Notices', icon: '🔍', items: ['Notice reviews and replies', 'Audit representation & coordination', 'Demand and assessment management', 'Settlement and dispute resolution'] },
+  { title: 'Corporate & SECP', icon: '🏢', items: ['Company incorporation and filings', 'Change of directors & shareholding', 'Corporate tax health checks', 'Regulatory compliance reporting'] },
+  { title: 'Provincial Sales Tax', icon: '📊', items: ['PRA, SRB, KPRA, BRA registrations', 'Monthly & quarterly sales tax filings', 'Withholding and exemptions guidance', 'Provincial audits and notices'] },
+]
+
+const GALLERY_IMAGES = [
+  { src: '/images/gallery-1.jpg', caption: 'Lahore High Court' },
+  { src: '/images/gallery-2.jpg', caption: 'FBR — Federal Board of Revenue' },
+  { src: '/images/gallery-3.jpg', caption: 'SECP — Company Registration' },
+  { src: '/images/gallery-4.jpg', caption: 'SBP — State Bank of Pakistan' },
+  { src: '/images/gallery-5.jpg', caption: 'Supreme Court of Pakistan' },
+  { src: '/images/gallery-6.jpg', caption: 'Legal Excellence' },
+]
+
 const SERVICES = [
   { icon: '⚖️', title: 'Tax Law', desc: 'Comprehensive tax advisory, planning, and litigation services for individuals and corporations. We navigate complex tax codes to protect your financial interests.' },
   { icon: '🏛️', title: 'Civil Litigation', desc: 'Skilled representation in civil disputes, contract matters, property conflicts, and commercial litigation before all courts of Pakistan.' },
@@ -53,6 +113,7 @@ export default function App() {
   const [reviews, setReviews] = useState<any[]>([])
   const [reviewsLoading, setReviewsLoading] = useState(true)
   const [activeReview, setActiveReview] = useState(0)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   useEffect(() => {
     fetch('/api/blog').then(r => r.json()).then(d => { setPosts(Array.isArray(d) ? d : []); setPostsLoading(false) }).catch(() => setPostsLoading(false))
@@ -104,7 +165,7 @@ export default function App() {
             <div className="ra-nav__logo" onClick={() => setOpenPost(null)} style={{ cursor: 'pointer' }}>
               <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
               <div className="ra-nav__logo-text">
-                <span className="ra-nav__logo-name">RAI & Associates</span>
+                <span className="ra-nav__logo-name">RAI & ASSOCIATES</span>
                 <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
               </div>
             </div>
@@ -123,7 +184,7 @@ export default function App() {
           <div className="ra-nav__logo" onClick={() => scrollTo('home')}>
             <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
             <div className="ra-nav__logo-text">
-              <span className="ra-nav__logo-name">RAI & Associates</span>
+              <span className="ra-nav__logo-name">RAI & ASSOCIATES</span>
               <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
             </div>
           </div>
@@ -164,15 +225,31 @@ export default function App() {
           <div className="ra-hero__bar">
             <span>🏛️ Punjab Bar Registration No. 144840</span>
             <span>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</span>
-            <span>🌐 <a href="https://www.rai%26associates.com.pk" target="_blank" rel="noopener noreferrer" className="ra-hero__web-link">www.rai&associates.com.pk</a></span>
+            <span>🌐 <a href="https://www.raiandassociates.com.pk" target="_blank" rel="noopener noreferrer" className="ra-hero__web-link">www.raiandassociates.com.pk</a></span>
           </div>
         </div>
-        <div className="ra-hero__scales">
-          <div className="ra-scales">
-            <div className="ra-scales__beam" />
-            <div className="ra-scales__center" />
-            <div className="ra-scales__pan ra-scales__pan--left"><div className="ra-scales__pan-inner" /></div>
-            <div className="ra-scales__pan ra-scales__pan--right"><div className="ra-scales__pan-inner" /></div>
+        {/* 3D LOGO RIGHT SIDE */}
+        <div className="ra-hero__3d">
+          <div className="ra-hero3d__scene">
+            {/* Outer rotating ring */}
+            <div className="ra-hero3d__ring ra-hero3d__ring--outer" />
+            <div className="ra-hero3d__ring ra-hero3d__ring--mid" />
+            {/* Main logo card */}
+            <div className="ra-hero3d__card">
+              <div className="ra-hero3d__card-glow" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-hero3d__logo" />
+              <div className="ra-hero3d__firm">RAI & Associates</div>
+              <div className="ra-hero3d__est">Est. 1993 · Lahore</div>
+              <div className="ra-hero3d__divider" />
+              <div className="ra-hero3d__tagline">⚖️ Committed to Justice</div>
+            </div>
+            {/* Floating stat badges */}
+            <div className="ra-hero3d__badge ra-hero3d__badge--1"><span>30+</span><small>Years</small></div>
+            <div className="ra-hero3d__badge ra-hero3d__badge--2"><span>5K+</span><small>Cases</small></div>
+            <div className="ra-hero3d__badge ra-hero3d__badge--3"><span>98%</span><small>Success</small></div>
+            <div className="ra-hero3d__badge ra-hero3d__badge--4"><span>⚖️</span><small>Justice</small></div>
+            {/* Particles */}
+            {[...Array(10)].map((_, i) => <div key={i} className={`ra-hero3d__particle ra-hero3d__particle--${i+1}`} />)}
           </div>
         </div>
       </section>
@@ -180,6 +257,7 @@ export default function App() {
       {/* 3D SHOWCASE */}
       <section className="ra-3d-section">
         <div className="ra-3d-scene">
+          {/* Floating 3D Logo Card */}
           <div className="ra-3d-card">
             <div className="ra-3d-card__inner">
               <div className="ra-3d-card__front">
@@ -188,30 +266,38 @@ export default function App() {
                 <div className="ra-3d-card__firm">RAI & Associates</div>
                 <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
                 <div className="ra-3d-card__line" />
-                <div className="ra-3d-card__tagline">⚖️ Committed to Justice</div>
+                <div className="ra-3d-card__tagline">Committed to Justice</div>
               </div>
             </div>
           </div>
+          {/* Floating particles */}
           <div className="ra-3d-particles">
             {[...Array(12)].map((_, i) => <div key={i} className={`ra-3d-particle ra-3d-particle--${i+1}`} />)}
           </div>
-          <div className="ra-3d-float ra-3d-float--1"><span className="ra-3d-float__num">30+</span><span className="ra-3d-float__lbl">Years</span></div>
-          <div className="ra-3d-float ra-3d-float--2"><span className="ra-3d-float__num">5K+</span><span className="ra-3d-float__lbl">Cases</span></div>
-          <div className="ra-3d-float ra-3d-float--3"><span className="ra-3d-float__num">⚖️</span><span className="ra-3d-float__lbl">Justice</span></div>
-          <div className="ra-3d-float ra-3d-float--4"><span className="ra-3d-float__num">98%</span><span className="ra-3d-float__lbl">Success</span></div>
+          {/* Stats floating cards */}
+          <div className="ra-3d-float ra-3d-float--1">
+            <span className="ra-3d-float__num">30+</span>
+            <span className="ra-3d-float__lbl">Years</span>
+          </div>
+          <div className="ra-3d-float ra-3d-float--2">
+            <span className="ra-3d-float__num">5K+</span>
+            <span className="ra-3d-float__lbl">Cases</span>
+          </div>
+          <div className="ra-3d-float ra-3d-float--3">
+            <span className="ra-3d-float__num">⚖️</span>
+            <span className="ra-3d-float__lbl">Justice</span>
+          </div>
+          <div className="ra-3d-float ra-3d-float--4">
+            <span className="ra-3d-float__num">98%</span>
+            <span className="ra-3d-float__lbl">Success</span>
+          </div>
+          {/* Orbiting ring */}
           <div className="ra-3d-ring ra-3d-ring--1" />
           <div className="ra-3d-ring ra-3d-ring--2" />
         </div>
         <div className="ra-3d-text">
-          <div className="ra-section__label">Why Choose Us</div>
-          <h2 className="ra-3d-text__title">Trusted Legal Excellence<br/>Since 1993</h2>
-          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication. From tax tribunals to the Supreme Court — we fight for your rights.</p>
-          <div className="ra-3d-features">
-            <div className="ra-3d-feature"><span>✓</span> Lahore High Court Practice</div>
-            <div className="ra-3d-feature"><span>✓</span> Supreme Court Representation</div>
-            <div className="ra-3d-feature"><span>✓</span> Tax Bar Association Member</div>
-            <div className="ra-3d-feature"><span>✓</span> FIA & Cybercrime Specialist</div>
-          </div>
+          <h2 className="ra-3d-text__title">Trusted Legal Excellence</h2>
+          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication since 1993.</p>
           <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
         </div>
       </section>
@@ -235,6 +321,7 @@ export default function App() {
                 <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-about__logo" />
                 <div className="ra-about__est">EST. 1993</div>
               </div>
+
               <div className="ra-about__ceo">
                 <div className="ra-about__ceo-avatar">RA</div>
                 <div>
@@ -246,7 +333,7 @@ export default function App() {
             </div>
             <div className="ra-about__text-col">
               <div className="ra-section__label">About Our Firm</div>
-              <h2 className="ra-section__title">Welcome to Rai & Associates ⚖️</h2>
+              <h2 className="ra-section__title">Welcome to <span className="ra-brand-caps">RAI & ASSOCIATES</span> ⚖️</h2>
               <p className="ra-about__tagline">Legal Solutions for the Modern World</p>
               <div className="ra-divider" />
               <p className="ra-about__para">We are a <strong>Professional Law Firm</strong> based in Lahore, offering expert legal services designed for the complexities of today's world. From corporate disputes to digital crimes, we provide legal clarity and protection at every step.</p>
@@ -304,7 +391,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* EXPERT */}
+      {/* EXPERT — Only Rai Afraz */}
       <section id="expert" className="ra-section ra-experts">
         <div className="ra-container">
           <div className="ra-section__header">
@@ -337,10 +424,10 @@ export default function App() {
                 <span>🏛️ Punjab Bar Reg. No. 144840</span>
               </div>
               <p className="ra-expert-solo__bio">
-                Rai Afraz is the CEO and Founding Partner of Rai & Associates Law Firm.
-                Specialized in Tax Law Litigation and FIA Cases, he brings deep expertise
-                in navigating Pakistan's complex legal landscape. As a registered member of
-                the Lahore Tax Bar Association, he has successfully represented hundreds of
+                Rai Afraz is the CEO and Founding Partner of RAI & ASSOCIATES Law Firm. 
+                Specialized in Tax Law Litigation and FIA Cases, he brings deep expertise 
+                in navigating Pakistan's complex legal landscape. As a registered member of 
+                the Lahore Tax Bar Association, he has successfully represented hundreds of 
                 clients before tax tribunals, the Lahore High Court, and the Supreme Court of Pakistan.
               </p>
               <div className="ra-expert-solo__actions">
@@ -359,7 +446,7 @@ export default function App() {
             <div className="ra-section__label">Knowledge Hub</div>
             <h2 className="ra-section__title">Legal Insights</h2>
             <div className="ra-divider ra-divider--center" />
-            <p className="ra-section__subtitle">Expert legal articles and updates from Rai & Associates</p>
+            <p className="ra-section__subtitle">Expert legal articles and updates from <strong>RAI & ASSOCIATES</strong></p>
           </div>
           <div className="ra-blog__filters">
             {categories.map(cat => (
@@ -368,7 +455,7 @@ export default function App() {
           </div>
           {postsLoading ? (
             <div className="ra-blog__loading">
-              {[1, 2, 3].map(i => <div key={i} className="ra-blog__skeleton" />)}
+              {[1,2,3].map(i => <div key={i} className="ra-blog__skeleton" />)}
             </div>
           ) : (
             <div className="ra-blog__grid">
@@ -401,12 +488,14 @@ export default function App() {
             <div className="ra-divider ra-divider--center" />
             <p className="ra-section__subtitle">Genuine reviews from our clients across Pakistan</p>
           </div>
+
           {reviewsLoading ? (
             <div className="ra-reviews__loading">
-              {[1, 2, 3].map(i => <div key={i} className="ra-reviews__skeleton" />)}
+              {[1,2,3].map(i => <div key={i} className="ra-reviews__skeleton" />)}
             </div>
           ) : (
             <>
+              {/* Featured sliding review */}
               <div className="ra-reviews__featured">
                 {reviews.map((r, i) => (
                   <div key={r.id} className={`ra-reviews__slide ${i === activeReview ? 'active' : ''}`}>
@@ -428,6 +517,8 @@ export default function App() {
                   ))}
                 </div>
               </div>
+
+              {/* Grid of all reviews */}
               <div className="ra-reviews__grid">
                 {reviews.map((r) => (
                   <div key={r.id} className="ra-review-card">
@@ -444,6 +535,8 @@ export default function App() {
                   </div>
                 ))}
               </div>
+
+              {/* Overall rating bar */}
               <div className="ra-reviews__overall">
                 <div className="ra-reviews__overall-score">5.0</div>
                 <div>
@@ -452,6 +545,8 @@ export default function App() {
                 </div>
                 <div className="ra-reviews__overall-badge">⚖️ Verified Clients</div>
               </div>
+
+
             </>
           )}
         </div>
@@ -507,6 +602,162 @@ export default function App() {
         </div>
       </section>
 
+      {/* WHY CLIENTS TRUST US */}
+      <section className="ra-section ra-trust">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Our Promise</div>
+            <h2 className="ra-section__title">Why Clients Trust Us</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Our firm combines the precision of tax advisors with the rigour of litigation counsel</p>
+          </div>
+          <div className="ra-trust__grid">
+            {TRUST_REASONS.map((t, i) => (
+              <div key={i} className="ra-trust-card">
+                <div className="ra-trust-card__icon">{t.icon}</div>
+                <h3 className="ra-trust-card__title">{t.title}</h3>
+                <p className="ra-trust-card__desc">{t.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SIGNATURE SERVICE LINES */}
+      <section className="ra-section ra-signature">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Core Offerings</div>
+            <h2 className="ra-section__title">Signature Service Lines</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Comprehensive legal and tax support aligned with your business lifecycle</p>
+          </div>
+          <div className="ra-signature__grid">
+            {SIGNATURE_SERVICES.map((s, i) => (
+              <div key={i} className="ra-sig-card">
+                <div className="ra-sig-card__header">
+                  <span className="ra-sig-card__icon">{s.icon}</span>
+                  <h3 className="ra-sig-card__title">{s.title}</h3>
+                  <span className="ra-sig-card__team">Dedicated team</span>
+                </div>
+                <ul className="ra-sig-card__list">
+                  {s.items.map((item, j) => (
+                    <li key={j}><span className="ra-sig-card__dot">▸</span>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          {/* Full service list */}
+          <div className="ra-signature__all">
+            {['Income tax return filing for individuals and companies','Wealth statement preparation and reconciliation','FBR registration, profile updates, and ATL matters','Sales tax registration (federal and provincial)','FBR notices drafting and representation','Audit support, settlements, and dispute management','Corporate tax compliance and advisory','SECP filings and corporate governance support','Tax planning and exemption claims','Capital gains tax calculation and filing','Cybercrime & FIA defense under PECA 2016','Trademark & IPO registration','Civil, criminal & constitutional litigation','Revenue law & land record disputes'].map((item, i) => (
+              <div key={i} className="ra-signature__item"><span>✓</span>{item}</div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW WE WORK */}
+      <section className="ra-section ra-howwork">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Our Process</div>
+            <h2 className="ra-section__title">How We Work</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">A clear, structured approach from first consultation to final resolution</p>
+          </div>
+          <div className="ra-howwork__steps">
+            {HOW_WE_WORK.map((s, i) => (
+              <div key={i} className="ra-step">
+                <div className="ra-step__num">{s.num}</div>
+                <div className="ra-step__connector" />
+                <div className="ra-step__content">
+                  <h3 className="ra-step__title">{s.title}</h3>
+                  <p className="ra-step__desc">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* IMPORTANT LINKS */}
+      <section className="ra-section ra-links">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Quick Access</div>
+            <h2 className="ra-section__title">Important Links</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Direct access to Pakistan's key legal and regulatory portals</p>
+          </div>
+          <div className="ra-links__grid">
+            {IMPORTANT_LINKS.map((l, i) => (
+              <a key={i} href={l.url} target="_blank" rel="noopener noreferrer" className="ra-link-card" style={{'--lc': l.color} as React.CSSProperties}>
+                <div className="ra-link-card__name">{l.name}</div>
+                <div className="ra-link-card__full">{l.full}</div>
+                <div className="ra-link-card__desc">{l.desc}</div>
+                <div className="ra-link-card__arrow">→</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="ra-section ra-faq">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Common Questions</div>
+            <h2 className="ra-section__title">Frequently Asked Questions</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Everything you need to know before getting started</p>
+          </div>
+          <div className="ra-faq__list">
+            {FAQS.map((faq, i) => (
+              <div key={i} className={`ra-faq-item ${openFaq === i ? 'open' : ''}`}>
+                <button className="ra-faq-item__q" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+                  <span>{faq.q}</span>
+                  <span className="ra-faq-item__icon">{openFaq === i ? '▲' : '▾'}</span>
+                </button>
+                {openFaq === i && <div className="ra-faq-item__a">{faq.a}</div>}
+              </div>
+            ))}
+          </div>
+          <div className="ra-faq__cta">
+            <p>Still have questions? We're here to help.</p>
+            <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Ask Us Directly →</button>
+          </div>
+        </div>
+      </section>
+
+      {/* PHOTO GALLERY */}
+      <section className="ra-section ra-gallery">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Our World</div>
+            <h2 className="ra-section__title">Inside <span className="ra-brand-caps">RAI & ASSOCIATES</span></h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">A glimpse into our legal practice and expertise</p>
+          </div>
+          <div className="ra-gallery__grid">
+            {GALLERY_IMAGES.map((img, i) => (
+              <div key={i} className={`ra-gallery-item ra-gallery-item--${i+1}`}>
+                <img src={img.src} alt={img.caption} />
+                <div className="ra-gallery-item__caption">{img.caption}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHATSAPP FLOATING BUTTON */}
+      <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float" title="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor" className="ra-wa-float__icon">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span className="ra-wa-float__text">Chat with Us</span>
+      </a>
+
       {/* FOOTER */}
       <footer className="ra-footer">
         <div className="ra-container">
@@ -532,19 +783,40 @@ export default function App() {
                 <li><a href="tel:+923044840937">📞 +92 304 484 0937</a></li>
                 <li><a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer">💬 +92 316 437 1096</a></li>
                 <li><a href="mailto:afrazrai4457@gmail.com">✉️ afrazrai4457@gmail.com</a></li>
-                <li><a href="https://www.rai%26associates.com.pk" target="_blank" rel="noopener noreferrer">🌐 www.rai&associates.com.pk</a></li>
+                <li><a href="https://www.raiandassociates.com.pk" target="_blank" rel="noopener noreferrer">🌐 www.raiandassociates.com.pk</a></li>
               </ul>
             </div>
           </div>
           <div className="ra-footer__social">
             <span className="ra-footer__social-label">Follow Us:</span>
-            {SOCIAL_LINKS.map((s, i) => (
-              <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="ra-footer__social-link" title={s.label}>{s.icon}</a>
-            ))}
+            {/* Facebook R&A */}
+            <a href="https://www.facebook.com/61577203114572" target="_blank" rel="noopener noreferrer" className="ra-footer__soc-btn ra-footer__soc-btn--fb" title="Facebook R&A">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            {/* Facebook Rai Afraz */}
+            <a href="https://www.facebook.com/raiafraz10" target="_blank" rel="noopener noreferrer" className="ra-footer__soc-btn ra-footer__soc-btn--fb" title="Facebook Rai Afraz">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            {/* TikTok */}
+            <a href="https://www.tiktok.com/@rai_associates" target="_blank" rel="noopener noreferrer" className="ra-footer__soc-btn ra-footer__soc-btn--tt" title="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+            {/* Instagram */}
+            <a href="https://www.instagram.com/rai_associates10" target="_blank" rel="noopener noreferrer" className="ra-footer__soc-btn ra-footer__soc-btn--ig" title="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            {/* YouTube */}
+            <a href="https://www.youtube.com/@raiandassociates" target="_blank" rel="noopener noreferrer" className="ra-footer__soc-btn ra-footer__soc-btn--yt" title="YouTube">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+            {/* WhatsApp */}
+            <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-footer__soc-btn ra-footer__soc-btn--wa" title="WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
           </div>
           <div className="ra-footer__bottom">
-            <span>© {new Date().getFullYear()} RAI & Associates Law Firm. All Rights Reserved.</span>
-            <span><a href="https://www.rai%26associates.com.pk" target="_blank" rel="noopener noreferrer" className="ra-footer__web">🌐 www.rai&associates.com.pk</a> · Est. 1993 — Lahore, Pakistan</span>
+            <span>© {new Date().getFullYear()} <span className="ra-brand-caps">RAI & ASSOCIATES</span> Law Firm. All Rights Reserved.</span>
+            <span><a href="https://www.raiandassociates.com.pk" target="_blank" rel="noopener noreferrer" className="ra-footer__web">🌐 www.raiandassociates.com.pk</a> · Est. 1993 — Lahore, Pakistan</span>
           </div>
         </div>
       </footer>
