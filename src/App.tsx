@@ -188,7 +188,7 @@ export default function App() {
                 <div className="ra-3d-card__firm">RAI & Associates</div>
                 <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
                 <div className="ra-3d-card__line" />
-                <div className="ra-3d-card__tagline">Committed to Justice</div>
+                <div className="ra-3d-card__tagline">⚖️ Committed to Justice</div>
               </div>
             </div>
           </div>
@@ -203,8 +203,15 @@ export default function App() {
           <div className="ra-3d-ring ra-3d-ring--2" />
         </div>
         <div className="ra-3d-text">
-          <h2 className="ra-3d-text__title">Trusted Legal Excellence</h2>
-          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication since 1993.</p>
+          <div className="ra-section__label">Why Choose Us</div>
+          <h2 className="ra-3d-text__title">Trusted Legal Excellence<br/>Since 1993</h2>
+          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication. From tax tribunals to the Supreme Court — we fight for your rights.</p>
+          <div className="ra-3d-features">
+            <div className="ra-3d-feature"><span>✓</span> Lahore High Court Practice</div>
+            <div className="ra-3d-feature"><span>✓</span> Supreme Court Representation</div>
+            <div className="ra-3d-feature"><span>✓</span> Tax Bar Association Member</div>
+            <div className="ra-3d-feature"><span>✓</span> FIA & Cybercrime Specialist</div>
+          </div>
           <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
         </div>
       </section>
@@ -228,7 +235,6 @@ export default function App() {
                 <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-about__logo" />
                 <div className="ra-about__est">EST. 1993</div>
               </div>
-
               <div className="ra-about__ceo">
                 <div className="ra-about__ceo-avatar">RA</div>
                 <div>
@@ -298,7 +304,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* EXPERT — Only Rai Afraz */}
+      {/* EXPERT */}
       <section id="expert" className="ra-section ra-experts">
         <div className="ra-container">
           <div className="ra-section__header">
@@ -331,10 +337,10 @@ export default function App() {
                 <span>🏛️ Punjab Bar Reg. No. 144840</span>
               </div>
               <p className="ra-expert-solo__bio">
-                Rai Afraz is the CEO and Founding Partner of Rai & Associates Law Firm. 
-                Specialized in Tax Law Litigation and FIA Cases, he brings deep expertise 
-                in navigating Pakistan's complex legal landscape. As a registered member of 
-                the Lahore Tax Bar Association, he has successfully represented hundreds of 
+                Rai Afraz is the CEO and Founding Partner of Rai & Associates Law Firm.
+                Specialized in Tax Law Litigation and FIA Cases, he brings deep expertise
+                in navigating Pakistan's complex legal landscape. As a registered member of
+                the Lahore Tax Bar Association, he has successfully represented hundreds of
                 clients before tax tribunals, the Lahore High Court, and the Supreme Court of Pakistan.
               </p>
               <div className="ra-expert-solo__actions">
@@ -362,7 +368,7 @@ export default function App() {
           </div>
           {postsLoading ? (
             <div className="ra-blog__loading">
-              {[1,2,3].map(i => <div key={i} className="ra-blog__skeleton" />)}
+              {[1, 2, 3].map(i => <div key={i} className="ra-blog__skeleton" />)}
             </div>
           ) : (
             <div className="ra-blog__grid">
@@ -395,14 +401,12 @@ export default function App() {
             <div className="ra-divider ra-divider--center" />
             <p className="ra-section__subtitle">Genuine reviews from our clients across Pakistan</p>
           </div>
-
           {reviewsLoading ? (
             <div className="ra-reviews__loading">
-              {[1,2,3].map(i => <div key={i} className="ra-reviews__skeleton" />)}
+              {[1, 2, 3].map(i => <div key={i} className="ra-reviews__skeleton" />)}
             </div>
           ) : (
             <>
-              {/* Featured sliding review */}
               <div className="ra-reviews__featured">
                 {reviews.map((r, i) => (
                   <div key={r.id} className={`ra-reviews__slide ${i === activeReview ? 'active' : ''}`}>
@@ -424,8 +428,6 @@ export default function App() {
                   ))}
                 </div>
               </div>
-
-              {/* Grid of all reviews */}
               <div className="ra-reviews__grid">
                 {reviews.map((r) => (
                   <div key={r.id} className="ra-review-card">
@@ -442,8 +444,6 @@ export default function App() {
                   </div>
                 ))}
               </div>
-
-              {/* Overall rating bar */}
               <div className="ra-reviews__overall">
                 <div className="ra-reviews__overall-score">5.0</div>
                 <div>
