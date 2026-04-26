@@ -213,17 +213,73 @@ export default function App() {
       {/* HERO */}
       <section id="home" className="ra-hero">
         <div className="ra-hero__overlay" />
+
+        {/* TOP LEFT CORNER */}
+        <div className="ra-hero__corner ra-hero__corner--left">
+          <div className="ra-hero__corner-scales">⚖️</div>
+          <div className="ra-hero__corner-lines">
+            <div className="ra-hero__corner-line" />
+            <div className="ra-hero__corner-line" />
+            <div className="ra-hero__corner-line" />
+          </div>
+          <div className="ra-hero__corner-text">
+            <span className="ra-hero__corner-firm">R&A LAW FIRM</span>
+            <span className="ra-hero__corner-est">Est. 1993 · Lahore</span>
+          </div>
+          <div className="ra-hero__corner-icons">
+            <span title="Tax Law">📑</span>
+            <span title="Corporate">🏢</span>
+            <span title="FIA">🔍</span>
+            <span title="IP">™️</span>
+          </div>
+        </div>
+
+        {/* TOP RIGHT CORNER */}
+        <div className="ra-hero__corner ra-hero__corner--right">
+          <div className="ra-hero__corner-text">
+            <span className="ra-hero__corner-firm">R&A LAW FIRM</span>
+            <span className="ra-hero__corner-est">Est. 1993 · Lahore</span>
+          </div>
+          <div className="ra-hero__corner-lines">
+            <div className="ra-hero__corner-line" />
+            <div className="ra-hero__corner-line" />
+            <div className="ra-hero__corner-line" />
+          </div>
+          <div className="ra-hero__corner-scales">🏛️</div>
+          <div className="ra-hero__corner-icons">
+            <span title="Criminal">⚖️</span>
+            <span title="Civil">📋</span>
+            <span title="Family">👨‍👩‍👧</span>
+            <span title="Revenue">🏠</span>
+          </div>
+        </div>
+
         <div className="ra-hero__content">
           <div className="ra-hero__badge">Established Since 1993</div>
           <h1 className="ra-hero__title"><span className="ra-hero__title-gold">RAI & Associates</span><br />Law Firm</h1>
           <p className="ra-hero__tagline">Committed to Justice — R & A</p>
           <p className="ra-hero__desc">Three decades of trusted legal excellence in Lahore. Specializing in Tax Law, Civil Litigation, Corporate Law, and Constitutional matters before all courts of Pakistan.</p>
-          <div className="ra-hero__actions">
-            <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Book Consultation</button>
-            <button className="ra-btn ra-btn--outline" onClick={() => scrollTo('services')}>Our Services</button>
+          <div className="ra-hero__actions-row">
+            <div className="ra-hero__side-brand">
+              <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-hero__side-logo" />
+              <div className="ra-hero__side-text">
+                <span className="ra-hero__side-name">R&A LAW FIRM</span>
+                <span className="ra-hero__side-est">Est. 1993</span>
+              </div>
+            </div>
+            <div className="ra-hero__actions">
+              <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Book Consultation</button>
+              <button className="ra-btn ra-btn--outline" onClick={() => scrollTo('services')}>Our Services</button>
+            </div>
+            <div className="ra-hero__side-brand ra-hero__side-brand--right">
+              <div className="ra-hero__side-text ra-hero__side-text--right">
+                <span className="ra-hero__side-name">R&A LAW FIRM</span>
+                <span className="ra-hero__side-est">Lahore, Pakistan</span>
+              </div>
+              <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-hero__side-logo" />
+            </div>
           </div>
           <div className="ra-hero__bar">
-            <span>🏛️ Punjab Bar Registration No. 144840</span>
             <span>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</span>
             <span>🌐 <a href="https://www.raiandassociates.com.pk" target="_blank" rel="noopener noreferrer" className="ra-hero__web-link">www.raiandassociates.com.pk</a></span>
           </div>
@@ -420,9 +476,7 @@ export default function App() {
                 <span>Cybercrime Defense</span>
                 <span>IPO & Trademark</span>
               </div>
-              <div className="ra-expert-solo__reg">
-                <span>🏛️ Punjab Bar Reg. No. 144840</span>
-              </div>
+
               <p className="ra-expert-solo__bio">
                 Rai Afraz is the CEO and Founding Partner of RAI & ASSOCIATES Law Firm. 
                 Specialized in Tax Law Litigation and FIA Cases, he brings deep expertise 
@@ -570,7 +624,7 @@ export default function App() {
                 <div className="ra-contact__detail"><div className="ra-contact__detail-icon">📞</div><div><div className="ra-contact__detail-label">Call</div><a href="tel:+923044840937" className="ra-contact__detail-value ra-contact__link">+92 304 484 0937</a></div></div>
                 <div className="ra-contact__detail"><div className="ra-contact__detail-icon">💬</div><div><div className="ra-contact__detail-label">WhatsApp</div><a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-contact__detail-value ra-contact__link">+92 316 437 1096</a></div></div>
                 <div className="ra-contact__detail"><div className="ra-contact__detail-icon">✉️</div><div><div className="ra-contact__detail-label">Email</div><a href="mailto:afrazrai4457@gmail.com" className="ra-contact__detail-value ra-contact__link">afrazrai4457@gmail.com</a></div></div>
-                <div className="ra-contact__detail"><div className="ra-contact__detail-icon">🏛️</div><div><div className="ra-contact__detail-label">Punjab Bar Registration</div><div className="ra-contact__detail-value">No. 144840</div></div></div>
+
                 <div className="ra-contact__detail"><div className="ra-contact__detail-icon">🕐</div><div><div className="ra-contact__detail-label">Office Hours</div><div className="ra-contact__detail-value">Mon – Sat: 9:00 AM – 6:00 PM</div></div></div>
               </div>
             </div>
@@ -765,7 +819,7 @@ export default function App() {
             <div className="ra-footer__brand">
               <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-footer__logo" />
               <p className="ra-footer__brand-text">Committed to Justice since 1993. Trusted legal advocates serving Lahore and all of Pakistan.</p>
-              <div className="ra-footer__reg">Punjab Bar Reg. No. 144840</div>
+
             </div>
             <div className="ra-footer__col">
               <h4>Services</h4>
@@ -820,12 +874,38 @@ export default function App() {
           </div>
         </div>
       </footer>
-      {/* WHATSAPP FLOATING BUTTON */}
+      {/* LEFT SIDE DECORATOR */}
+      <div className="ra-side-deco ra-side-deco--left">
+        <div className="ra-side-deco__card">
+          <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-side-deco__logo" />
+          <div className="ra-side-deco__ring ra-side-deco__ring--1" />
+          <div className="ra-side-deco__ring ra-side-deco__ring--2" />
+        </div>
+        <div className="ra-side-deco__text">RAI & ASSOCIATES</div>
+        <div className="ra-side-deco__badge"><span>30+</span><small>Yrs</small></div>
+        <div className="ra-side-deco__badge ra-side-deco__badge--2"><span>⚖️</span><small>Law</small></div>
+        {[...Array(5)].map((_, i) => <div key={i} className={`ra-side-deco__particle ra-side-deco__p--${i+1}`} />)}
+      </div>
+
+      {/* RIGHT SIDE DECORATOR */}
+      <div className="ra-side-deco ra-side-deco--right">
+        <div className="ra-side-deco__card">
+          <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-side-deco__logo" />
+          <div className="ra-side-deco__ring ra-side-deco__ring--1" />
+          <div className="ra-side-deco__ring ra-side-deco__ring--2" />
+        </div>
+        <div className="ra-side-deco__text">EST. 1993</div>
+        <div className="ra-side-deco__badge"><span>98%</span><small>Win</small></div>
+        <div className="ra-side-deco__badge ra-side-deco__badge--2"><span>5K+</span><small>Cases</small></div>
+        {[...Array(5)].map((_, i) => <div key={i} className={`ra-side-deco__particle ra-side-deco__p--${i+1}`} />)}
+      </div>
+
+      {/* WHATSAPP FLOATING BUTTON - LEFT SIDE */}
       <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float" title="Chat on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor" className="ra-wa-float__icon">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
-        <span className="ra-wa-float__text">Chat with Us</span>
+        <span className="ra-wa-float__text">WhatsApp Us</span>
       </a>
     </div>
   )
