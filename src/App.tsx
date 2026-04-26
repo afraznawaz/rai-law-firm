@@ -186,7 +186,7 @@ export default function App() {
             <div className="ra-nav__logo" onClick={() => scrollTo('home')}>
               <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
               <div className="ra-nav__logo-text">
-                <span className="ra-nav__logo-name">RAI & Associates</span>
+                <span className="ra-nav__logo-name">RAI & ASSOCIATES</span>
                 <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
               </div>
             </div>
@@ -201,15 +201,8 @@ export default function App() {
               ))}
             </div>
           </div>
-          {/* RIGHT — Stats + CTA */}
+          {/* RIGHT — CTA */}
           <div className="ra-nav__right">
-            <div className="ra-nav__stats">
-              <div className="ra-nav__stat"><span className="ra-nav__stat-num">30+</span><span className="ra-nav__stat-lbl">Yrs</span></div>
-              <div className="ra-nav__stat-div" />
-              <div className="ra-nav__stat"><span className="ra-nav__stat-num">5K+</span><span className="ra-nav__stat-lbl">Cases</span></div>
-              <div className="ra-nav__stat-div" />
-              <div className="ra-nav__stat"><span className="ra-nav__stat-num">98%</span><span className="ra-nav__stat-lbl">Won</span></div>
-            </div>
             <button className="ra-nav__cta" onClick={() => scrollTo('contact')}>Free Consultation</button>
             <button className="ra-nav__burger" onClick={() => setMenuOpen(!menuOpen)}>
               <span /><span /><span />
@@ -231,7 +224,7 @@ export default function App() {
         <div className="ra-hero__overlay" />
         <div className="ra-hero__content">
           <div className="ra-hero__badge">Established Since 1993</div>
-          <h1 className="ra-hero__title"><span className="ra-hero__title-gold">RAI & Associates</span><br />Law Firm</h1>
+          <h1 className="ra-hero__title"><span className="ra-hero__title-gold">RAI & ASSOCIATES</span><br />Law Firm</h1>
           <p className="ra-hero__tagline">Committed to Justice — R & A</p>
           <p className="ra-hero__desc">Three decades of trusted legal excellence in Lahore. Specializing in Tax Law, Civil Litigation, Corporate Law, and Constitutional matters before all courts of Pakistan.</p>
           <div className="ra-hero__actions">
@@ -239,7 +232,6 @@ export default function App() {
             <button className="ra-btn ra-btn--outline" onClick={() => scrollTo('services')}>Our Services</button>
           </div>
           <div className="ra-hero__bar">
-            <span>🏛️ Punjab Bar Reg. No. 144840</span>
             <span>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</span>
             <span>🌐 <a href="https://www.raiandassociates.com.pk" target="_blank" rel="noopener noreferrer" className="ra-hero__web-link">www.raiandassociates.com.pk</a></span>
           </div>
@@ -252,7 +244,7 @@ export default function App() {
             <div className="ra-hero3d__card">
               <div className="ra-hero3d__card-glow" />
               <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-hero3d__logo" />
-              <div className="ra-hero3d__firm">RAI & Associates</div>
+              <div className="ra-hero3d__firm">RAI & ASSOCIATES</div>
               <div className="ra-hero3d__est">Est. 1993 · Lahore</div>
               <div className="ra-hero3d__divider" />
               <div className="ra-hero3d__tagline">⚖️ Committed to Justice</div>
@@ -274,7 +266,7 @@ export default function App() {
               <div className="ra-3d-card__front">
                 <div className="ra-3d-card__glow" />
                 <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-card__logo" />
-                <div className="ra-3d-card__firm">RAI & Associates</div>
+                <div className="ra-3d-card__firm">RAI & ASSOCIATES</div>
                 <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
                 <div className="ra-3d-card__line" />
                 <div className="ra-3d-card__tagline">Committed to Justice</div>
@@ -819,31 +811,7 @@ export default function App() {
           </div>
         </div>
       </footer>
-      {/* LEFT SIDE DECORATOR */}
-      <div className="ra-side-deco ra-side-deco--left">
-        <div className="ra-side-deco__card">
-          <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-side-deco__logo" />
-          <div className="ra-side-deco__ring ra-side-deco__ring--1" />
-          <div className="ra-side-deco__ring ra-side-deco__ring--2" />
-        </div>
-        <div className="ra-side-deco__text">RAI & ASSOCIATES</div>
-        <div className="ra-side-deco__badge"><span>30+</span><small>Yrs</small></div>
-        <div className="ra-side-deco__badge ra-side-deco__badge--2"><span>⚖️</span><small>Law</small></div>
-        {[...Array(5)].map((_, i) => <div key={i} className={`ra-side-deco__particle ra-side-deco__p--${i+1}`} />)}
-      </div>
 
-      {/* RIGHT SIDE DECORATOR */}
-      <div className="ra-side-deco ra-side-deco--right">
-        <div className="ra-side-deco__card">
-          <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-side-deco__logo" />
-          <div className="ra-side-deco__ring ra-side-deco__ring--1" />
-          <div className="ra-side-deco__ring ra-side-deco__ring--2" />
-        </div>
-        <div className="ra-side-deco__text">EST. 1993</div>
-        <div className="ra-side-deco__badge"><span>98%</span><small>Win</small></div>
-        <div className="ra-side-deco__badge ra-side-deco__badge--2"><span>5K+</span><small>Cases</small></div>
-        {[...Array(5)].map((_, i) => <div key={i} className={`ra-side-deco__particle ra-side-deco__p--${i+1}`} />)}
-      </div>
 
       {/* WHATSAPP FLOATING BUTTON - LEFT SIDE */}
       <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float" title="WhatsApp Us">
