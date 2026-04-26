@@ -874,6 +874,32 @@ export default function App() {
           </div>
         </div>
       </footer>
+      {/* LEFT SIDE DECORATOR */}
+      <div className="ra-side-deco ra-side-deco--left">
+        <div className="ra-side-deco__card">
+          <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-side-deco__logo" />
+          <div className="ra-side-deco__ring ra-side-deco__ring--1" />
+          <div className="ra-side-deco__ring ra-side-deco__ring--2" />
+        </div>
+        <div className="ra-side-deco__text">RAI & ASSOCIATES</div>
+        <div className="ra-side-deco__badge"><span>30+</span><small>Yrs</small></div>
+        <div className="ra-side-deco__badge ra-side-deco__badge--2"><span>⚖️</span><small>Law</small></div>
+        {[...Array(5)].map((_, i) => <div key={i} className={`ra-side-deco__particle ra-side-deco__p--${i+1}`} />)}
+      </div>
+
+      {/* RIGHT SIDE DECORATOR */}
+      <div className="ra-side-deco ra-side-deco--right">
+        <div className="ra-side-deco__card">
+          <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-side-deco__logo" />
+          <div className="ra-side-deco__ring ra-side-deco__ring--1" />
+          <div className="ra-side-deco__ring ra-side-deco__ring--2" />
+        </div>
+        <div className="ra-side-deco__text">EST. 1993</div>
+        <div className="ra-side-deco__badge"><span>98%</span><small>Win</small></div>
+        <div className="ra-side-deco__badge ra-side-deco__badge--2"><span>5K+</span><small>Cases</small></div>
+        {[...Array(5)].map((_, i) => <div key={i} className={`ra-side-deco__particle ra-side-deco__p--${i+1}`} />)}
+      </div>
+
       {/* WHATSAPP FLOATING BUTTON - LEFT SIDE */}
       <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float" title="Chat on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor" className="ra-wa-float__icon">
