@@ -574,22 +574,7 @@ ul { list-style: none; }
   50%{transform:translateY(-20px) scale(1.3); opacity:1}
 }
 
-/* ===== WHATSAPP FLOAT ===== */
-.ra-wa-float {
-  position: fixed; left: 20px; bottom: 28px; z-index: 9999;
-  display: flex; align-items: center; gap: 10px;
-  background: #25d366; color: white;
-  padding: 12px 18px 12px 14px; border-radius: 50px;
-  box-shadow: 0 4px 20px rgba(37,211,102,0.45);
-  text-decoration: none; font-weight: 700; font-size: 0.85rem;
-  transition: all 0.3s; animation: waPulse 2.5s ease-in-out infinite;
-}
-.ra-wa-float:hover { transform: scale(1.07); box-shadow: 0 6px 28px rgba(37,211,102,0.6); background: #20ba5a; }
-.ra-wa-float__icon { width: 24px; height: 24px; flex-shrink: 0; }
-@keyframes waPulse {
-  0%,100%{box-shadow: 0 4px 20px rgba(37,211,102,0.45)}
-  50%{box-shadow: 0 4px 32px rgba(37,211,102,0.75), 0 0 0 8px rgba(37,211,102,0.1)}
-}
+
 
 /* ===== FOOTER SOCIAL BUTTONS ===== */
 .ra-footer__soc-btn {
