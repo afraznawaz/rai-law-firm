@@ -33,7 +33,7 @@ export default function Admin() {
   const [password, setPassword] = useState('')
   const [authError, setAuthError] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState<'posts' | 'certificates'>('posts')
+  const [activeTab, setActiveTab] = useState<'posts' | 'certificates' | 'cases'>('posts')
 
   // Blog state
   const [posts, setPosts] = useState<Post[]>([])
@@ -43,6 +43,15 @@ export default function Admin() {
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState('')
   const [deleteId, setDeleteId] = useState<number | null>(null)
+
+  // Cases state
+  const [cases, setCases] = useState<any[]>([])
+  const [casesLoading, setCasesLoading] = useState(false)
+  const [caseView, setCaseView] = useState<'list' | 'edit' | 'new'>('list')
+  const [editCase, setEditCase] = useState<any>({ title: '', category: 'Tax Law', court: '', year: new Date().getFullYear(), outcome: 'Won', summary: '', published: true })
+  const [caseSaving, setCaseSaving] = useState(false)
+  const [caseSaveMsg, setCaseSaveMsg] = useState('')
+  const [deleteCaseId, setDeleteCaseId] = useState<number | null>(null)
 
   // Certificates state
   const [certs, setCerts] = useState<Certificate[]>([])
@@ -61,7 +70,7 @@ export default function Admin() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => { if (user) { fetchPosts(); fetchCerts() } }, [user])
+  useEffect(() => { if (user) { fetchPosts(); fetchCerts(); fetchCases() } }, [user])
 
   const getToken = async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -77,6 +86,47 @@ export default function Admin() {
       setPosts(Array.isArray(data) ? data : [])
     } catch (e) { console.error(e) }
     finally { setLoading(false) }
+  }
+
+  const fetchCases = async () => {
+    setCasesLoading(true)
+    try {
+      const token = await getToken()
+      const res = await fetch('/api/cases?admin=1', { headers: { Authorization: `Bearer ${token}` } })
+      const data = await res.json()
+      setCases(Array.isArray(data) ? data : [])
+    } catch (e) { console.error(e) }
+    finally { setCasesLoading(false) }
+  }
+
+  const handleSaveCase = async (e: React.FormEvent) => {
+    e.preventDefault(); setCaseSaving(true); setCaseSaveMsg('')
+    try {
+      const token = await getToken()
+      const method = caseView === 'new' ? 'POST' : 'PUT'
+      const res = await fetch('/api/cases', {
+        method,
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(editCase)
+      })
+      if (!res.ok) throw new Error('Save failed')
+      setCaseSaveMsg('✅ Saved!')
+      await fetchCases()
+      setTimeout(() => { setCaseSaveMsg(''); setCaseView('list') }, 1500)
+    } catch (err: any) { setCaseSaveMsg('❌ ' + err.message) }
+    finally { setCaseSaving(false) }
+  }
+
+  const handleDeleteCase = async (id: number) => {
+    try {
+      const token = await getToken()
+      await fetch('/api/cases', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ id })
+      })
+      setDeleteCaseId(null); await fetchCases()
+    } catch (e) { console.error(e) }
   }
 
   const fetchCerts = async () => {
@@ -274,6 +324,8 @@ export default function Admin() {
             onClick={() => { setActiveTab('posts'); setView('list') }}>📋 Blog Posts</button>
           <button className={`adm-sidebar__link ${activeTab === 'posts' && view === 'new' ? 'active' : ''}`}
             onClick={() => { setActiveTab('posts'); setEditPost({ ...EMPTY_POST }); setView('new') }}>✏️ New Post</button>
+          <button className={`adm-sidebar__link ${activeTab === 'cases' ? 'active' : ''}`}
+            onClick={() => { setActiveTab('cases'); setCaseView('list') }}>⚖️ Cases</button>
           <button className={`adm-sidebar__link ${activeTab === 'certificates' ? 'active' : ''}`}
             onClick={() => setActiveTab('certificates')}>🏆 Certificates</button>
           <a href="/" className="adm-sidebar__link">🌐 View Website</a>
@@ -388,6 +440,117 @@ export default function Admin() {
                 </div>
               </div>
             </form>
+          </div>
+        )}
+
+        {/* ===== CASES ===== */}
+        {activeTab === 'cases' && caseView === 'list' && (
+          <div>
+            <div className="adm-header">
+              <div>
+                <h1 className="adm-header__title">Cases</h1>
+                <p className="adm-header__sub">{cases.length} case{cases.length !== 1 ? 's' : ''} total</p>
+              </div>
+              <button className="adm-btn adm-btn--gold" onClick={() => { setEditCase({ title: '', category: 'Tax Law', court: '', year: new Date().getFullYear(), outcome: 'Won', summary: '', published: true }); setCaseView('new') }}>+ New Case</button>
+            </div>
+            {casesLoading ? <div className="adm-loading">Loading...</div> : (
+              <div className="adm-posts">
+                {cases.map(c => (
+                  <div key={c.id} className="adm-post-card">
+                    <div className="adm-post-card__left">
+                      <span className={`adm-post-card__status ${c.published ? 'published' : 'draft'}`}>{c.published ? '🟢 Published' : '🟡 Draft'}</span>
+                      <h3 className="adm-post-card__title">{c.title}</h3>
+                      <div className="adm-post-card__meta">
+                        <span className="adm-post-card__cat">{c.category}</span>
+                        <span>🏛️ {c.court}</span>
+                        <span>📅 {c.year}</span>
+                        <span style={{color: c.outcome === 'Won' ? '#16a34a' : '#dc2626'}}>⚖️ {c.outcome}</span>
+                      </div>
+                      <p className="adm-post-card__excerpt">{c.summary?.substring(0, 120)}...</p>
+                    </div>
+                    <div className="adm-post-card__actions">
+                      <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setEditCase({...c}); setCaseView('edit') }}>✏️ Edit</button>
+                      <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => setDeleteCaseId(c.id)}>🗑️ Delete</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'cases' && (caseView === 'edit' || caseView === 'new') && (
+          <div>
+            <div className="adm-header">
+              <div><h1 className="adm-header__title">{caseView === 'new' ? 'New Case' : 'Edit Case'}</h1></div>
+              <button className="adm-btn adm-btn--outline" onClick={() => setCaseView('list')}>← Back</button>
+            </div>
+            <form onSubmit={handleSaveCase} className="adm-editor">
+              <div className="adm-editor__grid">
+                <div className="adm-editor__main">
+                  <div className="adm-form__group">
+                    <label>Case Title *</label>
+                    <input required placeholder="e.g. Tax Evasion Defense — FBR vs. XYZ Company" value={editCase.title} onChange={e => setEditCase({...editCase, title: e.target.value})} />
+                  </div>
+                  <div className="adm-form__group">
+                    <label>Court *</label>
+                    <input required placeholder="e.g. Lahore High Court" value={editCase.court} onChange={e => setEditCase({...editCase, court: e.target.value})} />
+                  </div>
+                  <div className="adm-form__group">
+                    <label>Case Summary *</label>
+                    <textarea rows={6} required placeholder="Describe the case, what was at stake, and how it was resolved..." value={editCase.summary} onChange={e => setEditCase({...editCase, summary: e.target.value})} />
+                  </div>
+                </div>
+                <div className="adm-editor__sidebar">
+                  <div className="adm-editor__panel">
+                    <h3>Case Details</h3>
+                    <div className="adm-form__group">
+                      <label>Status</label>
+                      <select value={editCase.published ? 'published' : 'draft'} onChange={e => setEditCase({...editCase, published: e.target.value === 'published'})}>
+                        <option value="published">🟢 Published</option>
+                        <option value="draft">🟡 Draft</option>
+                      </select>
+                    </div>
+                    <div className="adm-form__group">
+                      <label>Category *</label>
+                      <select required value={editCase.category} onChange={e => setEditCase({...editCase, category: e.target.value})}>
+                        {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div className="adm-form__group">
+                      <label>Outcome</label>
+                      <select value={editCase.outcome} onChange={e => setEditCase({...editCase, outcome: e.target.value})}>
+                        <option>Won</option>
+                        <option>Settled</option>
+                        <option>Ongoing</option>
+                        <option>Lost</option>
+                      </select>
+                    </div>
+                    <div className="adm-form__group">
+                      <label>Year</label>
+                      <input type="number" min="1993" max="2030" value={editCase.year} onChange={e => setEditCase({...editCase, year: parseInt(e.target.value)})} />
+                    </div>
+                    {caseSaveMsg && <div className="adm-save-msg">{caseSaveMsg}</div>}
+                    <button type="submit" className="adm-btn adm-btn--gold adm-btn--full" disabled={caseSaving}>
+                      {caseSaving ? 'Saving...' : caseView === 'new' ? '🚀 Add Case' : '💾 Save Changes'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {deleteCaseId && (
+          <div className="adm-modal-overlay" onClick={() => setDeleteCaseId(null)}>
+            <div className="adm-modal" onClick={e => e.stopPropagation()}>
+              <h3>Delete Case?</h3>
+              <p>This cannot be undone.</p>
+              <div className="adm-modal__actions">
+                <button className="adm-btn adm-btn--outline" onClick={() => setDeleteCaseId(null)}>Cancel</button>
+                <button className="adm-btn adm-btn--danger" onClick={() => handleDeleteCase(deleteCaseId)}>Delete</button>
+              </div>
+            </div>
           </div>
         )}
 

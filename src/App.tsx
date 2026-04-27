@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import Admin from './pages/Admin'
 import BlogPost from './pages/BlogPost'
+import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon } from './components/SocialIcons'
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Certificates', 'Case Laws', 'Contact']
 
@@ -113,12 +114,12 @@ const SERVICES = [
 ]
 
 const SOCIAL_LINKS = [
-  { icon: '📘', label: 'Facebook (R&A)', href: 'https://www.facebook.com/61577203114572', color: '#1877f2' },
-  { icon: '📘', label: 'Facebook (Rai Afraz)', href: 'https://www.facebook.com/raiafraz10', color: '#1877f2' },
-  { icon: '🎵', label: 'TikTok', href: 'https://www.tiktok.com/@rai_associates', color: '#010101' },
-  { icon: '📸', label: 'Instagram', href: 'https://www.instagram.com/rai_associates10', color: '#e1306c' },
-  { icon: '▶️', label: 'YouTube', href: 'https://www.youtube.com/@raiandassociates', color: '#ff0000' },
-  { icon: '💬', label: 'WhatsApp', href: 'https://wa.me/923164371096', color: '#25d366' },
+  { Icon: FacebookIcon, label: 'Facebook (R&A)', href: 'https://www.facebook.com/61577203114572', color: '#1877f2' },
+  { Icon: FacebookIcon, label: 'Facebook (Rai Afraz)', href: 'https://www.facebook.com/raiafraz10', color: '#1877f2' },
+  { Icon: TikTokIcon, label: 'TikTok', href: 'https://www.tiktok.com/@rai_associates', color: '#010101' },
+  { Icon: InstagramIcon, label: 'Instagram', href: 'https://www.instagram.com/rai_associates10', color: '#e1306c' },
+  { Icon: YouTubeIcon, label: 'YouTube', href: 'https://www.youtube.com/@raiandassociates', color: '#ff0000' },
+  { Icon: WhatsAppIcon, label: 'WhatsApp', href: 'https://wa.me/923164371096', color: '#25d366' },
 ]
 
 const STATS = [
@@ -368,7 +369,7 @@ export default function App() {
                 <div className="ra-about__social-links">
                   {SOCIAL_LINKS.map((s, i) => (
                     <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="ra-about__social-btn" style={{ '--sc': s.color } as React.CSSProperties}>
-                      <span>{s.icon}</span><span>{s.label}</span>
+                      <s.Icon size={16} /><span>{s.label}</span>
                     </a>
                   ))}
                 </div>
