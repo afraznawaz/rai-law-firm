@@ -24,7 +24,7 @@ interface Certificate {
   created_at: string
 }
 
-const CATEGORIES = ['Tax Law', 'Cybercrime & FIA', 'Intellectual Property', 'Corporate Law', 'Civil Litigation', 'Criminal Law', 'Family Law', 'Environmental Law', 'Revenue Law', 'Constitutional Law', 'General Legal Advice']
+const CATEGORIES = ['Tax Law', 'Cybercrime & FIA', 'Intellectual Property', 'Corporate Law', 'Civil Litigation', 'Criminal Law', 'Family Law', 'Environmental Law', 'Revenue Law', 'Constitutional Law', 'Case Laws', 'General Legal Advice']
 const EMPTY_POST = { title: '', slug: '', category: 'Tax Law', excerpt: '', content: '', author: 'Rai Afraz (Advocate)', published: true }
 
 export default function Admin() {
