@@ -782,7 +782,7 @@ ul { list-style: none; }
 }
 
 @media (max-width: 1024px) {
-  .ra-root { padding-left: 48px; padding-right: 48px; }
+  .ra-root { padding-left: 0; padding-right: 0; }
 }
 @media (max-width: 768px) {
   .ra-root { padding-left: 0 !important; padding-right: 0 !important; }
@@ -2111,8 +2111,8 @@ ul { list-style: none; }
 
 /* Push main content away from sidebars */
 .ra-root {
-  margin-left: 32px;
-  margin-right: 32px;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 /* Hide on small screens */

@@ -619,24 +619,7 @@ export default function App() {
             <div className="ra-divider ra-divider--center" />
             <p className="ra-section__subtitle">Official bar memberships, registrations and professional certifications</p>
           </div>
-          {/* Certificate Images */}
-          <div className="ra-certs__images">
-            {[
-              { src: '/uploads/cert-1.jpg', badge: '🎓 Certificate 1', label: 'Professional Legal Certificate', sub: 'Rai Afraz (Advocate) — Verified' },
-              { src: '/uploads/cert-2.jpg', badge: '🏆 Certificate 2', label: 'Professional Legal Certificate', sub: 'Rai Afraz (Advocate) — Verified' },
-              { src: '/uploads/cert-3.jpg', badge: '📜 Certificate 3', label: 'Professional Legal Certificate', sub: 'Rai Afraz (Advocate) — Verified' },
-            ].map((cert, i) => (
-              <div key={i} className="ra-cert-img-card">
-                <div className="ra-cert-img-card__badge">{cert.badge}</div>
-                <div className="ra-cert-img-card__frame">
-                  <img src={cert.src} alt={cert.label} className="ra-cert-img-card__img"
-                    onError={e => { (e.target as HTMLImageElement).style.opacity='0.3' }} />
-                </div>
-                <div className="ra-cert-img-card__label">{cert.label}</div>
-                <div className="ra-cert-img-card__sub">{cert.sub}</div>
-              </div>
-            ))}
-          </div>
+
           <div className="ra-certs__grid">
             <div className="ra-cert-card">
               <div className="ra-cert-card__icon">🏛️</div>
