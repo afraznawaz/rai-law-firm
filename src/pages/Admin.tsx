@@ -38,7 +38,9 @@ export default function Admin() {
   // Blog state
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(false)
-  const [view, setView] = useState<'list' | 'edit' | 'new'>('list')
+  const [view, setView] = useState<'list' | 'edit' | 'new' | 'inbox'>('list')
+  const [messages, setMessages] = useState<any[]>([])
+  const [msgsLoading, setMsgsLoading] = useState(false)
   const [editPost, setEditPost] = useState<any>(EMPTY_POST)
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState('')
@@ -70,7 +72,20 @@ export default function Admin() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => { if (user) { fetchPosts(); fetchCerts(); fetchCases() } }, [user])
+  useEffect(() => { if (user) { fetchPosts(); fetchCerts(); fetchCases(); fetchMessages() } }, [user])
+
+  const fetchMessages = async () => {
+    setMsgsLoading(true)
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch('/api/contact', {
+        headers: { Authorization: `Bearer ${session?.access_token}` }
+      })
+      const data = await res.json()
+      setMessages(Array.isArray(data) ? data : [])
+    } catch (e) { console.error(e) }
+    finally { setMsgsLoading(false) }
+  }
 
   const getToken = async () => {
     const { data: { session } } = await supabase.auth.getSession()

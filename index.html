@@ -4,266 +4,218 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-site-verification" content="HqLtpLcfVlDeR-n014Lva98eCyMDhmd9hlsz0c_xCWU" />
-    <title>RAI & Associates Law Firm | Est. 1993 | Lahore</title>
-    <script data-arena-recording="true">(function(){
-"use strict";
-var SK="__arena_rec",RRWEB_CDN="https://cdn.jsdelivr.net/npm/rrweb@2.0.0-alpha.4/dist/rrweb.min.js";
-var MAX_RECORDING_MS=600000,MAX_RRWEB_EVENTS=30000,MAX_INTERACTIONS=5000,MAX_CURSOR_POINTS=10000,recStopped=false;
-var stored=null;try{var raw=sessionStorage.getItem(SK);if(raw)stored=JSON.parse(raw);}catch(ex){}
-var meta=stored?stored.m||null:null,rrwebEvents=stored?stored.r||[]:[],rrwebStarted=false,startTime=stored?stored.st||Date.now():Date.now();
-var interactions=stored?stored.i||[]:[],cursorPath=stored?stored.c||[]:[],lastCursorSample=0,lastScrollSample=0;
-var pageHeight=document.documentElement.scrollHeight;
-var viewport={width:window.innerWidth,height:window.innerHeight};
-function isCapped(){if(recStopped)return true;if(Date.now()-startTime>=MAX_RECORDING_MS){recStopped=true;return true;}return false;}
-function persist(){try{var d=JSON.stringify({r:rrwebEvents,i:interactions,c:cursorPath,m:meta,st:startTime});sessionStorage.setItem(SK,d);}catch(ex){rrwebEvents=rrwebEvents.slice(Math.floor(rrwebEvents.length/2));try{sessionStorage.setItem(SK,JSON.stringify({r:rrwebEvents,i:interactions,c:cursorPath,m:meta,st:startTime}));}catch(ex2){}}}
-setInterval(persist,5000);
-window.addEventListener("resize",function(){viewport={width:window.innerWidth,height:window.innerHeight};pageHeight=document.documentElement.scrollHeight;});
-document.addEventListener("click",function(e){if(isCapped()||interactions.length>=MAX_INTERACTIONS)return;var el=e.target;var tag=el.tagName?el.tagName.toLowerCase():"";var text=(el.textContent||"").trim().substring(0,80);var classes=el.className&&typeof el.className==="string"?el.className.substring(0,120):"";interactions.push({type:"click",t:Date.now()-startTime,x:Math.round(e.clientX),y:Math.round(e.clientY),element:{tag:tag,text:text,classes:classes}});},true);
-window.addEventListener("scroll",function(){if(isCapped()||interactions.length>=MAX_INTERACTIONS)return;var now=Date.now();if(now-lastScrollSample<200)return;lastScrollSample=now;var scrollY=Math.round(window.scrollY||window.pageYOffset||0);var depthPct=pageHeight>viewport.height?Math.min(100,Math.round(((scrollY+viewport.height)/pageHeight)*100)):100;interactions.push({type:"scroll",t:now-startTime,y:scrollY,depth_pct:depthPct});},{passive:true});
-document.addEventListener("mousemove",function(e){if(isCapped()||cursorPath.length>=MAX_CURSOR_POINTS)return;var now=Date.now();if(now-lastCursorSample<250)return;lastCursorSample=now;cursorPath.push([Math.round(e.clientX),Math.round(e.clientY),now-startTime]);},{passive:true});
-document.addEventListener("keydown",function(e){if(isCapped()||interactions.length>=MAX_INTERACTIONS)return;if(e.target&&(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA"))return;interactions.push({type:"keydown",t:Date.now()-startTime,key:e.key});},true);
-function buildAnalytics(){if(!meta)return null;var ph=document.documentElement.scrollHeight;var maxScroll=0,clickElements={},firstClick=null,firstScroll=null,totalDistance=0;for(var i=0;i<interactions.length;i++){var ev=interactions[i];if(ev.type==="scroll"){if(ev.depth_pct>maxScroll)maxScroll=ev.depth_pct;if(!firstScroll)firstScroll=ev.t;}if(ev.type==="click"){if(!firstClick)firstClick=ev.t;var key=ev.element.tag+":"+ev.element.text.substring(0,30);clickElements[key]=true;}}for(var j=1;j<cursorPath.length;j++){var dx=cursorPath[j][0]-cursorPath[j-1][0];var dy=cursorPath[j][1]-cursorPath[j-1][1];totalDistance+=Math.sqrt(dx*dx+dy*dy);}var duration=Date.now()-startTime;var clickHeatmap=[];for(var k=0;k<interactions.length;k++){if(interactions[k].type==="click")clickHeatmap.push([interactions[k].x,interactions[k].y]);}return{generation_id:meta.generationId,tournament_id:meta.tournamentId,started_at:new Date(startTime).toISOString(),ended_at:new Date().toISOString(),duration_ms:duration,viewport:viewport,page_height:ph,interactions:interactions,cursor_path:cursorPath,click_heatmap:clickHeatmap,summary:{total_clicks:clickHeatmap.length,total_scrolls:interactions.filter(function(e){return e.type==="scroll";}).length,max_scroll_depth_pct:maxScroll,unique_elements_clicked:Object.keys(clickElements).length,time_to_first_click_ms:firstClick,time_to_first_scroll_ms:firstScroll,cursor_distance_px:Math.round(totalDistance),active_time_ms:duration}};}
-function loadRrweb(){if(rrwebStarted)return;rrwebStarted=true;var s=document.createElement("script");s.src=RRWEB_CDN;s.onload=function(){var rec=(window.rrweb&&window.rrweb.record)||window.rrwebRecord;if(!rec)return;rec({emit:function(event){if(rrwebEvents.length>=MAX_RRWEB_EVENTS||isCapped())return;rrwebEvents.push(event);}});};s.onerror=function(){};document.head.appendChild(s);}
-window.addEventListener("message",function(e){if(!e.data||typeof e.data.type!=="string")return;if(e.data.type==="arena:init"){if(!meta)startTime=Date.now();meta={generationId:e.data.generationId||e.data.modelId,tournamentId:e.data.tournamentId};persist();loadRrweb();if(e.source)e.source.postMessage({type:"arena:init-ack",generationId:meta.generationId},"*");}if(e.data.type==="arena:flush"){var resp={type:"arena:recording-data",generationId:meta?meta.generationId:null,rrwebEvents:rrwebEvents,analytics:buildAnalytics()};try{sessionStorage.removeItem(SK);}catch(ex){}if(e.source)e.source.postMessage(resp,"*");}});
-loadRrweb();
-})();</script>
-  <script data-arena-views="true">(function(){var isTop=false;try{isTop=window.self===window.top;}catch(e){}if(!isTop)return;window.__ARENA_META={generationId:"claude-sonnet-4-6",tournamentId:"1bee3376-04dc-4739-8621-5bf1138843c6"};var payload={tournamentId:"1bee3376-04dc-4739-8621-5bf1138843c6",modelId:"claude-sonnet-4-6"};try{var r=document.referrer;if(r){var u=new URL(r);payload.referrerDomain=u.hostname;}}catch(e){}try{var vid=null;try{vid=localStorage.getItem('arena_vid');}catch(e){}if(!vid){vid=typeof crypto!=="undefined"&&crypto.randomUUID?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2)).slice(0,32);try{localStorage.setItem('arena_vid',vid);}catch(e){}}if(vid)payload.viewerId=vid;}catch(e){}try{fetch("https://www.designarena.ai/api/agon/page-views",{"method":"POST","headers":{"Content-Type":"application/json"},"body":JSON.stringify(payload),"keepalive":true});}catch(e){}})();</script>
-</head>
+
+    <!-- PRIMARY SEO META TAGS -->
+    <title>RAI & Associates Law Firm Lahore | Best Tax Lawyer Pakistan | Advocate Rai Afraz</title>
+    <meta name="description" content="RAI & Associates Law Firm Lahore — Pakistan's trusted legal experts since 1993. Specializing in Tax Law, FBR disputes, FIA Cybercrime, Corporate Law, Trademark & IP. Call: 0304-4840937. Punjab Bar Reg. 144840." />
+    <meta name="keywords" content="tax lawyer Lahore, tax advocate Pakistan, best law firm Lahore, FBR tax lawyer, income tax lawyer Lahore, corporate lawyer Lahore, FIA cybercrime lawyer, trademark registration Pakistan, advocate Lahore High Court, tax litigation Pakistan, Rai Afraz advocate, RAI Associates law firm, tax attorney Pakistan, vakeel Lahore, best advocate Pakistan, Lahore High Court advocate, Punjab Bar Council, tax bar association Lahore" />
+    <meta name="author" content="Rai Afraz (Advocate) — RAI & Associates Law Firm" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" href="https://raiandassociates.com.pk/" />
+
+    <!-- GEO / LOCAL SEO -->
+    <meta name="geo.region" content="PK-PB" />
+    <meta name="geo.placename" content="Lahore, Punjab, Pakistan" />
+    <meta name="geo.position" content="31.5497;74.3436" />
+    <meta name="ICBM" content="31.5497, 74.3436" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+
+    <!-- OPEN GRAPH (Facebook, WhatsApp previews) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://raiandassociates.com.pk/" />
+    <meta property="og:title" content="RAI & Associates Law Firm Lahore | Best Tax Lawyer Pakistan" />
+    <meta property="og:description" content="Trusted legal experts since 1993. Tax Law, FBR Disputes, FIA Cybercrime, Corporate & Trademark Law. Punjab Bar Reg. 144840. Call: 0304-4840937" />
+    <meta property="og:image" content="https://raiandassociates.com.pk/uploads/upload_1.PNG" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="RAI & Associates Law Firm" />
+    <meta property="og:locale" content="en_PK" />
+
+    <!-- TWITTER CARD -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RAI & Associates Law Firm | Best Tax Lawyer Lahore Pakistan" />
+    <meta name="twitter:description" content="Expert legal services in Tax Law, FBR disputes, FIA Cybercrime, Corporate & IP Law. Lahore, Pakistan. Since 1993." />
+    <meta name="twitter:image" content="https://raiandassociates.com.pk/uploads/upload_1.PNG" />
+
+    <!-- SCHEMA.ORG STRUCTURED DATA -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LegalService",
+      "name": "RAI & Associates Law Firm",
+      "alternateName": ["Rai and Associates", "R&A Law Firm", "RAI Associates Lahore"],
+      "description": "Professional law firm in Lahore, Pakistan specializing in Tax Law, FBR disputes, FIA Cybercrime, Corporate Law, Trademark & IP registration since 1993.",
+      "url": "https://raiandassociates.com.pk",
+      "logo": "https://raiandassociates.com.pk/uploads/upload_1.PNG",
+      "image": "https://raiandassociates.com.pk/uploads/upload_1.PNG",
+      "foundingDate": "1993",
+      "telephone": ["+92-304-4840937", "+92-316-4371096"],
+      "email": "afrazrai4457@gmail.com",
+      "address": [
+        {
+          "@type": "PostalAddress",
+          "streetAddress": "3-Fane Road, Tehreem Building",
+          "addressLocality": "Lahore",
+          "addressRegion": "Punjab",
+          "addressCountry": "PK",
+          "description": "R&A Law Firm — Near Lahore High Court"
+        },
+        {
+          "@type": "PostalAddress",
+          "streetAddress": "Near Eiffel Tower, Bahria Town",
+          "addressLocality": "Lahore",
+          "addressRegion": "Punjab",
+          "addressCountry": "PK",
+          "description": "Tax Consultancy Office"
+        }
+      ],
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "31.5497",
+        "longitude": "74.3436"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      ],
+      "priceRange": "$$",
+      "areaServed": [
+        {"@type": "City", "name": "Lahore"},
+        {"@type": "City", "name": "Islamabad"},
+        {"@type": "City", "name": "Karachi"},
+        {"@type": "Country", "name": "Pakistan"}
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Legal Services",
+        "itemListElement": [
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Tax Law & FBR Litigation"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "FIA Cybercrime Defense"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Corporate Law & SECP Registration"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Trademark & IP Registration"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Civil Litigation"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Family Law & Divorce"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Criminal Defense"}},
+          {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Constitutional Law & Writ Petitions"}}
+        ]
+      },
+      "employee": {
+        "@type": "Person",
+        "name": "Rai Afraz",
+        "jobTitle": "CEO & Advocate",
+        "description": "Member of Lahore Tax Bar Association. Specialized in Tax Law Litigation and FIA Cases. Punjab Bar Registration No. 144840.",
+        "telephone": "+92-304-4840937",
+        "email": "afrazrai4457@gmail.com",
+        "memberOf": {
+          "@type": "Organization",
+          "name": "Lahore Tax Bar Association"
+        }
+      },
+      "sameAs": [
+        "https://www.facebook.com/61577203114572",
+        "https://www.facebook.com/raiafraz10",
+        "https://www.instagram.com/rai_associates10",
+        "https://www.youtube.com/@raiandassociates",
+        "https://www.tiktok.com/@rai_associates"
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "10",
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    }
+    </script>
+
+    <!-- PERSON SCHEMA for Rai Afraz -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Rai Afraz",
+      "alternateName": "Advocate Rai Afraz Kharal",
+      "jobTitle": "Advocate & CEO",
+      "worksFor": {
+        "@type": "LegalService",
+        "name": "RAI & Associates Law Firm"
+      },
+      "description": "Tax Law specialist and CEO of RAI & Associates Law Firm Lahore. Member of Lahore Tax Bar Association. Punjab Bar Registration No. 144840. Expert in FBR tax disputes, FIA cybercrime cases, and corporate law.",
+      "telephone": "+92-304-4840937",
+      "email": "afrazrai4457@gmail.com",
+      "url": "https://raiandassociates.com.pk",
+      "image": "https://raiandassociates.com.pk/uploads/rai-afraz.jpg",
+      "knowsAbout": ["Tax Law", "FBR Litigation", "FIA Cybercrime", "Corporate Law", "Trademark Registration", "Civil Litigation", "Family Law", "Constitutional Law"],
+      "memberOf": [
+        {"@type": "Organization", "name": "Lahore Tax Bar Association"},
+        {"@type": "Organization", "name": "Punjab Bar Council"}
+      ]
+    }
+    </script>
+
+    <!-- FAQ SCHEMA -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the best law firm in Lahore for tax cases?",
+          "acceptedAnswer": {"@type": "Answer", "text": "RAI & Associates Law Firm is one of Lahore's most trusted law firms for tax cases. Led by Advocate Rai Afraz, a member of the Lahore Tax Bar Association, the firm specializes in FBR tax disputes, income tax litigation, and sales tax matters before all tax tribunals and courts."}
+        },
+        {
+          "@type": "Question",
+          "name": "How do I find a tax lawyer in Lahore Pakistan?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Contact RAI & Associates Law Firm at 0304-4840937 or visit our office at 3-Fane Road, Tehreem Building, near Lahore High Court. We offer free initial consultations for tax matters."}
+        },
+        {
+          "@type": "Question",
+          "name": "Can RAI & Associates help with FIA cybercrime cases?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Yes. RAI & Associates specializes in FIA cybercrime defense under PECA 2016. We handle online harassment, digital fraud, social media cases, and all FIA Cybercrime Wing matters across Pakistan."}
+        },
+        {
+          "@type": "Question",
+          "name": "How to register a trademark in Pakistan?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Trademark registration in Pakistan is done through IPO Pakistan. RAI & Associates handles the complete process including trademark search, classification, application filing, and registration certificate. Contact us at 0304-4840937."}
+        },
+        {
+          "@type": "Question",
+          "name": "What is Punjab Bar Registration No. 144840?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Punjab Bar Registration No. 144840 belongs to Advocate Rai Afraz, CEO of RAI & Associates Law Firm, Lahore. This registration confirms his authorization to practice law before all courts in Punjab including the Lahore High Court."}
+        }
+      ]
+    }
+    </script>
+
+    <!-- BREADCRUMB SCHEMA -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://raiandassociates.com.pk/"},
+        {"@type": "ListItem", "position": 2, "name": "Legal Services", "item": "https://raiandassociates.com.pk/#services"},
+        {"@type": "ListItem", "position": 3, "name": "Legal Insights Blog", "item": "https://raiandassociates.com.pk/#blog"},
+        {"@type": "ListItem", "position": 4, "name": "Contact", "item": "https://raiandassociates.com.pk/#contact"}
+      ]
+    }
+    </script>
+
+    <!-- PERFORMANCE -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://wa.me" />
+    <link rel="dns-prefetch" href="https://www.facebook.com" />
+  </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-      <script data-element-picker>/**
- * Agon Element Picker — injected into the preview iframe.
- *
- * Listens for postMessage from the parent to toggle inspect mode.
- * In inspect mode, hovering highlights elements and clicking sends
- * the element's source location (from data-source-loc) back to the parent.
- *
- * Protocol:
- *   Parent -> iframe:  { type: 'inspect:mode', enabled: true/false }
- *   iframe -> Parent:  { type: 'element:selected', file, line, column, tag, text, classes, id }
- */
-(function () {
-  'use strict';
-
-  var inspectEnabled = false;
-  var overlay = null;
-  var label = null;
-  var currentTarget = null;
-
-  function createOverlay() {
-    if (overlay) return;
-
-    overlay = document.createElement('div');
-    overlay.id = '__picker-overlay';
-    overlay.style.cssText = [
-      'position: fixed',
-      'pointer-events: none',
-      'z-index: 2147483647',
-      'border: 2px solid #3b82f6',
-      'background: rgba(59, 130, 246, 0.08)',
-      'transition: all 0.05s ease-out',
-      'display: none',
-      'box-sizing: border-box',
-    ].join(';');
-
-    label = document.createElement('div');
-    label.id = '__picker-label';
-    label.style.cssText = [
-      'position: fixed',
-      'pointer-events: none',
-      'z-index: 2147483647',
-      'background: #1e40af',
-      'color: #fff',
-      'font: 11px/1.4 monospace',
-      'padding: 2px 6px',
-      'border-radius: 3px',
-      'white-space: nowrap',
-      'display: none',
-      'max-width: 400px',
-      'overflow: hidden',
-      'text-overflow: ellipsis',
-    ].join(';');
-
-    document.body.appendChild(overlay);
-    document.body.appendChild(label);
-  }
-
-  function removeOverlay() {
-    if (overlay) { overlay.remove(); overlay = null; }
-    if (label) { label.remove(); label = null; }
-  }
-
-  function findSourceAttr(el) {
-    while (el && el !== document.body && el !== document.documentElement) {
-      var src = el.getAttribute('data-source-loc');
-      if (src) return { element: el, source: src };
-      el = el.parentElement;
-    }
-    return null;
-  }
-
-  function parseSource(sourceStr) {
-    // Format: "relative/path.tsx:line:col"
-    var parts = sourceStr.split(':');
-    if (parts.length < 3) return { file: sourceStr, line: 0, column: 0 };
-    var col = parseInt(parts.pop(), 10);
-    var line = parseInt(parts.pop(), 10);
-    var file = parts.join(':'); // rejoin in case path has colons (unlikely but safe)
-    return { file: file, line: line, column: col };
-  }
-
-  function highlightElement(el) {
-    if (!overlay || !el) return;
-
-    var rect = el.getBoundingClientRect();
-    overlay.style.top = rect.top + 'px';
-    overlay.style.left = rect.left + 'px';
-    overlay.style.width = rect.width + 'px';
-    overlay.style.height = rect.height + 'px';
-    overlay.style.display = 'block';
-
-    var tag = el.tagName.toLowerCase();
-    var src = el.getAttribute('data-source-loc');
-    var labelText = '<' + tag + '>';
-    if (src) {
-      var parsed = parseSource(src);
-      labelText += '  ' + parsed.file + ':' + parsed.line;
-    }
-    label.textContent = labelText;
-
-    // Position label above the element, or below if too close to top
-    var labelTop = rect.top - 22;
-    if (labelTop < 4) labelTop = rect.bottom + 4;
-    label.style.top = labelTop + 'px';
-    label.style.left = Math.max(4, rect.left) + 'px';
-    label.style.display = 'block';
-  }
-
-  function hideOverlay() {
-    if (overlay) overlay.style.display = 'none';
-    if (label) label.style.display = 'none';
-    currentTarget = null;
-  }
-
-  function onMouseOver(e) {
-    if (!inspectEnabled) return;
-    var target = e.target;
-
-    // Skip our own overlay elements
-    if (target === overlay || target === label) return;
-    if (target.id === '__picker-overlay' || target.id === '__picker-label') return;
-
-    var found = findSourceAttr(target);
-    if (found) {
-      currentTarget = found.element;
-      highlightElement(found.element);
-    } else {
-      currentTarget = target;
-      highlightElement(target);
-    }
-  }
-
-  function onMouseOut(e) {
-    if (!inspectEnabled) return;
-    var related = e.relatedTarget;
-    if (related === overlay || related === label) return;
-    if (!e.relatedTarget || e.relatedTarget === document) {
-      hideOverlay();
-    }
-  }
-
-  function onClick(e) {
-    if (!inspectEnabled) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-
-    var target = e.target;
-    if (target === overlay || target === label) return;
-
-    var found = findSourceAttr(target);
-    var element = found ? found.element : target;
-    var sourceStr = found ? found.source : null;
-
-    var info = {
-      type: 'element:selected',
-      tag: element.tagName.toLowerCase(),
-      text: (element.textContent || '').trim().substring(0, 200),
-      classes: element.className && typeof element.className === 'string'
-        ? element.className.substring(0, 300) : '',
-      id: element.id || '',
-      file: null,
-      line: null,
-      column: null,
-    };
-
-    if (sourceStr) {
-      var parsed = parseSource(sourceStr);
-      info.file = parsed.file;
-      info.line = parsed.line;
-      info.column = parsed.column;
-    }
-
-    // Send to parent
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage(info, '*');
-    }
-    // Also log locally for standalone testing
-    console.log('[element-picker] Selected:', info);
-  }
-
-  function enableInspect() {
-    if (inspectEnabled) return;
-    inspectEnabled = true;
-    createOverlay();
-    document.addEventListener('mouseover', onMouseOver, true);
-    document.addEventListener('mouseout', onMouseOut, true);
-    document.addEventListener('click', onClick, true);
-    document.body.style.cursor = 'crosshair';
-    console.log('[element-picker] Inspect mode ON');
-  }
-
-  function disableInspect() {
-    if (!inspectEnabled) return;
-    inspectEnabled = false;
-    document.removeEventListener('mouseover', onMouseOver, true);
-    document.removeEventListener('mouseout', onMouseOut, true);
-    document.removeEventListener('click', onClick, true);
-    hideOverlay();
-    removeOverlay();
-    document.body.style.cursor = '';
-    console.log('[element-picker] Inspect mode OFF');
-  }
-
-  // Listen for commands from parent
-  window.addEventListener('message', function (e) {
-    if (!e.data || typeof e.data.type !== 'string') return;
-
-    if (e.data.type === 'inspect:mode') {
-      if (e.data.enabled) {
-        enableInspect();
-      } else {
-        disableInspect();
-      }
-    }
-  });
-
-  // Also support toggling via keyboard (Alt+Shift+I) for standalone testing
-  document.addEventListener('keydown', function (e) {
-    if (e.altKey && e.shiftKey && e.key === 'I') {
-      if (inspectEnabled) {
-        disableInspect();
-      } else {
-        enableInspect();
-      }
-    }
-  });
-
-  console.log('[element-picker] Loaded. Waiting for inspect-mode command (or press Alt+Shift+I).');
-})();
-</script>
   </body>
 </html>

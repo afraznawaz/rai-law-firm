@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+
+Sitemap: https://raiandassociates.com.pk/sitemap.xml
+
+# RAI & Associates Law Firm - Lahore, Pakistan
+# Tax Lawyer Lahore | Advocate | Legal Services Pakistan
