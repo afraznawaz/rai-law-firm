@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import supabase from '../lib/supabase'
 
 interface Post {
   id: number; title: string; slug: string; category: string
   excerpt: string; content: string; author: string; published: boolean; created_at: string
 }
-interface Certificate {
-  id: number; title: string; description: string
-  file_url: string; file_type: string; file_name: string; created_at: string
+interface CaseLaw {
+  id: number; title: string; court: string; citation: string
+  category: string; description: string; file_url: string
+  file_type: string; file_name: string; created_at: string
 }
 
 const CATEGORIES = ['Tax Law','Cybercrime & FIA','Intellectual Property','Corporate Law','Civil Litigation','Criminal Law','Family Law','Environmental Law','Revenue Law','Constitutional Law','General Legal Advice']
+const COURTS = ['Supreme Court of Pakistan','Lahore High Court','Islamabad High Court','Peshawar High Court','Sindh High Court','Balochistan High Court','Federal Shariat Court','Appellate Tribunal Inland Revenue','Banking Court','Family Court','District Court']
 const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:'', author:'Rai Afraz (Advocate)', published:true }
 
 export default function Admin() {
@@ -19,7 +21,9 @@ export default function Admin() {
   const [password, setPassword] = useState('')
   const [authError, setAuthError] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState<'posts'|'certificates'>('posts')
+  const [activeTab, setActiveTab] = useState<'posts'|'caselaws'>('posts')
+
+  // Posts
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(false)
   const [view, setView] = useState<'list'|'edit'|'new'>('list')
@@ -27,16 +31,18 @@ export default function Admin() {
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState('')
   const [deleteId, setDeleteId] = useState<number|null>(null)
-  // Certificates
-  const [certs, setCerts] = useState<Certificate[]>([])
-  const [certsLoading, setCertsLoading] = useState(false)
-  const [certForm, setCertForm] = useState({ title:'', description:'' })
-  const [certFile, setCertFile] = useState<File|null>(null)
-  const [certUploading, setCertUploading] = useState(false)
-  const [certMsg, setCertMsg] = useState('')
-  const [deleteCertId, setDeleteCertId] = useState<number|null>(null)
-  // Blog image upload
   const [uploadingImg, setUploadingImg] = useState(false)
+
+  // Case Laws
+  const [caseLaws, setCaseLaws] = useState<CaseLaw[]>([])
+  const [clLoading, setClLoading] = useState(false)
+  const [clForm, setClForm] = useState({ title:'', court:'Lahore High Court', citation:'', category:'Tax Law', description:'' })
+  const [clFile, setClFile] = useState<File|null>(null)
+  const [clUploading, setClUploading] = useState(false)
+  const [clMsg, setClMsg] = useState('')
+  const [deleteClId, setDeleteClId] = useState<number|null>(null)
+  const [clFilter, setClFilter] = useState('All')
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
@@ -44,7 +50,7 @@ export default function Admin() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => { if (user) { fetchPosts(); fetchCerts() } }, [user])
+  useEffect(() => { if (user) { fetchPosts(); fetchCaseLaws() } }, [user])
 
   const fetchPosts = async () => {
     setLoading(true)
@@ -56,13 +62,13 @@ export default function Admin() {
     } catch(e){} finally { setLoading(false) }
   }
 
-  const fetchCerts = async () => {
-    setCertsLoading(true)
+  const fetchCaseLaws = async () => {
+    setClLoading(true)
     try {
-      const res = await fetch('/api/certificates')
+      const res = await fetch('/api/caselaws')
       const data = await res.json()
-      setCerts(Array.isArray(data) ? data : [])
-    } catch(e){} finally { setCertsLoading(false) }
+      setCaseLaws(Array.isArray(data) ? data : [])
+    } catch(e){} finally { setClLoading(false) }
   }
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -75,43 +81,26 @@ export default function Admin() {
   const generateSlug = (title: string) =>
     title.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim()
 
-  // Upload file to Supabase storage via API
-  const uploadFile = async (file: File): Promise<{url:string, fileName:string, fileType:string} | null> => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession()
-      const formData = new FormData()
-      formData.append('file', file)
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${session?.access_token}` },
-        body: formData
-      })
-      if (!res.ok) {
-        const err = await res.json()
-        throw new Error(err.error || 'Upload failed')
-      }
-      return await res.json()
-    } catch(err: any) {
-      console.error('Upload error:', err)
-      throw err
-    }
+  const uploadFileToStorage = async (file: File, folder: string = 'uploads') => {
+    const { data: { session } } = await supabase.auth.getSession()
+    const ext = file.name.split('.').pop()
+    const fileName = `${folder}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`
+    const { error } = await supabase.storage.from('documents').upload(fileName, file, { contentType: file.type, upsert: false })
+    if (error) throw error
+    const { data: { publicUrl } } = supabase.storage.from('documents').getPublicUrl(fileName)
+    return { url: publicUrl, fileName: file.name, fileType: file.type }
   }
 
-  // Insert image URL into content textarea
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0]; if (!file) return
     setUploadingImg(true)
     try {
-      const result = await uploadFile(file)
-      if (result) {
-        setEditPost((prev: any) => ({ ...prev, content: prev.content + `\n\n![${file.name}](${result.url})` }))
-        setSaveMsg('✅ Image uploaded!')
-        setTimeout(() => setSaveMsg(''), 2000)
-      }
-    } catch(err: any) {
-      setSaveMsg('❌ Upload failed: ' + err.message)
-    } finally { setUploadingImg(false); e.target.value = '' }
+      const result = await uploadFileToStorage(file, 'blog-images')
+      setEditPost((prev: any) => ({ ...prev, content: prev.content + `\n\n![${file.name}](${result.url})` }))
+      setSaveMsg('✅ Image uploaded!')
+      setTimeout(() => setSaveMsg(''), 2000)
+    } catch(err: any) { setSaveMsg('❌ ' + err.message) }
+    finally { setUploadingImg(false); e.target.value = '' }
   }
 
   const handleSave = async (e: React.FormEvent) => {
@@ -140,44 +129,55 @@ export default function Admin() {
     } catch(e){}
   }
 
-  // Certificate upload
-  const handleCertUpload = async (e: React.FormEvent) => {
+  // Case Law upload
+  const handleCLUpload = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!certFile) { setCertMsg('❌ Please select a file'); return }
-    if (!certForm.title) { setCertMsg('❌ Please enter a title'); return }
-    setCertUploading(true); setCertMsg('')
+    if (!clFile) { setClMsg('❌ Please select a file'); return }
+    if (!clForm.title) { setClMsg('❌ Please enter a title'); return }
+    setClUploading(true); setClMsg('')
     try {
-      const result = await uploadFile(certFile)
-      if (!result) throw new Error('Upload returned no result')
+      const result = await uploadFileToStorage(clFile, 'caselaws')
       const { data: { session } } = await supabase.auth.getSession()
-      const res = await fetch('/api/certificates', {
+      const res = await fetch('/api/caselaws', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ title: certForm.title, description: certForm.description, file_url: result.url, file_type: result.fileType, file_name: result.fileName })
+        body: JSON.stringify({ ...clForm, file_url: result.url, file_type: result.fileType, file_name: result.fileName })
       })
-      if (!res.ok) throw new Error('Save failed')
-      setCertMsg('✅ Certificate uploaded successfully!')
-      setCertForm({ title:'', description:'' }); setCertFile(null)
-      await fetchCerts()
-      setTimeout(() => setCertMsg(''), 3000)
-    } catch(err: any) { setCertMsg('❌ ' + err.message) }
-    finally { setCertUploading(false) }
+      if (!res.ok) throw new Error('Upload failed')
+      setClMsg('✅ Case Law uploaded successfully!')
+      setClForm({ title:'', court:'Lahore High Court', citation:'', category:'Tax Law', description:'' })
+      setClFile(null)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+      await fetchCaseLaws()
+      setTimeout(() => setClMsg(''), 3000)
+    } catch(err: any) { setClMsg('❌ ' + err.message) }
+    finally { setClUploading(false) }
   }
 
-  const handleDeleteCert = async (id: number) => {
+  const handleDeleteCL = async (id: number) => {
     try {
       const { data: { session } } = await supabase.auth.getSession()
-      await fetch('/api/certificates', { method:'DELETE', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${session?.access_token}` }, body: JSON.stringify({ id }) })
-      setDeleteCertId(null); await fetchCerts()
+      await fetch('/api/caselaws', { method:'DELETE', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${session?.access_token}` }, body: JSON.stringify({ id }) })
+      setDeleteClId(null); await fetchCaseLaws()
     } catch(e){}
   }
+
+  const getFileIcon = (fileType: string) => {
+    if (!fileType) return '📄'
+    if (fileType.includes('pdf')) return '📕'
+    if (fileType.includes('word') || fileType.includes('docx') || fileType.includes('doc')) return '📘'
+    if (fileType.includes('image') || fileType.includes('png') || fileType.includes('jpg')) return '🖼️'
+    return '📄'
+  }
+
+  const filteredCL = clFilter === 'All' ? caseLaws : caseLaws.filter(c => c.category === clFilter)
 
   if (!user) return (
     <div className="adm-login">
       <div className="adm-login__box">
         <div className="adm-login__logo"><img src="/uploads/upload_1.PNG" alt="RAI & Associates" /></div>
         <h1 className="adm-login__title">CMS Login</h1>
-        <p className="adm-login__sub">RAI & Associates — Blog Admin</p>
+        <p className="adm-login__sub">RAI & Associates — Admin Panel</p>
         <form onSubmit={handleLogin} className="adm-login__form">
           <div className="adm-form__group"><label>Email</label><input type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="your@email.com" /></div>
           <div className="adm-form__group"><label>Password</label><input type="password" required value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password" /></div>
@@ -191,16 +191,19 @@ export default function Admin() {
 
   return (
     <div className="adm-root">
+      {/* SIDEBAR */}
       <aside className="adm-sidebar">
         <div className="adm-sidebar__logo">
           <img src="/uploads/upload_1.PNG" alt="RAI" />
-          <span>Blog CMS</span>
+          <span>Admin CMS</span>
         </div>
         <nav className="adm-sidebar__nav">
-          <button className={`adm-sidebar__link ${activeTab==='posts'&&view==='list'?'active':''}`} onClick={()=>{setActiveTab('posts');setView('list')}}>📋 All Posts</button>
-          <button className={`adm-sidebar__link ${view==='new'?'active':''}`} onClick={()=>{setActiveTab('posts');setView('new');setEditPost({...EMPTY_POST})}}>✏️ New Post</button>
-          <button className={`adm-sidebar__link ${activeTab==='certificates'?'active':''}`} onClick={()=>setActiveTab('certificates')}>🏆 Certificates</button>
-          <a href="/" className="adm-sidebar__link">🌐 View Website</a>
+          <div className="adm-sidebar__section">📝 Blog</div>
+          <button className={`adm-sidebar__link ${activeTab==='posts'&&view==='list'?'active':''}`} onClick={()=>{setActiveTab('posts');setView('list')}}>📋 All Posts ({posts.length})</button>
+          <button className={`adm-sidebar__link ${activeTab==='posts'&&view==='new'?'active':''}`} onClick={()=>{setActiveTab('posts');setView('new');setEditPost({...EMPTY_POST})}}>✏️ New Post</button>
+          <div className="adm-sidebar__section" style={{marginTop:'12px'}}>⚖️ Case Laws</div>
+          <button className={`adm-sidebar__link ${activeTab==='caselaws'?'active':''}`} onClick={()=>setActiveTab('caselaws')}>📚 All Case Laws ({caseLaws.length})</button>
+          <a href="/" className="adm-sidebar__link" style={{marginTop:'16px'}}>🌐 View Website</a>
         </nav>
         <div className="adm-sidebar__user">
           <div className="adm-sidebar__user-email">{user.email}</div>
@@ -208,13 +211,14 @@ export default function Admin() {
         </div>
       </aside>
 
+      {/* MAIN */}
       <main className="adm-main">
 
-        {/* ===== POSTS TAB ===== */}
+        {/* ===== POSTS ===== */}
         {activeTab==='posts' && view==='list' && (
           <div>
             <div className="adm-header">
-              <div><h1 className="adm-header__title">Legal Insights</h1><p className="adm-header__sub">{posts.length} posts total</p></div>
+              <div><h1 className="adm-header__title">Legal Insights Blog</h1><p className="adm-header__sub">{posts.length} articles total</p></div>
               <button className="adm-btn adm-btn--gold" onClick={()=>{setEditPost({...EMPTY_POST});setView('new')}}>+ New Post</button>
             </div>
             {loading ? <div className="adm-loading">Loading...</div> : (
@@ -258,7 +262,7 @@ export default function Admin() {
                   </div>
                   <div className="adm-form__group">
                     <label>Short Summary *</label>
-                    <textarea rows={3} required placeholder="Brief summary..." value={editPost.excerpt}
+                    <textarea rows={3} required placeholder="Brief summary shown on blog list..." value={editPost.excerpt}
                       onChange={e=>setEditPost({...editPost,excerpt:e.target.value})}/>
                   </div>
                   <div className="adm-form__group">
@@ -268,9 +272,9 @@ export default function Admin() {
                         {uploadingImg ? '⏳ Uploading...' : '📷 Insert Image'}
                         <input type="file" accept="image/*" style={{display:'none'}} onChange={handleImageUpload} disabled={uploadingImg}/>
                       </label>
-                      <span className="adm-form__hint">Use **bold** for formatting. Images auto-inserted at cursor end.</span>
+                      <span className="adm-form__hint">Use **bold** for formatting.</span>
                     </div>
-                    <textarea rows={18} required placeholder="Write full article here..." value={editPost.content}
+                    <textarea rows={18} required placeholder="Write full article..." value={editPost.content}
                       onChange={e=>setEditPost({...editPost,content:e.target.value})}/>
                   </div>
                 </div>
@@ -301,7 +305,7 @@ export default function Admin() {
                     </div>
                     {saveMsg && <div className="adm-save-msg">{saveMsg}</div>}
                     <button type="submit" className="adm-btn adm-btn--gold adm-btn--full" disabled={saving}>
-                      {saving?'Saving...':view==='new'?'🚀 Publish Post':'💾 Save Changes'}
+                      {saving?'Saving...':view==='new'?'🚀 Publish':'💾 Save Changes'}
                     </button>
                   </div>
                 </div>
@@ -310,85 +314,135 @@ export default function Admin() {
           </div>
         )}
 
-        {/* ===== CERTIFICATES TAB ===== */}
-        {activeTab==='certificates' && (
+        {/* ===== CASE LAWS ===== */}
+        {activeTab==='caselaws' && (
           <div>
             <div className="adm-header">
-              <div><h1 className="adm-header__title">Certificates & Documents</h1><p className="adm-header__sub">Upload bar certificates, case laws, PDFs</p></div>
+              <div>
+                <h1 className="adm-header__title">⚖️ Case Laws</h1>
+                <p className="adm-header__sub">{caseLaws.length} case laws uploaded — PDF, Word, PNG supported</p>
+              </div>
             </div>
 
             {/* Upload Form */}
-            <div className="adm-cert-upload">
-              <h3>📤 Upload New Certificate / Document</h3>
-              <form onSubmit={handleCertUpload}>
+            <div className="adm-cl-upload">
+              <h3>📤 Upload New Case Law</h3>
+              <form onSubmit={handleCLUpload}>
                 <div className="adm-form__row">
                   <div className="adm-form__group">
-                    <label>Title *</label>
-                    <input required placeholder="e.g. Punjab Bar Certificate 2024" value={certForm.title}
-                      onChange={e=>setCertForm({...certForm,title:e.target.value})}/>
+                    <label>Case Title *</label>
+                    <input required placeholder="e.g. Commissioner vs XYZ Ltd 2023" value={clForm.title}
+                      onChange={e=>setClForm({...clForm,title:e.target.value})}/>
                   </div>
                   <div className="adm-form__group">
-                    <label>Description</label>
-                    <input placeholder="Optional description..." value={certForm.description}
-                      onChange={e=>setCertForm({...certForm,description:e.target.value})}/>
+                    <label>Citation</label>
+                    <input placeholder="e.g. 2023 PTD 456" value={clForm.citation}
+                      onChange={e=>setClForm({...clForm,citation:e.target.value})}/>
+                  </div>
+                </div>
+                <div className="adm-form__row">
+                  <div className="adm-form__group">
+                    <label>Court *</label>
+                    <select value={clForm.court} onChange={e=>setClForm({...clForm,court:e.target.value})}>
+                      {COURTS.map(c=><option key={c}>{c}</option>)}
+                    </select>
+                  </div>
+                  <div className="adm-form__group">
+                    <label>Category *</label>
+                    <select value={clForm.category} onChange={e=>setClForm({...clForm,category:e.target.value})}>
+                      {CATEGORIES.map(c=><option key={c}>{c}</option>)}
+                    </select>
                   </div>
                 </div>
                 <div className="adm-form__group">
-                  <label>Select File * (Image or PDF, max 10MB)</label>
-                  <div className="adm-file-drop" onClick={()=>document.getElementById('cert-file-input')?.click()}>
-                    {certFile ? (
-                      <div className="adm-file-drop__selected">
-                        <span>{certFile.type.includes('pdf') ? '📄' : '🖼️'} {certFile.name}</span>
-                        <span className="adm-file-drop__size">({(certFile.size/1024/1024).toFixed(2)} MB)</span>
-                        <button type="button" onClick={e=>{e.stopPropagation();setCertFile(null)}} className="adm-file-drop__remove">✕</button>
+                  <label>Brief Description</label>
+                  <textarea rows={2} placeholder="Key points or summary of this case law..." value={clForm.description}
+                    onChange={e=>setClForm({...clForm,description:e.target.value})}/>
+                </div>
+
+                {/* File Upload Area */}
+                <div className="adm-form__group">
+                  <label>Upload File * (PDF, Word .docx, PNG, JPG — max 20MB)</label>
+                  <div className="adm-cl-dropzone" onClick={()=>fileInputRef.current?.click()}>
+                    {clFile ? (
+                      <div className="adm-cl-dropzone__selected">
+                        <span className="adm-cl-dropzone__icon">
+                          {clFile.type.includes('pdf') ? '📕' : clFile.type.includes('word') || clFile.name.endsWith('.docx') || clFile.name.endsWith('.doc') ? '📘' : '🖼️'}
+                        </span>
+                        <div className="adm-cl-dropzone__info">
+                          <span className="adm-cl-dropzone__name">{clFile.name}</span>
+                          <span className="adm-cl-dropzone__size">{(clFile.size/1024/1024).toFixed(2)} MB</span>
+                        </div>
+                        <button type="button" className="adm-cl-dropzone__remove" onClick={e=>{e.stopPropagation();setClFile(null);if(fileInputRef.current)fileInputRef.current.value=''}}>✕ Remove</button>
                       </div>
                     ) : (
-                      <div className="adm-file-drop__placeholder">
-                        <span className="adm-file-drop__icon">📁</span>
-                        <span>Click to select file</span>
-                        <span className="adm-form__hint">JPG, PNG, PDF supported</span>
+                      <div className="adm-cl-dropzone__empty">
+                        <div className="adm-cl-dropzone__formats">
+                          <span>📕 PDF</span>
+                          <span>📘 Word</span>
+                          <span>🖼️ PNG/JPG</span>
+                        </div>
+                        <p>Click to browse or drag & drop your file here</p>
+                        <span className="adm-form__hint">Supports: .pdf, .doc, .docx, .png, .jpg, .jpeg</span>
                       </div>
                     )}
-                    <input id="cert-file-input" type="file" accept="image/*,.pdf,application/pdf"
-                      style={{display:'none'}} onChange={e=>setCertFile(e.target.files?.[0]||null)}/>
+                    <input ref={fileInputRef} type="file"
+                      accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*"
+                      style={{display:'none'}}
+                      onChange={e=>setClFile(e.target.files?.[0]||null)}/>
                   </div>
                 </div>
-                {certMsg && <div className={`adm-save-msg ${certMsg.includes('❌')?'adm-save-msg--error':''}`}>{certMsg}</div>}
-                <button type="submit" className="adm-btn adm-btn--gold" disabled={certUploading||!certFile}>
-                  {certUploading ? '⏳ Uploading...' : '📤 Upload Certificate'}
+
+                {clMsg && <div className={`adm-save-msg ${clMsg.includes('❌')?'adm-save-msg--error':''}`}>{clMsg}</div>}
+                <button type="submit" className="adm-btn adm-btn--gold" disabled={clUploading||!clFile}>
+                  {clUploading ? '⏳ Uploading...' : '📤 Upload Case Law'}
                 </button>
               </form>
             </div>
 
-            {/* Certificates List */}
-            <div className="adm-cert-list">
-              <h3>📋 Uploaded Certificates ({certs.length})</h3>
-              {certsLoading ? <div className="adm-loading">Loading...</div> : (
-                <div className="adm-certs-grid">
-                  {certs.length === 0 && <p className="adm-loading">No certificates uploaded yet.</p>}
-                  {certs.map(cert=>(
-                    <div key={cert.id} className="adm-cert-card">
-                      <div className="adm-cert-card__preview">
-                        {cert.file_type?.includes('pdf') ? (
-                          <div className="adm-cert-card__pdf">📄<span>PDF</span></div>
-                        ) : (
-                          <img src={cert.file_url} alt={cert.title} className="adm-cert-card__img"/>
-                        )}
+            {/* Filter */}
+            <div className="adm-cl-filters">
+              <span className="adm-cl-filters__label">Filter:</span>
+              {['All', ...CATEGORIES].map(cat=>(
+                <button key={cat} className={`adm-cl-filter ${clFilter===cat?'active':''}`} onClick={()=>setClFilter(cat)}>{cat}</button>
+              ))}
+            </div>
+
+            {/* Case Laws List */}
+            {clLoading ? <div className="adm-loading">Loading case laws...</div> : (
+              <div className="adm-cl-list">
+                {filteredCL.length === 0 && (
+                  <div className="adm-cl-empty">
+                    <div className="adm-cl-empty__icon">⚖️</div>
+                    <p>No case laws uploaded yet.</p>
+                    <p className="adm-form__hint">Upload your first case law above!</p>
+                  </div>
+                )}
+                {filteredCL.map(cl=>(
+                  <div key={cl.id} className="adm-cl-card">
+                    <div className="adm-cl-card__icon">{getFileIcon(cl.file_type)}</div>
+                    <div className="adm-cl-card__info">
+                      <h4 className="adm-cl-card__title">{cl.title}</h4>
+                      <div className="adm-cl-card__meta">
+                        {cl.court && <span className="adm-cl-card__court">🏛️ {cl.court}</span>}
+                        {cl.citation && <span className="adm-cl-card__citation">📎 {cl.citation}</span>}
+                        <span className="adm-cl-card__cat">{cl.category}</span>
+                        <span className="adm-cl-card__date">{new Date(cl.created_at).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'})}</span>
                       </div>
-                      <div className="adm-cert-card__info">
-                        <div className="adm-cert-card__title">{cert.title}</div>
-                        {cert.description && <div className="adm-cert-card__desc">{cert.description}</div>}
-                        <div className="adm-cert-card__meta">{new Date(cert.created_at).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'})}</div>
-                      </div>
-                      <div className="adm-cert-card__actions">
-                        <a href={cert.file_url} target="_blank" rel="noopener noreferrer" className="adm-btn adm-btn--sm adm-btn--outline">👁️ View</a>
-                        <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={()=>setDeleteCertId(cert.id)}>🗑️</button>
+                      {cl.description && <p className="adm-cl-card__desc">{cl.description}</p>}
+                      <div className="adm-cl-card__file">
+                        <span>{getFileIcon(cl.file_type)} {cl.file_name}</span>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                    <div className="adm-cl-card__actions">
+                      <a href={cl.file_url} target="_blank" rel="noopener noreferrer" className="adm-btn adm-btn--sm adm-btn--outline">👁️ View</a>
+                      <a href={cl.file_url} download={cl.file_name} className="adm-btn adm-btn--sm adm-btn--outline">⬇️ Download</a>
+                      <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={()=>setDeleteClId(cl.id)}>🗑️ Delete</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </main>
@@ -406,14 +460,14 @@ export default function Admin() {
         </div>
       )}
 
-      {/* Delete Cert Modal */}
-      {deleteCertId && (
-        <div className="adm-modal-overlay" onClick={()=>setDeleteCertId(null)}>
+      {/* Delete Case Law Modal */}
+      {deleteClId && (
+        <div className="adm-modal-overlay" onClick={()=>setDeleteClId(null)}>
           <div className="adm-modal" onClick={e=>e.stopPropagation()}>
-            <h3>Delete Certificate?</h3><p>This cannot be undone.</p>
+            <h3>Delete Case Law?</h3><p>This cannot be undone.</p>
             <div className="adm-modal__actions">
-              <button className="adm-btn adm-btn--outline" onClick={()=>setDeleteCertId(null)}>Cancel</button>
-              <button className="adm-btn adm-btn--danger" onClick={()=>handleDeleteCert(deleteCertId)}>Delete</button>
+              <button className="adm-btn adm-btn--outline" onClick={()=>setDeleteClId(null)}>Cancel</button>
+              <button className="adm-btn adm-btn--danger" onClick={()=>handleDeleteCL(deleteClId)}>Delete</button>
             </div>
           </div>
         </div>
