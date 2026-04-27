@@ -33,7 +33,6 @@ ul { list-style: none; }
 /* ===== ROOT ===== */
 .ra-root {
   min-height: 100vh; overflow-x: hidden;
-  padding-left: 48px; padding-right: 48px;
 }
 
 /* ===== LEFT SIDEBAR ===== */
@@ -99,17 +98,8 @@ ul { list-style: none; }
 
 /* ===== WHATSAPP TOP-LEFT BUTTON ===== */
 .ra-wa-topleft { display: none; }
-.ra-wa-right {
-  position: fixed; bottom: 28px; right: 0; z-index: 1100;
-  display: flex; align-items: center; gap: 10px;
-  background: #25d366;
-  color: white; font-weight: 700; font-size: 0.85rem;
-  padding: 10px 16px 10px 12px;
-  border-radius: 0 24px 24px 0;
-  box-shadow: 2px 4px 16px rgba(37,211,102,0.45);
-  text-decoration: none;
-  transition: all 0.3s;
-  animation: waPulseNew 2.5s ease-in-out infinite;
+.ra-wa-right-DISABLED {
+  display:none;
 }
 .ra-wa-right {
   padding: 12px 20px 12px 16px;
@@ -131,7 +121,7 @@ ul { list-style: none; }
 
 /* ===== NAVBAR ===== */
 .ra-nav {
-  position: fixed; top: 0; left: 48px; right: 48px; z-index: 1000;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   background: rgba(13, 61, 30, 0.97);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(201,168,76,0.2);
@@ -1547,6 +1537,57 @@ ul { list-style: none; }
   background: linear-gradient(135deg, rgba(165,28,48,0.08), rgba(165,28,48,0.03)) !important;
 }
 .ra-cert-card--harvard .ra-cert-card__icon { color: #a51c30; }
+.ra-cert-card--stanford {
+  border-color: #8c1515 !important;
+  background: linear-gradient(135deg, rgba(140,21,21,0.08), rgba(140,21,21,0.03)) !important;
+}
+.ra-cert-card--stanford .ra-cert-card__icon { color: #8c1515; }
+
+/* Stanford cert placeholder */
+.ra-cert-img-card--stanford .ra-cert-img-card__frame--placeholder {
+  background: linear-gradient(135deg, #8c1515, #a51c30, #6b0f0f);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 280px; border-radius: 8px;
+}
+.ra-cert-stanford-placeholder {
+  text-align: center; padding: 32px 24px; color: white;
+}
+.ra-cert-stanford-placeholder__seal { font-size: 3rem; margin-bottom: 12px; }
+.ra-cert-stanford-placeholder__uni {
+  font-family: var(--font-serif); font-size: 1.1rem; font-weight: 900;
+  letter-spacing: 0.15em; color: #f5c842; margin-bottom: 8px;
+}
+.ra-cert-stanford-placeholder__line {
+  width: 60px; height: 2px; background: rgba(255,255,255,0.4);
+  margin: 12px auto;
+}
+.ra-cert-stanford-placeholder__title {
+  font-size: 0.85rem; color: rgba(255,255,255,0.8); margin-bottom: 16px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.ra-cert-stanford-placeholder__name {
+  font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700;
+  color: white; margin-bottom: 8px;
+}
+.ra-cert-stanford-placeholder__course {
+  font-size: 0.9rem; color: rgba(255,255,255,0.85); margin-bottom: 8px;
+}
+.ra-cert-stanford-placeholder__footer {
+  font-size: 0.75rem; color: rgba(255,255,255,0.55); letter-spacing: 0.05em;
+}
+
+/* Expert achievements */
+.ra-expert-solo__achievements {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0 20px;
+}
+.ra-expert-solo__ach {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 8px; padding: 10px 12px; font-size: 0.82rem;
+  color: rgba(255,255,255,0.8);
+}
+.ra-expert-solo__ach span:first-child { font-size: 1rem; flex-shrink: 0; }
+.ra-expert-solo__ach strong { color: var(--gold-light); }
 
 /* ===== EXPERT SOLO ===== */
 .ra-expert-solo {
