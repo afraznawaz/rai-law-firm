@@ -1847,6 +1847,30 @@ ul { list-style: none; }
 .cl-modal__preview { margin-top: 20px; border-radius: 8px; overflow: hidden; border: 1px solid #e8e0d0; }
 .cl-modal__iframe { width: 100%; height: 500px; border: none; display: block; }
 
+/* ===== FAQ ===== */
+.ra-faq { background: var(--white); }
+.ra-faq__grid { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.ra-faq__item {
+  border: 1px solid #e8e0d0; border-radius: var(--radius);
+  overflow: hidden; transition: border-color 0.2s;
+}
+.ra-faq__item:hover { border-color: var(--border); }
+.ra-faq__q {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 22px; background: var(--white); text-align: left;
+  font-size: 0.97rem; font-weight: 700; color: var(--green-dark);
+  cursor: pointer; gap: 16px; transition: background 0.2s;
+}
+.ra-faq__q:hover, .ra-faq__q.open { background: #f8f5ef; }
+.ra-faq__q.open .ra-faq__arrow { transform: rotate(180deg); }
+.ra-faq__arrow { font-size: 0.7rem; color: var(--gold-dark); flex-shrink: 0; transition: transform 0.3s; }
+.ra-faq__a {
+  padding: 0 22px 18px;
+  background: #faf8f4;
+  border-top: 1px solid #f0e8d8;
+}
+.ra-faq__a p { font-size: 0.92rem; color: var(--text-mid); line-height: 1.75; padding-top: 14px; }
+
 /* ===== ADMIN CMS ===== */
 .adm-login {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;

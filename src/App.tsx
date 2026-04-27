@@ -962,6 +962,40 @@ export default function App() {
         <span className="ra-wa-float__text">Chat with Us</span>
       </a>
 
+      {/* FAQ SECTION — SEO Optimized */}
+      <section id="faq" className="ra-section ra-faq" itemScope itemType="https://schema.org/FAQPage">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Common Questions</div>
+            <h2 className="ra-section__title">Frequently Asked Questions</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Answers to the most common legal questions in Pakistan</p>
+          </div>
+          <div className="ra-faq__grid">
+            {[
+              { q: 'What is the best law firm in Lahore for tax cases?', a: 'RAI & Associates Law Firm is one of Lahore\'s most trusted law firms for tax cases. Led by Advocate Rai Afraz, a member of the Lahore Tax Bar Association (Punjab Bar Reg. No. 144840), the firm specializes in FBR tax disputes, income tax appeals, and sales tax litigation before all tax tribunals and courts in Pakistan.' },
+              { q: 'How do I respond to an FBR tax notice?', a: 'Do NOT ignore any FBR notice. Contact a tax lawyer immediately. RAI & Associates specializes in responding to FBR notices under Section 114, 122, and 176 of the Income Tax Ordinance. Call Advocate Rai Afraz at 0304-4840937 for urgent tax notice assistance.' },
+              { q: 'Can RAI & Associates help with FIA cybercrime cases?', a: 'Yes. RAI & Associates specializes in FIA cybercrime defense under PECA 2016. We handle online harassment, digital fraud, social media cases, PECA Section 19 & 20 cases, and all FIA Cybercrime Wing matters across Pakistan.' },
+              { q: 'How to register a trademark in Pakistan?', a: 'Trademark registration is done through IPO Pakistan. RAI & Associates handles the complete process — trademark search, classification, TM-1 application filing, examination response, and registration certificate. Contact us at 0304-4840937 for a free consultation.' },
+              { q: 'Where is RAI & Associates Law Firm located?', a: 'RAI & Associates has two offices in Lahore: (1) R&A Law Firm, 3-Fane Road, Tehreem Building, near Lahore High Court; (2) Tax Consultancy Office, near Eiffel Tower, Bahria Town, Lahore. Call: 0304-4840937 or WhatsApp: 0316-4371096.' },
+              { q: 'What legal services does RAI & Associates offer?', a: 'We offer: Tax Law & FBR disputes, FIA Cybercrime defense, Corporate Law & SECP registration, Trademark & IP registration, Civil Litigation, Family Law & divorce, Criminal defense, Constitutional Law & writ petitions, Revenue Law, Property disputes, Environmental Law, and Labour Law.' },
+              { q: 'How to get bail in a criminal case in Pakistan?', a: 'Contact RAI & Associates immediately after arrest. We apply for pre-arrest bail (anticipatory bail) before arrest or post-arrest bail after. Bail applications are filed in the Sessions Court or High Court depending on the offense. Call 0304-4840937 for urgent criminal matters.' },
+              { q: 'How to file a writ petition in Lahore High Court?', a: 'A writ petition under Article 199 of the Constitution is filed when a fundamental right is violated or a public authority acts illegally. RAI & Associates has extensive experience filing writ petitions in the Lahore High Court for illegal detention, service matters, and government authority abuse.' },
+            ].map((item, i) => (
+              <div key={i} className="ra-faq__item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+                <button className="ra-faq__q" onClick={e => { const el = e.currentTarget.nextElementSibling as HTMLElement; el.style.display = el.style.display === 'none' ? 'block' : 'none'; e.currentTarget.classList.toggle('open') }}>
+                  <span itemProp="name">{item.q}</span>
+                  <span className="ra-faq__arrow">▼</span>
+                </button>
+                <div className="ra-faq__a" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer" style={{display:'none'}}>
+                  <p itemProp="text">{item.a}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER */}
       <footer className="ra-footer">
         <div className="ra-container">
