@@ -3,7 +3,43 @@ import './App.css'
 import Admin from './pages/Admin'
 import BlogPost from './pages/BlogPost'
 
-const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Contact']
+const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Certificates', 'Case Laws', 'Contact']
+
+const CASE_LAWS = [
+  {
+    id: 1,
+    title: 'STR No. 115558 of 2017',
+    court: 'Lahore High Court, Lahore',
+    parties: 'Commissioner Inland Revenue, RTO Gujranwala vs. M/s Nadeem Silk Factory',
+    date: '09.09.2025',
+    judges: 'Malik Javid Iqbal Wains & Abid Aziz Sheikh',
+    outcome: 'Disposed of in favour of respondent-taxpayer',
+    category: 'Tax Law — Sales Tax',
+    image: '/certificates/certificate-1.jpg'
+  },
+  {
+    id: 2,
+    title: 'STR No. 112851 of 2017 — Judgment Page',
+    court: 'Lahore High Court, Lahore',
+    parties: 'Commissioner Inland Revenue, RTO Gujranwala vs. M/s Ashraf Silk Factory',
+    date: '23.04.2019 (LHC 1245)',
+    judges: 'Malik Javid Iqbal Wains & Abid Aziz Sheikh',
+    outcome: 'Reference applications disposed of — Sales Tax Act 1990 interpreted in favour of taxpayer',
+    category: 'Tax Law — Sales Tax Act 1990',
+    image: '/certificates/certificate-2.jpg'
+  },
+  {
+    id: 3,
+    title: 'STR No. 112851 of 2017',
+    court: 'Lahore High Court, Lahore',
+    parties: 'Commissioner Inland Revenue, RTO Gujranwala vs. M/s Ashraf Silk Factory Race Course',
+    date: '09.09.2025',
+    judges: 'Malik Javid Iqbal Wains & Abid Aziz Sheikh',
+    outcome: 'ATIR order held unsustainable — taxpayer rights upheld',
+    category: 'Tax Law — Sales Tax Act 1990',
+    image: '/certificates/certificate-3.jpg'
+  }
+]
 
 const IMPORTANT_LINKS = [
   { name: 'FBR', full: 'Federal Board of Revenue', url: 'https://www.fbr.gov.pk', desc: 'Tax filing, NTN, ATL status', color: '#1a5276' },
@@ -102,6 +138,7 @@ export default function App() {
   if (path === '/admin') return <Admin />
 
   const [activeSection, setActiveSection] = useState('home')
+  const [lightbox, setLightbox] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
@@ -129,7 +166,7 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 60)
-      const sections = ['home', 'about', 'services', 'expert', 'blog', 'reviews', 'contact']
+      const sections = ['home', 'about', 'services', 'expert', 'blog', 'reviews', 'certificates', 'case-laws', 'contact']
       for (const id of sections) {
         const el = document.getElementById(id)
         if (el) {
@@ -258,39 +295,20 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3D SHOWCASE */}
-      <section className="ra-3d-section">
-        <div className="ra-3d-scene">
-          <div className="ra-3d-card">
-            <div className="ra-3d-card__inner">
-              <div className="ra-3d-card__front">
-                <div className="ra-3d-card__glow" />
-                <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-card__logo" />
-                <div className="ra-3d-card__firm">RAI & ASSOCIATES</div>
-                <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
-                <div className="ra-3d-card__line" />
-                <div className="ra-3d-card__tagline">Committed to Justice</div>
-              </div>
-            </div>
-          </div>
-          <div className="ra-3d-particles">
-            {[...Array(12)].map((_, i) => <div key={i} className={`ra-3d-particle ra-3d-particle--${i+1}`} />)}
-          </div>
-          <div className="ra-3d-ring ra-3d-ring--1" />
-          <div className="ra-3d-ring ra-3d-ring--2" />
+      {/* R&A LAW FIRM BANNER */}
+      <section className="ra-firm-banner">
+        <div className="ra-firm-banner__orbs">
+          {[...Array(5)].map((_, i) => <div key={i} className={`ra-firm-banner__orb ra-firm-banner__orb--${i+1}`} />)}
         </div>
-        <div className="ra-3d-text">
-          <h2 className="ra-3d-text__title">Trusted Legal Excellence</h2>
-          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication since 1993.</p>
-          {/* Stats row inside 3D section */}
-          <div className="ra-3d-stats">
-            <div className="ra-3d-stat"><span className="ra-3d-stat__num">30+</span><span className="ra-3d-stat__lbl">Years</span></div>
-            <div className="ra-3d-stat"><span className="ra-3d-stat__num">5K+</span><span className="ra-3d-stat__lbl">Cases Won</span></div>
-            <div className="ra-3d-stat"><span className="ra-3d-stat__num">98%</span><span className="ra-3d-stat__lbl">Success Rate</span></div>
-            <div className="ra-3d-stat"><span className="ra-3d-stat__num">⚖️</span><span className="ra-3d-stat__lbl">Justice First</span></div>
+        <div className="ra-firm-banner__inner">
+          <img src="/uploads/upload_1.PNG" alt="R&A" className="ra-firm-banner__logo" />
+          <div className="ra-firm-banner__words">
+            <span className="ra-firm-banner__ra">R&A</span>
+            <span className="ra-firm-banner__law">LAW FIRM</span>
           </div>
-          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
         </div>
+        <div className="ra-firm-banner__line" />
+        <div className="ra-firm-banner__sub">⚖️ Committed to Justice &nbsp;·&nbsp; Est. 1993 &nbsp;·&nbsp; Lahore, Pakistan</div>
       </section>
 
       {/* STATS */}
@@ -540,6 +558,85 @@ export default function App() {
           )}
         </div>
       </section>
+
+      {/* CERTIFICATES */}
+      <section id="certificates" className="ra-section ra-certs">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Official Documents</div>
+            <h2 className="ra-section__title">Certificates & Memberships</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Official bar memberships, registrations and professional certifications</p>
+          </div>
+          <div className="ra-certs__grid">
+            <div className="ra-cert-card">
+              <div className="ra-cert-card__icon">🏛️</div>
+              <h3 className="ra-cert-card__title">Punjab Bar Council</h3>
+              <p className="ra-cert-card__num">Registration No. 144840</p>
+              <p className="ra-cert-card__desc">Licensed Advocate — Punjab Bar Council, Pakistan</p>
+            </div>
+            <div className="ra-cert-card">
+              <div className="ra-cert-card__icon">⚖️</div>
+              <h3 className="ra-cert-card__title">Lahore Tax Bar Association</h3>
+              <p className="ra-cert-card__num">Active Member</p>
+              <p className="ra-cert-card__desc">Specialized member of Lahore Tax Bar — Tax Law & Tribunal Practice</p>
+            </div>
+            <div className="ra-cert-card">
+              <div className="ra-cert-card__icon">🎓</div>
+              <h3 className="ra-cert-card__title">Lahore High Court</h3>
+              <p className="ra-cert-card__num">Enrolled Advocate</p>
+              <p className="ra-cert-card__desc">Authorized to practice before the Lahore High Court in all matters</p>
+            </div>
+            <div className="ra-cert-card">
+              <div className="ra-cert-card__icon">📜</div>
+              <h3 className="ra-cert-card__title">KLC Law Firm</h3>
+              <p className="ra-cert-card__num">Kharal Law Chamber</p>
+              <p className="ra-cert-card__desc">3-Fane Road, Tehreem Building, Lahore — Est. 1993</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CASE LAWS */}
+      <section id="case-laws" className="ra-section ra-caselaws">
+        <div className="ra-container">
+          <div className="ra-section__header">
+            <div className="ra-section__label">Court Orders & Judgments</div>
+            <h2 className="ra-section__title">Case Laws</h2>
+            <div className="ra-divider ra-divider--center" />
+            <p className="ra-section__subtitle">Actual Lahore High Court orders where Rai Afraz Kharal appeared as Advocate</p>
+          </div>
+          <div className="ra-caselaws__grid">
+            {CASE_LAWS.map(c => (
+              <div key={c.id} className="ra-caselaw-card">
+                <div className="ra-caselaw-card__img-wrap" onClick={() => setLightbox(c.image)}>
+                  <img src={c.image} alt={c.title} className="ra-caselaw-card__img" />
+                  <div className="ra-caselaw-card__overlay">
+                    <span>🔍 View Full Document</span>
+                  </div>
+                </div>
+                <div className="ra-caselaw-card__body">
+                  <div className="ra-caselaw-card__cat">{c.category}</div>
+                  <h3 className="ra-caselaw-card__title">{c.title}</h3>
+                  <div className="ra-caselaw-card__court">🏛️ {c.court}</div>
+                  <div className="ra-caselaw-card__parties">👥 {c.parties}</div>
+                  <div className="ra-caselaw-card__date">📅 {c.date}</div>
+                  <div className="ra-caselaw-card__judges">⚖️ {c.judges}</div>
+                  <div className="ra-caselaw-card__outcome">✅ {c.outcome}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* LIGHTBOX */}
+      {lightbox && (
+        <div className="ra-lightbox" onClick={() => setLightbox(null)}>
+          <div className="ra-lightbox__close" onClick={() => setLightbox(null)}>×</div>
+          <img src={lightbox} alt="Document" className="ra-lightbox__img" onClick={e => e.stopPropagation()} />
+        </div>
+      )}
 
       {/* CONTACT */}
       <section id="contact" className="ra-section ra-contact">
@@ -805,46 +902,48 @@ export default function App() {
       </footer>
 
 
-      {/* LEFT VERTICAL SIDEBAR */}
-      <div className="ra-sidebar-left">
-        <div className="ra-sidebar__inner">
-          <div className="ra-sidebar__text">R&A LAW FIRM</div>
-          <div className="ra-sidebar__dots">
-            <span /><span /><span />
-          </div>
-          <div className="ra-sidebar__text">EST. 1993</div>
-          <div className="ra-sidebar__icon">⚖️</div>
-          <div className="ra-sidebar__text">LAHORE</div>
+      {/* 3D LEFT SIDEBAR — R&A LAW FIRM */}
+      <div className="ra3d-sidebar ra3d-sidebar--left">
+        <div className="ra3d-sidebar__track">
+          <span>R&A LAW FIRM</span>
+          <span className="ra3d-sidebar__dot">◆</span>
+          <span>R&A LAW FIRM</span>
+          <span className="ra3d-sidebar__dot">◆</span>
+          <span>R&A LAW FIRM</span>
+          <span className="ra3d-sidebar__dot">◆</span>
+          <span>R&A LAW FIRM</span>
+          <span className="ra3d-sidebar__dot">◆</span>
         </div>
       </div>
 
-      {/* RIGHT VERTICAL SIDEBAR */}
-      <div className="ra-sidebar-right">
-        <div className="ra-sidebar__inner">
-          <div className="ra-sidebar__text">TAX LAW</div>
-          <div className="ra-sidebar__dots">
-            <span /><span /><span />
-          </div>
-          <div className="ra-sidebar__text">JUSTICE</div>
-          <div className="ra-sidebar__icon">🏛️</div>
-          <div className="ra-sidebar__text">ADVOCATES</div>
+      {/* 3D RIGHT SIDEBAR — R&A LAW FIRM */}
+      <div className="ra3d-sidebar ra3d-sidebar--right">
+        <div className="ra3d-sidebar__track ra3d-sidebar__track--rev">
+          <span>R&A LAW FIRM</span>
+          <span className="ra3d-sidebar__dot">◆</span>
+          <span>R&A LAW FIRM</span>
+          <span className="ra3d-sidebar__dot">◆</span>
+          <span>R&A LAW FIRM</span>
+          <span className="ra3d-sidebar__dot">◆</span>
+          <span>R&A LAW FIRM</span>
+          <span className="ra3d-sidebar__dot">◆</span>
         </div>
       </div>
 
-      {/* WHATSAPP FLOATING BUTTON - LEFT SIDE */}
-      <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float ra-wa-float--left" title="WhatsApp Us">
+      {/* WHATSAPP FLOATING BUTTON */}
+      <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float" title="Chat on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor" className="ra-wa-float__icon">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
-        <span className="ra-wa-float__label">WhatsApp</span>
+        <span className="ra-wa-float__text">WhatsApp Us</span>
       </a>
 
-      {/* WHATSAPP FLOATING BUTTON - RIGHT SIDE */}
-      <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float ra-wa-float--right" title="WhatsApp Us">
-        <span className="ra-wa-float__label">Chat Now</span>
-        <svg viewBox="0 0 24 24" fill="currentColor" className="ra-wa-float__icon">
+
+      <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-btn" title="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
+        <span>WhatsApp</span>
       </a>
     </div>
   )
