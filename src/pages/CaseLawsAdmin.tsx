@@ -5,24 +5,44 @@ interface CaseLaw {
   id: number
   title: string
   court: string
-  parties: string
-  date: string
-  judges: string
-  outcome: string
+  year: string
   category: string
-  description: string
+  summary: string
+  outcome: string
   file_url: string
   file_type: string
   published: boolean
   created_at: string
 }
 
-const EMPTY: Partial<CaseLaw> = {
-  title: '', court: '', parties: '', date: '', judges: '',
-  outcome: '', category: 'Tax Law', description: '', file_url: '', file_type: '', published: true
+const EMPTY: any = {
+  title: '', court: '', year: '', category: 'Tax Law',
+  summary: '', outcome: 'Won', file_url: '', file_type: '', published: true
 }
 
-const CATS = ['Tax Law', 'Civil Litigation', 'Criminal Law', 'Family Law', 'Corporate Law', 'Constitutional Law', 'Revenue Law', 'Cybercrime & FIA', 'Environmental Law', 'Intellectual Property']
+const CATS = ['Tax Law', 'Cybercrime & FIA', 'Intellectual Property', 'Corporate Law', 'Civil Litigation', 'Criminal Law', 'Family Law', 'Environmental Law', 'Revenue Law', 'Constitutional Law']
+const COURTS = ['Lahore High Court', 'Supreme Court of Pakistan', 'Appellate Tribunal Inland Revenue', 'Banking Court', 'Family Court', 'Sessions Court', 'District Court', 'Other']
+
+async function uploadFile(file: File, bucket: string, token: string): Promise<{url: string, type: string}> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = async (ev) => {
+      try {
+        const base64 = ev.target?.result as string
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ fileName: file.name, fileType: file.type, fileData: base64, bucket })
+        })
+        const data = await res.json()
+        if (data.url) resolve({ url: data.url, type: file.type })
+        else reject(new Error(data.error || 'Upload failed'))
+      } catch (e) { reject(e) }
+    }
+    reader.onerror = () => reject(new Error('File read error'))
+    reader.readAsDataURL(file)
+  })
+}
 
 export default function CaseLawsAdmin() {
   const [items, setItems] = useState<CaseLaw[]>([])
@@ -33,7 +53,7 @@ export default function CaseLawsAdmin() {
   const [msg, setMsg] = useState('')
   const [deleteId, setDeleteId] = useState<number|null>(null)
   const [uploading, setUploading] = useState(false)
-  const [uploadProgress, setUploadProgress] = useState('')
+  const [uploadMsg, setUploadMsg] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
   const fetchItems = async () => {
@@ -47,35 +67,17 @@ export default function CaseLawsAdmin() {
 
   useEffect(() => { fetchItems() }, [])
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+  const handleUpload = async (file: File) => {
     setUploading(true)
-    setUploadProgress('Uploading...')
+    setUploadMsg(`⏳ Uploading ${file.name}...`)
     try {
-      const reader = new FileReader()
-      reader.onload = async (ev) => {
-        const base64 = ev.target?.result as string
-        const { data: { session } } = await supabase.auth.getSession()
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` },
-          body: JSON.stringify({ fileName: file.name, fileType: file.type, fileData: base64, bucket: 'case-files' })
-        })
-        const data = await res.json()
-        if (data.url) {
-          setForm((f: any) => ({ ...f, file_url: data.url, file_type: file.type }))
-          setUploadProgress(`✅ Uploaded: ${file.name}`)
-        } else {
-          setUploadProgress('❌ Upload failed: ' + (data.error || 'Unknown error'))
-        }
-        setUploading(false)
-      }
-      reader.readAsDataURL(file)
+      const { data: { session } } = await supabase.auth.getSession()
+      const result = await uploadFile(file, 'case-files', session?.access_token || '')
+      setForm((f: any) => ({ ...f, file_url: result.url, file_type: result.type }))
+      setUploadMsg(`✅ File uploaded: ${file.name}`)
     } catch (err: any) {
-      setUploadProgress('❌ Error: ' + err.message)
-      setUploading(false)
-    }
+      setUploadMsg(`❌ Upload failed: ${err.message}`)
+    } finally { setUploading(false) }
   }
 
   const handleSave = async (e: React.FormEvent) => {
@@ -103,23 +105,13 @@ export default function CaseLawsAdmin() {
     setDeleteId(null); fetchItems()
   }
 
-  const openEdit = (item: CaseLaw) => { setForm({ ...item }); setView('edit') }
-  const openNew = () => { setForm({ ...EMPTY }); setUploadProgress(''); setView('new') }
-
-  const getFileIcon = (type: string) => {
-    if (type?.includes('pdf')) return '📄'
-    if (type?.includes('word') || type?.includes('document')) return '📝'
-    if (type?.includes('image')) return '🖼️'
-    return '📎'
-  }
-
   return (
     <div className="adm-tab-content">
       {view === 'list' && (
         <>
           <div className="adm-header">
             <div><h1 className="adm-header__title">Case Laws</h1><p className="adm-header__sub">{items.length} case{items.length !== 1 ? 's' : ''} total</p></div>
-            <button className="adm-btn adm-btn--gold" onClick={openNew}>+ Add Case Law</button>
+            <button className="adm-btn adm-btn--gold" onClick={() => { setForm({...EMPTY}); setUploadMsg(''); setView('new') }}>+ Add Case</button>
           </div>
           {loading ? <div className="adm-loading">Loading...</div> : (
             <div className="adm-posts">
@@ -130,14 +122,15 @@ export default function CaseLawsAdmin() {
                     <h3 className="adm-post-card__title">{item.title}</h3>
                     <div className="adm-post-card__meta">
                       <span className="adm-post-card__cat">{item.category}</span>
-                      <span>🏛️ {item.court}</span>
-                      <span>📅 {item.date}</span>
-                      {item.file_url && <span>{getFileIcon(item.file_type)} File attached</span>}
+                      <span>{item.court}</span>
+                      <span>{item.year}</span>
+                      <span className={`adm-outcome adm-outcome--${item.outcome?.toLowerCase()}`}>{item.outcome === 'Won' ? '✅ Won' : item.outcome === 'Lost' ? '❌ Lost' : '⚖️ Settled'}</span>
+                      {item.file_url && <span className="adm-post-card__cat" style={{background:'#fee2e2',color:'#dc2626'}}>📄 File attached</span>}
                     </div>
-                    <p className="adm-post-card__excerpt">{item.parties}</p>
+                    <p className="adm-post-card__excerpt">{item.summary?.substring(0,120)}...</p>
                   </div>
                   <div className="adm-post-card__actions">
-                    <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => openEdit(item)}>✏️ Edit</button>
+                    <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setForm({...item}); setUploadMsg(''); setView('edit') }}>✏️ Edit</button>
                     <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => setDeleteId(item.id)}>🗑️ Delete</button>
                   </div>
                 </div>
@@ -158,69 +151,67 @@ export default function CaseLawsAdmin() {
             <div className="adm-editor__grid">
               <div className="adm-editor__main">
                 <div className="adm-form__group">
-                  <label>Case Title / Reference No. *</label>
-                  <input required placeholder="e.g. STR No. 115558 of 2017" value={form.title} onChange={e => setForm({...form, title: e.target.value})} />
+                  <label>Case Title *</label>
+                  <input required placeholder="e.g. XYZ Ltd vs FBR — Income Tax Appeal" value={form.title} onChange={e => setForm({...form, title: e.target.value})} />
                 </div>
                 <div className="adm-form__row2">
                   <div className="adm-form__group">
-                    <label>Court *</label>
-                    <input required placeholder="e.g. Lahore High Court" value={form.court} onChange={e => setForm({...form, court: e.target.value})} />
+                    <label>Court / Tribunal *</label>
+                    <select value={form.court} onChange={e => setForm({...form, court: e.target.value})}>
+                      {COURTS.map(c => <option key={c}>{c}</option>)}
+                    </select>
                   </div>
                   <div className="adm-form__group">
-                    <label>Date</label>
-                    <input placeholder="e.g. 09.09.2024" value={form.date} onChange={e => setForm({...form, date: e.target.value})} />
+                    <label>Year</label>
+                    <input placeholder="e.g. 2024" value={form.year} onChange={e => setForm({...form, year: e.target.value})} />
                   </div>
                 </div>
                 <div className="adm-form__group">
-                  <label>Parties (Appellant vs Respondent)</label>
-                  <input placeholder="e.g. Commissioner Inland Revenue vs. M/s ABC Company" value={form.parties} onChange={e => setForm({...form, parties: e.target.value})} />
+                  <label>Case Summary *</label>
+                  <textarea required rows={5} placeholder="Describe the case, legal issues involved, and how it was resolved..." value={form.summary} onChange={e => setForm({...form, summary: e.target.value})} />
                 </div>
-                <div className="adm-form__group">
-                  <label>Judges / Bench</label>
-                  <input placeholder="e.g. Justice Malik Javid Iqbal Wains" value={form.judges} onChange={e => setForm({...form, judges: e.target.value})} />
-                </div>
-                <div className="adm-form__group">
-                  <label>Outcome / Holding</label>
-                  <input placeholder="e.g. Disposed of in favour of respondent-taxpayer" value={form.outcome} onChange={e => setForm({...form, outcome: e.target.value})} />
-                </div>
-                <div className="adm-form__group">
-                  <label>Description / Summary</label>
-                  <textarea rows={4} placeholder="Brief description of the case and its significance..." value={form.description} onChange={e => setForm({...form, description: e.target.value})} />
-                </div>
+
+                {uploadMsg && (
+                  <div className={`adm-upload-msg ${uploadMsg.includes('❌') ? 'error' : uploadMsg.includes('✅') ? 'success' : ''}`}>
+                    {uploadMsg}
+                  </div>
+                )}
 
                 {/* FILE UPLOAD */}
                 <div className="adm-upload-box">
                   <h4 className="adm-upload-box__title">📎 Attach Case File</h4>
-                  <p className="adm-upload-box__hint">Upload PDF, Word document, or image of the judgment</p>
-                  <div className="adm-upload-box__types">
-                    <span>📄 PDF</span><span>📝 Word (.doc/.docx)</span><span>🖼️ Image (JPG/PNG)</span>
-                  </div>
-                  <input ref={fileRef} type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp" onChange={handleFileUpload} className="adm-upload-box__input" />
+                  <p className="adm-upload-box__hint">Upload PDF, Word document, or image of the judgment/order</p>
+                  <input ref={fileRef} type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style={{display:'none'}}
+                    onChange={e => { const f = e.target.files?.[0]; if(f) handleUpload(f) }} />
                   <button type="button" className="adm-btn adm-btn--outline" onClick={() => fileRef.current?.click()} disabled={uploading}>
-                    {uploading ? '⏳ Uploading...' : '📁 Choose File'}
+                    {uploading ? '⏳ Uploading...' : '📎 Choose File (PDF, Word, Image)'}
                   </button>
-                  {uploadProgress && <div className="adm-upload-box__progress">{uploadProgress}</div>}
                   {form.file_url && (
-                    <div className="adm-upload-box__preview">
-                      <span>{getFileIcon(form.file_type)} File ready: </span>
-                      <a href={form.file_url} target="_blank" rel="noopener noreferrer">View / Download</a>
-                      <button type="button" className="adm-upload-box__remove" onClick={() => setForm({...form, file_url: '', file_type: ''})}>✕ Remove</button>
+                    <div className="adm-upload-box__file-preview">
+                      <span>📄 File uploaded</span>
+                      <a href={form.file_url} target="_blank" rel="noopener noreferrer" className="adm-btn adm-btn--sm adm-btn--outline">View File</a>
+                      <button type="button" className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => setForm({...form, file_url: '', file_type: ''})}>Remove</button>
                     </div>
                   )}
-                  <div className="adm-form__group" style={{marginTop: '12px'}}>
-                    <label>Or paste file URL directly</label>
-                    <input placeholder="https://..." value={form.file_url} onChange={e => setForm({...form, file_url: e.target.value})} />
-                  </div>
                 </div>
               </div>
 
               <div className="adm-editor__sidebar">
                 <div className="adm-editor__panel">
-                  <h3>Settings</h3>
+                  <h3>Case Details</h3>
                   <div className="adm-form__group">
-                    <label>Category *</label>
+                    <label>Category</label>
                     <select value={form.category} onChange={e => setForm({...form, category: e.target.value})}>
                       {CATS.map(c => <option key={c}>{c}</option>)}
+                    </select>
+                  </div>
+                  <div className="adm-form__group">
+                    <label>Outcome</label>
+                    <select value={form.outcome} onChange={e => setForm({...form, outcome: e.target.value})}>
+                      <option value="Won">✅ Won</option>
+                      <option value="Lost">❌ Lost</option>
+                      <option value="Settled">⚖️ Settled</option>
+                      <option value="Pending">⏳ Pending</option>
                     </select>
                   </div>
                   <div className="adm-form__group">
@@ -232,7 +223,7 @@ export default function CaseLawsAdmin() {
                   </div>
                   {msg && <div className="adm-save-msg">{msg}</div>}
                   <button type="submit" className="adm-btn adm-btn--gold adm-btn--full" disabled={saving}>
-                    {saving ? 'Saving...' : view === 'new' ? '🚀 Add Case Law' : '💾 Save Changes'}
+                    {saving ? 'Saving...' : view === 'new' ? '🚀 Add Case' : '💾 Save Changes'}
                   </button>
                 </div>
               </div>
@@ -244,7 +235,7 @@ export default function CaseLawsAdmin() {
       {deleteId && (
         <div className="adm-modal-overlay" onClick={() => setDeleteId(null)}>
           <div className="adm-modal" onClick={e => e.stopPropagation()}>
-            <h3>Delete Case Law?</h3>
+            <h3>Delete Case?</h3>
             <p>This cannot be undone.</p>
             <div className="adm-modal__actions">
               <button className="adm-btn adm-btn--outline" onClick={() => setDeleteId(null)}>Cancel</button>
