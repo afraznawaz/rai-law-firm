@@ -621,31 +621,21 @@ export default function App() {
           </div>
           {/* Certificate Images */}
           <div className="ra-certs__images">
-            <div className="ra-cert-img-card ra-cert-img-card--harvard">
-              <div className="ra-cert-img-card__badge">🎓 Harvard University</div>
-              <div className="ra-cert-img-card__frame">
-                <img src="/certificates/harvard-certificate.jpg" alt="HarvardX Certificate — Contract Law" className="ra-cert-img-card__img" />
-              </div>
-              <div className="ra-cert-img-card__label">📜 HarvardX — Contract Law: From Trust to Promise to Contract</div>
-              <div className="ra-cert-img-card__sub">Issued August 20, 2024 · Verified by edX</div>
-            </div>
-            <div className="ra-cert-img-card ra-cert-img-card--stanford">
-              <div className="ra-cert-img-card__badge">🏆 Stanford University</div>
-              <div className="ra-cert-img-card__frame ra-cert-img-card__frame--placeholder">
-                <div className="ra-cert-stanford-placeholder">
-                  <div className="ra-cert-stanford-placeholder__seal">🏆</div>
-                  <div className="ra-cert-stanford-placeholder__uni">STANFORD UNIVERSITY</div>
-                  <div className="ra-cert-stanford-placeholder__line" />
-                  <div className="ra-cert-stanford-placeholder__title">Certificate of Completion</div>
-                  <div className="ra-cert-stanford-placeholder__name">Rai Afraz Kharal</div>
-                  <div className="ra-cert-stanford-placeholder__course">Advanced Legal Studies</div>
-                  <div className="ra-cert-stanford-placeholder__line" />
-                  <div className="ra-cert-stanford-placeholder__footer">Stanford Law School · Online Program</div>
+            {[
+              { src: '/uploads/cert-1.jpg', badge: '🎓 Certificate 1', label: 'Professional Legal Certificate', sub: 'Rai Afraz (Advocate) — Verified' },
+              { src: '/uploads/cert-2.jpg', badge: '🏆 Certificate 2', label: 'Professional Legal Certificate', sub: 'Rai Afraz (Advocate) — Verified' },
+              { src: '/uploads/cert-3.jpg', badge: '📜 Certificate 3', label: 'Professional Legal Certificate', sub: 'Rai Afraz (Advocate) — Verified' },
+            ].map((cert, i) => (
+              <div key={i} className="ra-cert-img-card">
+                <div className="ra-cert-img-card__badge">{cert.badge}</div>
+                <div className="ra-cert-img-card__frame">
+                  <img src={cert.src} alt={cert.label} className="ra-cert-img-card__img"
+                    onError={e => { (e.target as HTMLImageElement).style.opacity='0.3' }} />
                 </div>
+                <div className="ra-cert-img-card__label">{cert.label}</div>
+                <div className="ra-cert-img-card__sub">{cert.sub}</div>
               </div>
-              <div className="ra-cert-img-card__label">📜 Stanford Law — Advanced Legal Studies</div>
-              <div className="ra-cert-img-card__sub">Continuing Legal Education · Stanford Law School Online</div>
-            </div>
+            ))}
           </div>
           <div className="ra-certs__grid">
             <div className="ra-cert-card">
