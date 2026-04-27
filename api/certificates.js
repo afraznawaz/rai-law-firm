@@ -1,9 +1,4 @@
 import supabase from './_supabase.js';
-import { IncomingForm } from 'formidable';
-import fs from 'fs';
-import path from 'path';
-
-export const config = { api: { bodyParser: false } };
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,47 +7,42 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
 
   try {
+    // GET - fetch all certificates (public)
     if (req.method === 'GET') {
-      const { data, error } = await supabase.from('certificates').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase
+        .from('certificates')
+        .select('*')
+        .order('created_at', { ascending: false });
       if (error) throw error;
       return res.status(200).json(data);
     }
 
-    if (req.method === 'POST') {
-      const token = req.headers.authorization?.replace('Bearer ', '');
-      if (!token) return res.status(401).json({ error: 'Unauthorized' });
-      const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
-      if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
+    // Verify auth for write operations
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    if (!token) return res.status(401).json({ error: 'Unauthorized' });
+    const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
+    if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
 
-      let body = req.body;
-      if (!body || !body.title) {
-        const form = new IncomingForm({ maxFileSize: 20 * 1024 * 1024 });
-        const { fields, files } = await new Promise((resolve, reject) => {
-          form.parse(req, (err, fields, files) => err ? reject(err) : resolve({ fields, files }));
-        });
-        const file = files.file?.[0] || files.file;
-        if (file) {
-          const fileBuffer = fs.readFileSync(file.filepath || file.path);
-          const originalName = file.originalFilename || file.name || 'upload';
-          const mimeType = file.mimetype || file.type || 'application/octet-stream';
-          const fileName = `certificates/${Date.now()}-${originalName.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
-          const { error: uploadError } = await supabase.storage.from('documents').upload(fileName, fileBuffer, { contentType: mimeType, upsert: false });
-          if (uploadError) throw uploadError;
-          const { data: { publicUrl } } = supabase.storage.from('documents').getPublicUrl(fileName);
-          body = { title: fields.title?.[0] || fields.title, description: fields.description?.[0] || fields.description, file_url: publicUrl, file_type: mimeType, file_name: originalName };
-        }
-      }
-      const { data, error } = await supabase.from('certificates').insert(body).select().single();
+    // POST - save certificate record (file already uploaded to storage)
+    if (req.method === 'POST') {
+      const { title, description, file_url, file_name, file_type, file_size } = req.body;
+      if (!title || !file_url) return res.status(400).json({ error: 'Title and file_url required' });
+      const { data, error } = await supabase
+        .from('certificates')
+        .insert({ title, description, file_url, file_name, file_type, file_size })
+        .select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
 
+    // DELETE - remove certificate
     if (req.method === 'DELETE') {
-      const token = req.headers.authorization?.replace('Bearer ', '');
-      if (!token) return res.status(401).json({ error: 'Unauthorized' });
-      const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
-      if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { id } = req.body;
+      const { id, file_path } = req.body;
+      if (!id) return res.status(400).json({ error: 'ID required' });
+      // Remove from storage if path provided
+      if (file_path) {
+        await supabase.storage.from('certificates').remove([file_path]);
+      }
       const { error } = await supabase.from('certificates').delete().eq('id', id);
       if (error) throw error;
       return res.status(200).json({ ok: true });
