@@ -1744,6 +1744,88 @@ ul { list-style: none; }
 }
 .ra-gallery-item:hover .ra-gallery-item__caption { transform: translateY(0); }
 
+/* ===== VERTICAL SIDEBARS ===== */
+.ra-sidebar-left,
+.ra-sidebar-right {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 32px;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.ra-sidebar-left { left: 0; }
+.ra-sidebar-right { right: 0; }
+
+.ra-sidebar__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 100%;
+  padding: 80px 0 40px;
+  background: linear-gradient(180deg, var(--green-dark) 0%, #0a2a12 50%, var(--green-dark) 100%);
+  width: 100%;
+  border-right: 1px solid rgba(201,168,76,0.25);
+  box-shadow: 2px 0 16px rgba(0,0,0,0.3);
+}
+.ra-sidebar-right .ra-sidebar__inner {
+  border-right: none;
+  border-left: 1px solid rgba(201,168,76,0.25);
+  box-shadow: -2px 0 16px rgba(0,0,0,0.3);
+}
+
+.ra-sidebar__text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-family: var(--font-serif);
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1;
+}
+.ra-sidebar-right .ra-sidebar__text {
+  transform: rotate(0deg);
+}
+
+.ra-sidebar__dots {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+.ra-sidebar__dots span {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.5);
+  display: block;
+}
+
+.ra-sidebar__icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+/* Push main content away from sidebars */
+.ra-root {
+  margin-left: 32px;
+  margin-right: 32px;
+}
+
+/* Hide on small screens */
+@media (max-width: 1100px) {
+  .ra-sidebar-left,
+  .ra-sidebar-right { display: none; }
+  .ra-root { margin-left: 0; margin-right: 0; }
+}
+
 /* ===== ADMIN CMS ===== */
 .adm-login {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;

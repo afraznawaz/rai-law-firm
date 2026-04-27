@@ -805,6 +805,32 @@ export default function App() {
       </footer>
 
 
+      {/* LEFT VERTICAL SIDEBAR */}
+      <div className="ra-sidebar-left">
+        <div className="ra-sidebar__inner">
+          <div className="ra-sidebar__text">R&A LAW FIRM</div>
+          <div className="ra-sidebar__dots">
+            <span /><span /><span />
+          </div>
+          <div className="ra-sidebar__text">EST. 1993</div>
+          <div className="ra-sidebar__icon">⚖️</div>
+          <div className="ra-sidebar__text">LAHORE</div>
+        </div>
+      </div>
+
+      {/* RIGHT VERTICAL SIDEBAR */}
+      <div className="ra-sidebar-right">
+        <div className="ra-sidebar__inner">
+          <div className="ra-sidebar__text">TAX LAW</div>
+          <div className="ra-sidebar__dots">
+            <span /><span /><span />
+          </div>
+          <div className="ra-sidebar__text">JUSTICE</div>
+          <div className="ra-sidebar__icon">🏛️</div>
+          <div className="ra-sidebar__text">ADVOCATES</div>
+        </div>
+      </div>
+
       {/* WHATSAPP FLOATING BUTTON - LEFT SIDE */}
       <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float ra-wa-float--left" title="WhatsApp Us">
         <svg viewBox="0 0 24 24" fill="currentColor" className="ra-wa-float__icon">
