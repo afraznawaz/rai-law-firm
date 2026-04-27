@@ -400,46 +400,91 @@ export default function App() {
         </div>
       </section>
 
-      {/* EXPERT — Only Rai Afraz */}
+      {/* EXPERTS */}
       <section id="expert" className="ra-section ra-experts">
         <div className="ra-container">
           <div className="ra-section__header">
-            <div className="ra-section__label">Meet The Expert</div>
-            <h2 className="ra-section__title">Rai Afraz — CEO & Advocate</h2>
+            <div className="ra-section__label">Meet Our Experts</div>
+            <h2 className="ra-section__title">Our Legal Team</h2>
             <div className="ra-divider ra-divider--center" />
-            <p className="ra-section__subtitle">Dedicated advocate committed to delivering justice</p>
+            <p className="ra-section__subtitle">Experienced advocates committed to delivering justice since 1993</p>
           </div>
-          <div className="ra-expert-solo">
-            <div className="ra-expert-solo__photo-wrap">
-              <div className="ra-expert-solo__photo-bg">
-                <img src="/images/legal-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
-                <img src="/uploads/rai-afraz.jpg" alt="Rai Afraz" className="ra-expert-solo__photo"
-                  onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
-                <div className="ra-expert-solo__name-overlay">Rai Afraz ⚖️</div>
+
+          {/* FOUNDER */}
+          <div className="ra-expert-duo">
+            <div className="ra-expert-solo ra-expert-solo--founder">
+              <div className="ra-expert-solo__photo-wrap">
+                <div className="ra-expert-solo__photo-bg">
+                  <img src="/images/legal-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
+                  <img src="/uploads/rai-haq-nawaz.jpg" alt="Rai Haq Nawaz Kharal" className="ra-expert-solo__photo" />
+                  <div className="ra-expert-solo__name-overlay">Rai Haq Nawaz ⚖️</div>
+                </div>
+              </div>
+              <div className="ra-expert-solo__info">
+                <div className="ra-expert-solo__badge ra-expert-solo__badge--founder">⭐ Founder</div>
+                <h2 className="ra-expert-solo__name">Rai Haq Nawaz Kharal</h2>
+                <p className="ra-expert-solo__title-role">Advocate High Court</p>
+                <p className="ra-expert-solo__bar">Punjab Bar Council — Practicing Since 1993</p>
+                <div className="ra-expert-solo__tags">
+                  <span>High Court Practice</span>
+                  <span>Civil Litigation</span>
+                  <span>Revenue Law</span>
+                  <span>Property Disputes</span>
+                  <span>Constitutional Law</span>
+                </div>
+                <div className="ra-expert-solo__reg"><span>🏛️ Punjab Bar Council — 30+ Years Experience</span></div>
+                <p className="ra-expert-solo__bio">
+                  Rai Haq Nawaz Kharal is the Founder of RAI & Associates Law Firm, established in 1993. 
+                  With over three decades of distinguished legal practice, he is a highly respected 
+                  Advocate of the Lahore High Court. He began his legal career in 1993 and has since 
+                  built an unparalleled reputation in civil litigation, revenue law, property disputes, 
+                  and constitutional matters. His deep knowledge of Punjab's legal landscape and 
+                  unwavering commitment to justice have made him one of Lahore's most trusted advocates. 
+                  He has appeared before District Courts, the Lahore High Court, and the Supreme Court 
+                  of Pakistan, successfully representing thousands of clients over his illustrious career.
+                </p>
+                <div className="ra-expert-solo__actions">
+                  <a href="tel:+923044840937" className="ra-btn ra-btn--gold">📞 Call Now</a>
+                  <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-btn ra-btn--outline">💬 WhatsApp</a>
+                </div>
               </div>
             </div>
-            <div className="ra-expert-solo__info">
-              <div className="ra-expert-solo__badge">CEO & Founding Partner</div>
-              <h2 className="ra-expert-solo__name">Rai Afraz (Advocate) ⚖️</h2>
-              <p className="ra-expert-solo__bar">Member, Lahore Tax Bar Association</p>
-              <div className="ra-expert-solo__tags">
-                <span>Tax Law Litigation</span>
-                <span>FIA Cases</span>
-                <span>Corporate Law</span>
-                <span>Cybercrime Defense</span>
-                <span>IPO & Trademark</span>
-              </div>
 
-              <p className="ra-expert-solo__bio">
-                Rai Afraz is the CEO and Founding Partner of RAI & ASSOCIATES Law Firm. 
-                Specialized in Tax Law Litigation and FIA Cases, he brings deep expertise 
-                in navigating Pakistan's complex legal landscape. As a registered member of 
-                the Lahore Tax Bar Association, he has successfully represented hundreds of 
-                clients before tax tribunals, the Lahore High Court, and the Supreme Court of Pakistan.
-              </p>
-              <div className="ra-expert-solo__actions">
-                <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-btn ra-btn--gold">💬 WhatsApp</a>
-                <a href="tel:+923044840937" className="ra-btn ra-btn--outline">📞 Call Now</a>
+            {/* CEO */}
+            <div className="ra-expert-solo">
+              <div className="ra-expert-solo__photo-wrap">
+                <div className="ra-expert-solo__photo-bg">
+                  <img src="/images/legal-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
+                  <img src="/uploads/rai-afraz.jpg" alt="Rai Afraz" className="ra-expert-solo__photo"
+                    onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
+                  <div className="ra-expert-solo__name-overlay">Rai Afraz ⚖️</div>
+                </div>
+              </div>
+              <div className="ra-expert-solo__info">
+                <div className="ra-expert-solo__badge">CEO & Managing Partner</div>
+                <h2 className="ra-expert-solo__name">Rai Afraz (Advocate) ⚖️</h2>
+                <p className="ra-expert-solo__title-role">CEO — RAI & Associates</p>
+                <p className="ra-expert-solo__bar">Member, Lahore Tax Bar Association</p>
+                <div className="ra-expert-solo__tags">
+                  <span>Tax Law Litigation</span>
+                  <span>FIA Cases</span>
+                  <span>Corporate Law</span>
+                  <span>Cybercrime Defense</span>
+                  <span>IPO & Trademark</span>
+                </div>
+                <div className="ra-expert-solo__reg"><span>🏛️ Punjab Bar Reg. No. 144840</span></div>
+                <p className="ra-expert-solo__bio">
+                  Rai Afraz is the CEO and Managing Partner of RAI & Associates Law Firm. 
+                  Son of the Founder Rai Haq Nawaz Kharal, he carries forward the firm's 
+                  legacy with modern legal expertise. Specialized in Tax Law Litigation and 
+                  FIA Cases, he is a registered member of the Lahore Tax Bar Association 
+                  and has successfully represented hundreds of clients before tax tribunals, 
+                  the Lahore High Court, and the Supreme Court of Pakistan.
+                </p>
+                <div className="ra-expert-solo__actions">
+                  <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-btn ra-btn--gold">💬 WhatsApp</a>
+                  <a href="tel:+923044840937" className="ra-btn ra-btn--outline">📞 Call Now</a>
+                </div>
               </div>
             </div>
           </div>
@@ -568,6 +613,31 @@ export default function App() {
             <div className="ra-divider ra-divider--center" />
             <p className="ra-section__subtitle">Official bar memberships, registrations and professional certifications</p>
           </div>
+          {/* Certificate Images from Google Drive */}
+          <div className="ra-certs__images">
+            <div className="ra-cert-img-card">
+              <div className="ra-cert-img-card__frame">
+                <img
+                  src="https://drive.google.com/thumbnail?id=1YaORBwfGZt8-8f_PnrU1AepC-DHQ8RVe&sz=w800"
+                  alt="Certificate 1"
+                  className="ra-cert-img-card__img"
+                  onError={e => { (e.target as HTMLImageElement).parentElement!.style.display='none' }}
+                />
+              </div>
+              <div className="ra-cert-img-card__label">📜 Official Certificate</div>
+            </div>
+            <div className="ra-cert-img-card">
+              <div className="ra-cert-img-card__frame">
+                <img
+                  src="https://drive.google.com/thumbnail?id=1jF-f1jRVJ4VbOiCJLF0vL_gpZiykOgKg&sz=w800"
+                  alt="Certificate 2"
+                  className="ra-cert-img-card__img"
+                  onError={e => { (e.target as HTMLImageElement).parentElement!.style.display='none' }}
+                />
+              </div>
+              <div className="ra-cert-img-card__label">📜 Official Certificate</div>
+            </div>
+          </div>
           <div className="ra-certs__grid">
             <div className="ra-cert-card">
               <div className="ra-cert-card__icon">🏛️</div>
@@ -589,9 +659,9 @@ export default function App() {
             </div>
             <div className="ra-cert-card">
               <div className="ra-cert-card__icon">📜</div>
-              <h3 className="ra-cert-card__title">KLC Law Firm</h3>
-              <p className="ra-cert-card__num">Kharal Law Chamber</p>
-              <p className="ra-cert-card__desc">3-Fane Road, Tehreem Building, Lahore — Est. 1993</p>
+              <h3 className="ra-cert-card__title">R&A Law Firm</h3>
+              <p className="ra-cert-card__num">Est. 1993 — Lahore</p>
+              <p className="ra-cert-card__desc">3-Fane Road, Tehreem Building, Lahore — Founded by Rai Haq Nawaz Kharal</p>
             </div>
           </div>
         </div>
