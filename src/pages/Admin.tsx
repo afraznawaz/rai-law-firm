@@ -3,8 +3,8 @@ import supabase from '../lib/supabase'
 
 const BLOG_CATS = ['Tax Law','Cybercrime & FIA','Intellectual Property','Corporate Law','Civil Litigation','Criminal Law','Family Law','Environmental Law','Revenue Law','Constitutional Law','Case Law','General Legal Advice']
 const LIB_CATS = ['Constitutional Law','Criminal Law','Civil Litigation','Tax Law','Family Law','Corporate Law','Revenue Law','Cybercrime & FIA','Intellectual Property','Labour Law','General']
-const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:'', author:'Rai Afraz (Advocate)', published:true }
-const EMPTY_LIB = { title:'', category:'Constitutional Law', year:'', summary:'', content:'' }
+const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:'', author:'Rai Afraz (Advocate)', published:true, document_url:'' }
+const EMPTY_LIB = { title:'', category:'Constitutional Law', year:'', summary:'', content:'', document_url:'' }
 
 type Section = 'blog' | 'elibrary' | 'messages'
 
@@ -24,6 +24,7 @@ export default function Admin() {
   const [blogSaving, setBlogSaving] = useState(false)
   const [blogMsg, setBlogMsg] = useState('')
   const [deleteBlogId, setDeleteBlogId] = useState<number|null>(null)
+  const [blogUploading, setBlogUploading] = useState(false)
 
   // E-Library
   const [books, setBooks] = useState<any[]>([])
@@ -33,6 +34,7 @@ export default function Admin() {
   const [libSaving, setLibSaving] = useState(false)
   const [libMsg, setLibMsg] = useState('')
   const [deleteLibId, setDeleteLibId] = useState<number|null>(null)
+  const [libUploading, setLibUploading] = useState(false)
 
   // Messages
   const [messages, setMessages] = useState<any[]>([])
@@ -68,6 +70,42 @@ export default function Admin() {
     setPostsLoading(false)
   }
   const slug = (t: string) => t.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').trim()
+
+  const uploadDoc = async (file: File, type: 'blog' | 'lib') => {
+    if (!file) return
+    const setUploading = type === 'blog' ? setBlogUploading : setLibUploading
+    setUploading(true)
+    try {
+      const fileName = `${Date.now()}-${file.name.replace(/\s+/g,'-')}`
+      // Try Supabase storage first
+      const { data, error } = await supabase.storage
+        .from('documents')
+        .upload(fileName, file, { contentType: file.type, upsert: false })
+      if (!error) {
+        const { data: urlData } = supabase.storage.from('documents').getPublicUrl(fileName)
+        const url = urlData.publicUrl
+        if (type === 'blog') setEditPost((p: any) => ({ ...p, document_url: url }))
+        else setEditBook((b: any) => ({ ...b, document_url: url }))
+      } else {
+        // Fallback: store as data URL (for small files)
+        if (file.size > 5 * 1024 * 1024) {
+          alert('File too large. Please create the "documents" bucket in Supabase Storage dashboard first, then try again.')
+          return
+        }
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          const url = e.target?.result as string
+          if (type === 'blog') setEditPost((p: any) => ({ ...p, document_url: url }))
+          else setEditBook((b: any) => ({ ...b, document_url: url }))
+        }
+        reader.readAsDataURL(file)
+      }
+    } catch (err: any) {
+      alert('Upload error: ' + err.message)
+    } finally {
+      setUploading(false)
+    }
+  }
   const savePost = async (e: React.FormEvent) => {
     e.preventDefault(); setBlogSaving(true); setBlogMsg('')
     const token = await getToken()
@@ -217,6 +255,23 @@ export default function Admin() {
                       <div className="adm-form__group"><label>Title *</label><input required value={editPost.title} onChange={e => setEditPost({...editPost, title:e.target.value, slug:slug(e.target.value)})} placeholder="Post title..." /></div>
                       <div className="adm-form__group"><label>Excerpt *</label><textarea rows={2} required value={editPost.excerpt} onChange={e => setEditPost({...editPost, excerpt:e.target.value})} placeholder="Short summary..." /></div>
                       <div className="adm-form__group"><label>Full Content *</label><div className="adm-form__hint">Use **bold** for important text. Separate paragraphs with blank line.</div><textarea rows={16} required value={editPost.content} onChange={e => setEditPost({...editPost, content:e.target.value})} placeholder="Write full article here..." /></div>
+                      <div className="adm-form__group adm-upload-box">
+                        <label>📎 Attach Document (PDF / Word) — Optional</label>
+                        <div className="adm-upload-area">
+                          <input type="file" accept=".pdf,.doc,.docx" id="blog-doc-upload" style={{display:'none'}}
+                            onChange={e => e.target.files?.[0] && uploadDoc(e.target.files[0], 'blog')} />
+                          <label htmlFor="blog-doc-upload" className="adm-upload-btn">
+                            {blogUploading ? '⏳ Uploading...' : '📂 Choose File'}
+                          </label>
+                          {editPost.document_url && (
+                            <div className="adm-upload-preview">
+                              <a href={editPost.document_url} target="_blank" rel="noopener noreferrer">📄 View Attached Document</a>
+                              <button type="button" onClick={() => setEditPost({...editPost, document_url:''})} className="adm-upload-remove">✕ Remove</button>
+                            </div>
+                          )}
+                          {!editPost.document_url && <span className="adm-upload-hint">PDF or Word file — max 10MB</span>}
+                        </div>
+                      </div>
                     </div>
                     <div className="adm-editor__sidebar">
                       <div className="adm-editor__panel">
@@ -278,6 +333,23 @@ export default function Admin() {
                       <div className="adm-form__group"><label>Title *</label><input required value={editBook.title} onChange={e => setEditBook({...editBook, title:e.target.value})} placeholder="e.g. Pakistan Penal Code 1860" /></div>
                       <div className="adm-form__group"><label>Summary / Description *</label><textarea rows={3} required value={editBook.summary} onChange={e => setEditBook({...editBook, summary:e.target.value})} placeholder="Brief description of this document..." /></div>
                       <div className="adm-form__group"><label>Full Content</label><div className="adm-form__hint">Use **bold** for headings. Separate sections with blank lines.</div><textarea rows={16} value={editBook.content} onChange={e => setEditBook({...editBook, content:e.target.value})} placeholder="Paste full legal text or summary here..." /></div>
+                      <div className="adm-form__group adm-upload-box">
+                        <label>📎 Attach Document (PDF / Word) — Optional</label>
+                        <div className="adm-upload-area">
+                          <input type="file" accept=".pdf,.doc,.docx" id="lib-doc-upload" style={{display:'none'}}
+                            onChange={e => e.target.files?.[0] && uploadDoc(e.target.files[0], 'lib')} />
+                          <label htmlFor="lib-doc-upload" className="adm-upload-btn">
+                            {libUploading ? '⏳ Uploading...' : '📂 Choose File'}
+                          </label>
+                          {editBook.document_url && (
+                            <div className="adm-upload-preview">
+                              <a href={editBook.document_url} target="_blank" rel="noopener noreferrer">📄 View Attached Document</a>
+                              <button type="button" onClick={() => setEditBook({...editBook, document_url:''})} className="adm-upload-remove">✕ Remove</button>
+                            </div>
+                          )}
+                          {!editBook.document_url && <span className="adm-upload-hint">PDF or Word file — max 10MB</span>}
+                        </div>
+                      </div>
                     </div>
                     <div className="adm-editor__sidebar">
                       <div className="adm-editor__panel">
