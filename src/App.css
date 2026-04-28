@@ -1453,6 +1453,7 @@ ul { list-style: none; }
 
 /* ===== LEFT SOCIAL SIDEBAR ===== */
 .ra-social-sidebar {
+  display: none !important;
   position: fixed;
   left: 0;
   top: 50%;
@@ -1495,6 +1496,7 @@ ul { list-style: none; }
 
 /* ===== RIGHT VERTICAL TEXT ===== */
 .ra-vertical-text {
+  display: none !important;
   position: fixed;
   right: 0;
   top: 50%;
@@ -2221,6 +2223,81 @@ ul { list-style: none; }
   .elib-detail__cta { margin: 0 24px 24px; padding: 24px; }
   .ra-wa-float__text { display: none; }
   .ra-wa-float { padding: 14px; border-radius: 50%; }
+}
+
+/* ===== LEFT SIDE SOCIAL ICONS ===== */
+.ra-side-social {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 0;
+}
+.ra-side-social__link {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 6px 6px 0;
+  transition: all 0.25s ease;
+  color: white;
+}
+.ra-side-social__link svg {
+  width: 15px;
+  height: 15px;
+}
+.ra-side-social__link:hover {
+  width: 42px;
+  transform: translateX(4px);
+}
+.ra-side-social__fb { background: #1877f2; }
+.ra-side-social__ig { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); }
+.ra-side-social__yt { background: #ff0000; }
+.ra-side-social__tt { background: #010101; }
+.ra-side-social__li { background: #0a66c2; }
+.ra-side-social__line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  margin-top: 6px;
+}
+
+/* ===== RIGHT SIDE VERTICAL TEXT ===== */
+.ra-side-text {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: translateY(-50%) rotate(180deg);
+}
+.ra-side-text span {
+  display: block;
+  background: linear-gradient(180deg, var(--green-dark), var(--green-mid));
+  color: var(--gold);
+  font-family: var(--font-serif);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  padding: 16px 8px;
+  border-radius: 6px 0 0 6px;
+  border-left: 2px solid var(--gold);
+  border-top: 1px solid rgba(201,168,76,0.3);
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .ra-side-social { display: none; }
+  .ra-side-text { display: none; }
 }
 
 /* ===== ADMIN CMS ===== */
