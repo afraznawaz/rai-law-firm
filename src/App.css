@@ -3198,3 +3198,44 @@ ul { list-style: none; }
   .ra-wa-btn-fixed__text { display: none; }
 }
 
+/* ===== LEFT SIDE FLOATING SOCIAL ICONS ===== */
+.ra-social-float {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.ra-social-float__icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--sc, #555);
+  color: white;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.ra-social-float__icon svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.ra-social-float__icon:first-child { border-radius: 0 8px 0 0; }
+.ra-social-float__icon:last-child  { border-radius: 0 0 8px 0; }
+.ra-social-float__icon:hover {
+  width: 56px;
+  box-shadow: 4px 0 16px rgba(0,0,0,0.25);
+}
+@media (max-width: 768px) {
+  .ra-social-float { display: none; }
+}
+
