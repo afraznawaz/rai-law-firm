@@ -347,6 +347,9 @@ ul { list-style: none; }
   position: relative; z-index: 2;
   width: 420px; height: 420px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
+}
+.ra-hero__3d--left {
+  order: -1; margin-right: 0; margin-left: 0;
   margin-top: 80px;
 }
 .ra-hero3d__scene {
@@ -2597,6 +2600,45 @@ ul { list-style: none; }
 .adm-cert-card__desc { font-size: 0.82rem; color: var(--text-mid); margin-bottom: 6px; }
 .adm-cert-card__meta { display: flex; gap: 12px; font-size: 0.75rem; color: var(--text-light); flex-wrap: wrap; }
 .adm-cert-card__actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* ===== WHATSAPP FLOATING BUTTON ===== */
+.ra-wa-float {
+  position: fixed;
+  left: 20px;
+  bottom: 32px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #25d366;
+  color: white;
+  padding: 12px 18px 12px 14px;
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  transition: all 0.3s ease;
+  animation: waPulse 2.5s ease-in-out infinite;
+}
+.ra-wa-float:hover {
+  background: #1ebe5d;
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 8px 28px rgba(37,211,102,0.55);
+  color: white;
+}
+.ra-wa-float__icon {
+  width: 24px; height: 24px; flex-shrink: 0;
+}
+.ra-wa-float__text {
+  white-space: nowrap;
+}
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.45); }
+  50% { box-shadow: 0 4px 28px rgba(37,211,102,0.75), 0 0 0 6px rgba(37,211,102,0.12); }
+}
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1100px) {
