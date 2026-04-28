@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon } from '../components/SocialIcons'
 
 interface LawItem {
   id: number
@@ -66,6 +67,45 @@ export default function ELibrary({ onBack }: { onBack: () => void }) {
             <p className="elib-detail__summary">{selected.summary}</p>
           </div>
           <div className="elib-detail__body" dangerouslySetInnerHTML={{ __html: renderContent(selected.content) }} />
+          {/* SOCIAL SHARE SECTION */}
+          <div className="elib-social-section">
+            <div className="elib-social-section__label">
+              <span className="elib-social-section__icon">📲</span>
+              <span>Follow Rai & Associates for Daily Legal Updates</span>
+            </div>
+            <div className="elib-social-section__links">
+              <a href="https://www.facebook.com/61577203114572" target="_blank" rel="noopener noreferrer" className="elib-social-btn elib-social-btn--fb">
+                <FacebookIcon size={18} />
+                <span>Facebook (R&A)</span>
+              </a>
+              <a href="https://www.facebook.com/raiafraz10" target="_blank" rel="noopener noreferrer" className="elib-social-btn elib-social-btn--fb">
+                <FacebookIcon size={18} />
+                <span>Rai Afraz</span>
+              </a>
+              <a href="https://www.tiktok.com/@rai_associates" target="_blank" rel="noopener noreferrer" className="elib-social-btn elib-social-btn--tt">
+                <TikTokIcon size={18} />
+                <span>TikTok</span>
+              </a>
+              <a href="https://www.instagram.com/rai_associates10" target="_blank" rel="noopener noreferrer" className="elib-social-btn elib-social-btn--ig">
+                <InstagramIcon size={18} />
+                <span>Instagram</span>
+              </a>
+              <a href="https://www.youtube.com/@raiandassociates" target="_blank" rel="noopener noreferrer" className="elib-social-btn elib-social-btn--yt">
+                <YouTubeIcon size={18} />
+                <span>YouTube</span>
+              </a>
+              <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="elib-social-btn elib-social-btn--wa">
+                <WhatsAppIcon size={18} />
+                <span>WhatsApp</span>
+              </a>
+            </div>
+            <div className="elib-social-section__share">
+              <span>📤 Share this article:</span>
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer" className="elib-share-btn elib-share-btn--fb"><FacebookIcon size={16}/> Share</a>
+              <a href={`https://wa.me/?text=${encodeURIComponent(selected.title + ' - Read on Rai & Associates: ' + window.location.href)}`} target="_blank" rel="noopener noreferrer" className="elib-share-btn elib-share-btn--wa"><WhatsAppIcon size={16}/> Share</a>
+            </div>
+          </div>
+
           <div className="elib-detail__cta">
             <h3>⚖️ Need Legal Advice on This Law?</h3>
             <p>Contact Rai & Associates for expert guidance and representation.</p>

@@ -3201,6 +3201,51 @@ ul { list-style: none; }
 .ra-blog__sicon svg { width: 18px; height: 18px; }
 .ra-blog__sicon:hover { transform: translateY(-3px) scale(1.1); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
 
+/* ===== ELIB SOCIAL SECTION ===== */
+.elib-social-section {
+  margin: 32px 0;
+  background: linear-gradient(135deg, var(--green-dark), #0a2a12);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  border: 1px solid rgba(201,168,76,0.25);
+}
+.elib-social-section__label {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.95rem; font-weight: 700; color: var(--gold);
+  margin-bottom: 18px; font-family: var(--font-serif);
+}
+.elib-social-section__icon { font-size: 1.3rem; }
+.elib-social-section__links {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+}
+.elib-social-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 24px;
+  font-size: 0.82rem; font-weight: 700; color: white;
+  text-decoration: none; transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.elib-social-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
+.elib-social-btn--fb { background: #1877f2; }
+.elib-social-btn--tt { background: #010101; border: 1px solid #333; }
+.elib-social-btn--ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.elib-social-btn--yt { background: #ff0000; }
+.elib-social-btn--wa { background: #25d366; }
+.elib-social-section__share {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.82rem; color: rgba(255,255,255,0.6);
+}
+.elib-share-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 16px;
+  font-size: 0.78rem; font-weight: 700; color: white;
+  text-decoration: none; transition: all 0.2s;
+}
+.elib-share-btn--fb { background: #1877f2; }
+.elib-share-btn--wa { background: #25d366; }
+.elib-share-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1100px) {
   .ra-nav__stats { display: none; }
