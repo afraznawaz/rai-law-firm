@@ -372,7 +372,25 @@ export default function App() {
 
       {/* 3D SHOWCASE */}
       <section className="ra-3d-section" aria-label="RAI & Associates Law Firm Lahore">
-        {/* TEXT — LEFT */}
+        {/* 3D LOGO — LEFT */}
+        <div className="ra-3d-logo-wrap">
+          <div className="ra-3d-logo-scene">
+            <div className="ra-3d-logo-card">
+              <div className="ra-3d-logo-card__shine" />
+              <div className="ra-3d-logo-card__glow" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-logo-card__img" />
+              <div className="ra-3d-logo-card__name">RAI & Associates</div>
+              <div className="ra-3d-logo-card__bar" />
+              <div className="ra-3d-logo-card__sub">Law Firm · Est. 1993</div>
+            </div>
+            <div className="ra-3d-logo-ring ra-3d-logo-ring--1" />
+            <div className="ra-3d-logo-ring ra-3d-logo-ring--2" />
+            <div className="ra-3d-logo-orb ra-3d-logo-orb--1" />
+            <div className="ra-3d-logo-orb ra-3d-logo-orb--2" />
+            <div className="ra-3d-logo-orb ra-3d-logo-orb--3" />
+          </div>
+        </div>
+        {/* TEXT — RIGHT */}
         <div className="ra-3d-text">
           <h2 className="ra-3d-text__title">Pakistan's Trusted Legal Experts</h2>
           <p className="ra-3d-text__desc">Best tax lawyer in Lahore — RAI & Associates has delivered justice with integrity, expertise, and dedication since 1993. Serving clients across Pakistan.</p>
@@ -385,7 +403,6 @@ export default function App() {
           </div>
           <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
         </div>
-
       </section>
 
       {/* ABOUT */}
@@ -482,7 +499,7 @@ export default function App() {
             <div className="ra-expert-solo ra-expert-solo--founder">
               <div className="ra-expert-solo__photo-wrap">
                 <div className="ra-expert-solo__photo-bg">
-                  <img src="/images/legal-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
+                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
                   <img src="/uploads/rai-haq-nawaz.jpg" alt="Rai Haq Nawaz Kharal" className="ra-expert-solo__photo" />
                   <div className="ra-expert-solo__name-overlay">Rai Haq Nawaz ⚖️</div>
                 </div>
@@ -523,7 +540,7 @@ export default function App() {
             <div className="ra-expert-solo">
               <div className="ra-expert-solo__photo-wrap">
                 <div className="ra-expert-solo__photo-bg">
-                  <img src="/images/legal-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
+                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
                   <img src="/uploads/rai-afraz.jpg" alt="Rai Afraz" className="ra-expert-solo__photo"
                     onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
                   <div className="ra-expert-solo__name-overlay">Rai Afraz ⚖️</div>
@@ -1124,8 +1141,6 @@ export default function App() {
           <div className="ra-sidebar-left__logo">
             <img src="/uploads/upload_1.PNG" alt="R&A" />
           </div>
-          <div className="ra-sidebar-left__divider" />
-          <span className="ra-sidebar-left__text">R&A LAW FIRM</span>
           <div className="ra-sidebar-left__divider" />
           <span className="ra-sidebar-left__text">EST. 1993</span>
           <div className="ra-sidebar-left__divider" />
