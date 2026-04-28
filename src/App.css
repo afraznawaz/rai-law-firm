@@ -2463,6 +2463,23 @@ ul { list-style: none; }
 .ra-3d-card__firm { font-family: var(--font-serif); font-size: 1rem; font-weight: 900; color: var(--gold); letter-spacing: 0.02em; }
 .ra-3d-card__sub { font-size: 0.68rem; color: rgba(255,255,255,0.55); letter-spacing: 0.1em; }
 .ra-3d-card__line { width: 50px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 2px 0; }
+.ra-3d-card__stats {
+  display: flex; justify-content: center; gap: 12px;
+  margin: 10px 0 12px; width: 100%;
+}
+.ra-3d-card__stat {
+  display: flex; flex-direction: column; align-items: center;
+  background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 8px; padding: 6px 10px; min-width: 52px;
+}
+.ra-3d-card__stat-num {
+  font-family: var(--font-serif); font-size: 1rem; font-weight: 900;
+  color: var(--gold); line-height: 1;
+}
+.ra-3d-card__stat-lbl {
+  font-size: 0.6rem; color: rgba(255,255,255,0.6);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px;
+}
 .ra-3d-card__tagline { font-family: var(--font-serif); font-size: 0.75rem; color: var(--gold-light); font-style: italic; }
 
 /* Floating stat badges — corners of scene */

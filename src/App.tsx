@@ -337,24 +337,11 @@ export default function App() {
       {/* 3D SHOWCASE */}
       <section className="ra-3d-section" aria-label="RAI & Associates Law Firm Lahore">
         <div className="ra-3d-scene">
-          <div className="ra-3d-card">
-            <div className="ra-3d-card__inner">
-              <div className="ra-3d-card__front">
-                <div className="ra-3d-card__glow" />
-                <div className="ra-3d-card__logo-circle">
-                  <img src="/uploads/upload_1.PNG" alt="RAI & Associates Law Firm Logo Lahore" className="ra-3d-card__logo" />
-                </div>
-                <div className="ra-3d-card__firm">RAI & Associates</div>
-                <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
-                <div className="ra-3d-card__line" />
-                <div className="ra-3d-card__tagline">Committed to Justice</div>
-              </div>
-            </div>
-          </div>
-          <div className="ra-3d-particles">
-            {[...Array(12)].map((_, i) => <div key={i} className={`ra-3d-particle ra-3d-particle--${i+1}`} />)}
-          </div>
-          {/* Orbit nodes — evenly spaced on the circular path */}
+          {/* Orbit rings */}
+          <div className="ra-3d-ring ra-3d-ring--1" />
+          <div className="ra-3d-ring ra-3d-ring--2" />
+
+          {/* Orbit nodes ON the ring */}
           <div className="ra-3d-orbit-node ra-3d-orbit-node--1">
             <span className="ra-3d-float__num">30+</span>
             <span className="ra-3d-float__lbl">Years</span>
@@ -375,9 +362,40 @@ export default function App() {
             <span className="ra-3d-float__num">R&A</span>
             <span className="ra-3d-float__lbl">Est. 1993</span>
           </div>
-          {/* Dotted orbit ring */}
-          <div className="ra-3d-ring ra-3d-ring--1" />
-          <div className="ra-3d-ring ra-3d-ring--2" />
+
+          {/* Main Card — center */}
+          <div className="ra-3d-card">
+            <div className="ra-3d-card__inner">
+              <div className="ra-3d-card__front">
+                <div className="ra-3d-card__glow" />
+                <div className="ra-3d-card__logo-circle">
+                  <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-card__logo" />
+                </div>
+                <div className="ra-3d-card__firm">RAI & Associates</div>
+                <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
+                <div className="ra-3d-card__line" />
+                {/* Stats inside card */}
+                <div className="ra-3d-card__stats">
+                  <div className="ra-3d-card__stat">
+                    <span className="ra-3d-card__stat-num">30+</span>
+                    <span className="ra-3d-card__stat-lbl">Years</span>
+                  </div>
+                  <div className="ra-3d-card__stat">
+                    <span className="ra-3d-card__stat-num">5K+</span>
+                    <span className="ra-3d-card__stat-lbl">Cases</span>
+                  </div>
+                  <div className="ra-3d-card__stat">
+                    <span className="ra-3d-card__stat-num">98%</span>
+                    <span className="ra-3d-card__stat-lbl">Success</span>
+                  </div>
+                </div>
+                <div className="ra-3d-card__tagline">Committed to Justice</div>
+              </div>
+            </div>
+          </div>
+          <div className="ra-3d-particles">
+            {[...Array(12)].map((_, i) => <div key={i} className={`ra-3d-particle ra-3d-particle--${i+1}`} />)}
+          </div>
         </div>
         <div className="ra-3d-text">
           <h2 className="ra-3d-text__title">Pakistan's Trusted Legal Experts</h2>

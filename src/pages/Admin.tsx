@@ -13,18 +13,7 @@ interface Post {
   created_at: string
 }
 
-interface Certificate {
-  id: number
-  title: string
-  description: string
-  file_url: string
-  file_name: string
-  file_type: string
-  file_size: number
-  created_at: string
-}
-
-const CATEGORIES = ['Tax Law', 'Cybercrime & FIA', 'Intellectual Property', 'Corporate Law', 'Civil Litigation', 'Criminal Law', 'Family Law', 'Environmental Law', 'Revenue Law', 'Constitutional Law', 'Case Laws', 'General Legal Advice']
+const CATEGORIES = ['Tax Law', 'Cybercrime & FIA', 'Intellectual Property', 'Corporate Law', 'Civil Litigation', 'Criminal Law', 'Family Law', 'Environmental Law', 'Revenue Law', 'Constitutional Law', 'General Legal Advice']
 const EMPTY_POST = { title: '', slug: '', category: 'Tax Law', excerpt: '', content: '', author: 'Rai Afraz (Advocate)', published: true }
 
 export default function Admin() {
@@ -33,38 +22,13 @@ export default function Admin() {
   const [password, setPassword] = useState('')
   const [authError, setAuthError] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState<'posts' | 'certificates' | 'cases'>('posts')
-
-  // Blog state
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(false)
-  const [view, setView] = useState<'list' | 'edit' | 'new' | 'inbox'>('list')
-  const [messages, setMessages] = useState<any[]>([])
-  const [msgsLoading, setMsgsLoading] = useState(false)
+  const [view, setView] = useState<'list' | 'edit' | 'new'>('list')
   const [editPost, setEditPost] = useState<any>(EMPTY_POST)
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState('')
   const [deleteId, setDeleteId] = useState<number | null>(null)
-
-  // Cases state
-  const [cases, setCases] = useState<any[]>([])
-  const [casesLoading, setCasesLoading] = useState(false)
-  const [caseView, setCaseView] = useState<'list' | 'edit' | 'new'>('list')
-  const [editCase, setEditCase] = useState<any>({ title: '', category: 'Tax Law', court: '', year: new Date().getFullYear(), outcome: 'Won', summary: '', published: true })
-  const [caseSaving, setCaseSaving] = useState(false)
-  const [caseSaveMsg, setCaseSaveMsg] = useState('')
-  const [deleteCaseId, setDeleteCaseId] = useState<number | null>(null)
-
-  // Certificates state
-  const [certs, setCerts] = useState<Certificate[]>([])
-  const [certsLoading, setCertsLoading] = useState(false)
-  const [certTitle, setCertTitle] = useState('')
-  const [certDesc, setCertDesc] = useState('')
-  const [certFile, setCertFile] = useState<File | null>(null)
-  const [uploading, setUploading] = useState(false)
-  const [uploadMsg, setUploadMsg] = useState('')
-  const [deleteCertId, setDeleteCertId] = useState<number | null>(null)
-  const [uploadProgress, setUploadProgress] = useState(0)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
@@ -72,20 +36,7 @@ export default function Admin() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => { if (user) { fetchPosts(); fetchCerts(); fetchCases(); fetchMessages() } }, [user])
-
-  const fetchMessages = async () => {
-    setMsgsLoading(true)
-    try {
-      const { data: { session } } = await supabase.auth.getSession()
-      const res = await fetch('/api/contact', {
-        headers: { Authorization: `Bearer ${session?.access_token}` }
-      })
-      const data = await res.json()
-      setMessages(Array.isArray(data) ? data : [])
-    } catch (e) { console.error(e) }
-    finally { setMsgsLoading(false) }
-  }
+  useEffect(() => { if (user) fetchPosts() }, [user])
 
   const getToken = async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -101,57 +52,6 @@ export default function Admin() {
       setPosts(Array.isArray(data) ? data : [])
     } catch (e) { console.error(e) }
     finally { setLoading(false) }
-  }
-
-  const fetchCases = async () => {
-    setCasesLoading(true)
-    try {
-      const token = await getToken()
-      const res = await fetch('/api/cases?admin=1', { headers: { Authorization: `Bearer ${token}` } })
-      const data = await res.json()
-      setCases(Array.isArray(data) ? data : [])
-    } catch (e) { console.error(e) }
-    finally { setCasesLoading(false) }
-  }
-
-  const handleSaveCase = async (e: React.FormEvent) => {
-    e.preventDefault(); setCaseSaving(true); setCaseSaveMsg('')
-    try {
-      const token = await getToken()
-      const method = caseView === 'new' ? 'POST' : 'PUT'
-      const res = await fetch('/api/cases', {
-        method,
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify(editCase)
-      })
-      if (!res.ok) throw new Error('Save failed')
-      setCaseSaveMsg('✅ Saved!')
-      await fetchCases()
-      setTimeout(() => { setCaseSaveMsg(''); setCaseView('list') }, 1500)
-    } catch (err: any) { setCaseSaveMsg('❌ ' + err.message) }
-    finally { setCaseSaving(false) }
-  }
-
-  const handleDeleteCase = async (id: number) => {
-    try {
-      const token = await getToken()
-      await fetch('/api/cases', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ id })
-      })
-      setDeleteCaseId(null); await fetchCases()
-    } catch (e) { console.error(e) }
-  }
-
-  const fetchCerts = async () => {
-    setCertsLoading(true)
-    try {
-      const res = await fetch('/api/certificates')
-      const data = await res.json()
-      setCerts(Array.isArray(data) ? data : [])
-    } catch (e) { console.error(e) }
-    finally { setCertsLoading(false) }
   }
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -177,8 +77,8 @@ export default function Admin() {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(editPost)
       })
-      if (!res.ok) { const err = await res.json(); throw new Error(err.error || 'Save failed') }
-      setSaveMsg('✅ Saved!')
+      if (!res.ok) throw new Error('Save failed')
+      setSaveMsg('✅ Saved successfully!')
       await fetchPosts()
       setTimeout(() => { setSaveMsg(''); setView('list') }, 1500)
     } catch (err: any) { setSaveMsg('❌ ' + err.message) }
@@ -195,108 +95,6 @@ export default function Admin() {
       })
       setDeleteId(null); await fetchPosts()
     } catch (e) { console.error(e) }
-  }
-
-  const handleUploadCert = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!certFile || !certTitle) { setUploadMsg('❌ Title aur file dono zaroori hain'); return }
-
-    // Validate file type
-    const allowed = ['image/png', 'image/jpeg', 'application/pdf',
-      'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
-    if (!allowed.includes(certFile.type)) {
-      setUploadMsg('❌ Sirf PNG, JPG, PDF, DOC, DOCX allowed hai'); return
-    }
-    if (certFile.size > 10 * 1024 * 1024) {
-      setUploadMsg('❌ File size 10MB se kam honi chahiye'); return
-    }
-
-    setUploading(true); setUploadMsg(''); setUploadProgress(10)
-
-    try {
-      const token = await getToken()
-      setUploadProgress(30)
-
-      // Upload file via API
-      const formData = new FormData()
-      formData.append('file', certFile)
-
-      const uploadRes = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData
-      })
-
-      setUploadProgress(70)
-
-      if (!uploadRes.ok) {
-        const err = await uploadRes.json()
-        throw new Error(err.error || 'Upload failed')
-      }
-
-      const uploadData = await uploadRes.json()
-      setUploadProgress(85)
-
-      // Save record to DB
-      const saveRes = await fetch('/api/certificates', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          title: certTitle,
-          description: certDesc,
-          file_url: uploadData.url,
-          file_name: uploadData.name,
-          file_type: uploadData.type,
-          file_size: uploadData.size
-        })
-      })
-
-      if (!saveRes.ok) {
-        const err = await saveRes.json()
-        throw new Error(err.error || 'Save failed')
-      }
-
-      setUploadProgress(100)
-      setUploadMsg('✅ Certificate upload ho gaya!')
-      setCertTitle(''); setCertDesc(''); setCertFile(null)
-      const fileInput = document.getElementById('cert-file') as HTMLInputElement
-      if (fileInput) fileInput.value = ''
-      await fetchCerts()
-      setTimeout(() => { setUploadMsg(''); setUploadProgress(0) }, 3000)
-    } catch (err: any) {
-      setUploadMsg('❌ ' + err.message)
-      setUploadProgress(0)
-    } finally { setUploading(false) }
-  }
-
-  const handleDeleteCert = async (cert: Certificate) => {
-    try {
-      const token = await getToken()
-      // Extract file path from URL
-      const urlParts = cert.file_url.split('/certificates/')
-      const filePath = urlParts.length > 1 ? urlParts[1] : null
-      await fetch('/api/certificates', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ id: cert.id, file_path: filePath })
-      })
-      setDeleteCertId(null); await fetchCerts()
-    } catch (e) { console.error(e) }
-  }
-
-  const formatSize = (bytes: number) => {
-    if (!bytes) return ''
-    if (bytes < 1024) return bytes + ' B'
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
-  }
-
-  const getFileIcon = (type: string) => {
-    if (!type) return '📄'
-    if (type.includes('pdf')) return '📕'
-    if (type.includes('word') || type.includes('doc')) return '📘'
-    if (type.includes('image')) return '🖼️'
-    return '📄'
   }
 
   if (!user) {
@@ -328,21 +126,14 @@ export default function Admin() {
 
   return (
     <div className="adm-root">
-      {/* Sidebar */}
       <aside className="adm-sidebar">
         <div className="adm-sidebar__logo">
           <img src="/uploads/upload_1.PNG" alt="RAI" />
-          <span>CMS Panel</span>
+          <span>Blog CMS</span>
         </div>
         <nav className="adm-sidebar__nav">
-          <button className={`adm-sidebar__link ${activeTab === 'posts' && view === 'list' ? 'active' : ''}`}
-            onClick={() => { setActiveTab('posts'); setView('list') }}>📋 Blog Posts</button>
-          <button className={`adm-sidebar__link ${activeTab === 'posts' && view === 'new' ? 'active' : ''}`}
-            onClick={() => { setActiveTab('posts'); setEditPost({ ...EMPTY_POST }); setView('new') }}>✏️ New Post</button>
-          <button className={`adm-sidebar__link ${activeTab === 'cases' ? 'active' : ''}`}
-            onClick={() => { setActiveTab('cases'); setCaseView('list') }}>⚖️ Cases</button>
-          <button className={`adm-sidebar__link ${activeTab === 'certificates' ? 'active' : ''}`}
-            onClick={() => setActiveTab('certificates')}>🏆 Certificates</button>
+          <button className={`adm-sidebar__link ${view === 'list' ? 'active' : ''}`} onClick={() => setView('list')}>📋 All Posts</button>
+          <button className="adm-sidebar__link" onClick={() => { setEditPost({ ...EMPTY_POST }); setView('new') }}>✏️ New Post</button>
           <a href="/" className="adm-sidebar__link">🌐 View Website</a>
         </nav>
         <div className="adm-sidebar__user">
@@ -351,20 +142,17 @@ export default function Admin() {
         </div>
       </aside>
 
-      {/* Main */}
       <main className="adm-main">
-
-        {/* ===== BLOG POSTS ===== */}
-        {activeTab === 'posts' && view === 'list' && (
+        {view === 'list' && (
           <div>
             <div className="adm-header">
               <div>
                 <h1 className="adm-header__title">Legal Insights</h1>
-                <p className="adm-header__sub">{posts.length} post{posts.length !== 1 ? 's' : ''} total</p>
+                <p className="adm-header__sub">{posts.length} posts total</p>
               </div>
               <button className="adm-btn adm-btn--gold" onClick={() => { setEditPost({ ...EMPTY_POST }); setView('new') }}>+ New Post</button>
             </div>
-            {loading ? <div className="adm-loading">Loading...</div> : (
+            {loading ? <div className="adm-loading">Loading posts...</div> : (
               <div className="adm-posts">
                 {posts.map(post => (
                   <div key={post.id} className="adm-post-card">
@@ -381,7 +169,7 @@ export default function Admin() {
                       <p className="adm-post-card__excerpt">{post.excerpt?.substring(0, 120)}...</p>
                     </div>
                     <div className="adm-post-card__actions">
-                      <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setEditPost({ ...post }); setActiveTab('posts'); setView('edit') }}>✏️ Edit</button>
+                      <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setEditPost({ ...post }); setView('edit') }}>✏️ Edit</button>
                       <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => setDeleteId(post.id)}>🗑️ Delete</button>
                     </div>
                   </div>
@@ -391,12 +179,12 @@ export default function Admin() {
           </div>
         )}
 
-        {activeTab === 'posts' && (view === 'edit' || view === 'new') && (
+        {(view === 'edit' || view === 'new') && (
           <div>
             <div className="adm-header">
               <div>
                 <h1 className="adm-header__title">{view === 'new' ? 'New Post' : 'Edit Post'}</h1>
-                <p className="adm-header__sub">Fill in the details below</p>
+                <p className="adm-header__sub">Fill in the details below and save</p>
               </div>
               <button className="adm-btn adm-btn--outline" onClick={() => setView('list')}>← Back</button>
             </div>
@@ -410,7 +198,7 @@ export default function Admin() {
                   </div>
                   <div className="adm-form__group">
                     <label>Short Summary / Excerpt *</label>
-                    <textarea rows={3} required placeholder="Brief 1-2 sentence summary..." value={editPost.excerpt}
+                    <textarea rows={3} required placeholder="A brief 1-2 sentence summary..." value={editPost.excerpt}
                       onChange={e => setEditPost({ ...editPost, excerpt: e.target.value })} />
                   </div>
                   <div className="adm-form__group">
@@ -457,229 +245,8 @@ export default function Admin() {
             </form>
           </div>
         )}
-
-        {/* ===== CASES ===== */}
-        {activeTab === 'cases' && caseView === 'list' && (
-          <div>
-            <div className="adm-header">
-              <div>
-                <h1 className="adm-header__title">Cases</h1>
-                <p className="adm-header__sub">{cases.length} case{cases.length !== 1 ? 's' : ''} total</p>
-              </div>
-              <button className="adm-btn adm-btn--gold" onClick={() => { setEditCase({ title: '', category: 'Tax Law', court: '', year: new Date().getFullYear(), outcome: 'Won', summary: '', published: true }); setCaseView('new') }}>+ New Case</button>
-            </div>
-            {casesLoading ? <div className="adm-loading">Loading...</div> : (
-              <div className="adm-posts">
-                {cases.map(c => (
-                  <div key={c.id} className="adm-post-card">
-                    <div className="adm-post-card__left">
-                      <span className={`adm-post-card__status ${c.published ? 'published' : 'draft'}`}>{c.published ? '🟢 Published' : '🟡 Draft'}</span>
-                      <h3 className="adm-post-card__title">{c.title}</h3>
-                      <div className="adm-post-card__meta">
-                        <span className="adm-post-card__cat">{c.category}</span>
-                        <span>🏛️ {c.court}</span>
-                        <span>📅 {c.year}</span>
-                        <span style={{color: c.outcome === 'Won' ? '#16a34a' : '#dc2626'}}>⚖️ {c.outcome}</span>
-                      </div>
-                      <p className="adm-post-card__excerpt">{c.summary?.substring(0, 120)}...</p>
-                    </div>
-                    <div className="adm-post-card__actions">
-                      <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setEditCase({...c}); setCaseView('edit') }}>✏️ Edit</button>
-                      <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => setDeleteCaseId(c.id)}>🗑️ Delete</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'cases' && (caseView === 'edit' || caseView === 'new') && (
-          <div>
-            <div className="adm-header">
-              <div><h1 className="adm-header__title">{caseView === 'new' ? 'New Case' : 'Edit Case'}</h1></div>
-              <button className="adm-btn adm-btn--outline" onClick={() => setCaseView('list')}>← Back</button>
-            </div>
-            <form onSubmit={handleSaveCase} className="adm-editor">
-              <div className="adm-editor__grid">
-                <div className="adm-editor__main">
-                  <div className="adm-form__group">
-                    <label>Case Title *</label>
-                    <input required placeholder="e.g. Tax Evasion Defense — FBR vs. XYZ Company" value={editCase.title} onChange={e => setEditCase({...editCase, title: e.target.value})} />
-                  </div>
-                  <div className="adm-form__group">
-                    <label>Court *</label>
-                    <input required placeholder="e.g. Lahore High Court" value={editCase.court} onChange={e => setEditCase({...editCase, court: e.target.value})} />
-                  </div>
-                  <div className="adm-form__group">
-                    <label>Case Summary *</label>
-                    <textarea rows={6} required placeholder="Describe the case, what was at stake, and how it was resolved..." value={editCase.summary} onChange={e => setEditCase({...editCase, summary: e.target.value})} />
-                  </div>
-                </div>
-                <div className="adm-editor__sidebar">
-                  <div className="adm-editor__panel">
-                    <h3>Case Details</h3>
-                    <div className="adm-form__group">
-                      <label>Status</label>
-                      <select value={editCase.published ? 'published' : 'draft'} onChange={e => setEditCase({...editCase, published: e.target.value === 'published'})}>
-                        <option value="published">🟢 Published</option>
-                        <option value="draft">🟡 Draft</option>
-                      </select>
-                    </div>
-                    <div className="adm-form__group">
-                      <label>Category *</label>
-                      <select required value={editCase.category} onChange={e => setEditCase({...editCase, category: e.target.value})}>
-                        {CATEGORIES.map(c => <option key={c}>{c}</option>)}
-                      </select>
-                    </div>
-                    <div className="adm-form__group">
-                      <label>Outcome</label>
-                      <select value={editCase.outcome} onChange={e => setEditCase({...editCase, outcome: e.target.value})}>
-                        <option>Won</option>
-                        <option>Settled</option>
-                        <option>Ongoing</option>
-                        <option>Lost</option>
-                      </select>
-                    </div>
-                    <div className="adm-form__group">
-                      <label>Year</label>
-                      <input type="number" min="1993" max="2030" value={editCase.year} onChange={e => setEditCase({...editCase, year: parseInt(e.target.value)})} />
-                    </div>
-                    {caseSaveMsg && <div className="adm-save-msg">{caseSaveMsg}</div>}
-                    <button type="submit" className="adm-btn adm-btn--gold adm-btn--full" disabled={caseSaving}>
-                      {caseSaving ? 'Saving...' : caseView === 'new' ? '🚀 Add Case' : '💾 Save Changes'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        )}
-
-        {deleteCaseId && (
-          <div className="adm-modal-overlay" onClick={() => setDeleteCaseId(null)}>
-            <div className="adm-modal" onClick={e => e.stopPropagation()}>
-              <h3>Delete Case?</h3>
-              <p>This cannot be undone.</p>
-              <div className="adm-modal__actions">
-                <button className="adm-btn adm-btn--outline" onClick={() => setDeleteCaseId(null)}>Cancel</button>
-                <button className="adm-btn adm-btn--danger" onClick={() => handleDeleteCase(deleteCaseId)}>Delete</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ===== CERTIFICATES ===== */}
-        {activeTab === 'certificates' && (
-          <div>
-            <div className="adm-header">
-              <div>
-                <h1 className="adm-header__title">🏆 Certificates & Documents</h1>
-                <p className="adm-header__sub">{certs.length} certificate{certs.length !== 1 ? 's' : ''} uploaded</p>
-              </div>
-            </div>
-
-            {/* Upload Form */}
-            <div className="adm-cert-upload">
-              <h3 className="adm-cert-upload__title">Upload New Certificate</h3>
-              <form onSubmit={handleUploadCert}>
-                <div className="adm-editor__grid">
-                  <div>
-                    <div className="adm-form__group">
-                      <label>Certificate Title *</label>
-                      <input required placeholder="e.g. Punjab Bar Council Registration" value={certTitle}
-                        onChange={e => setCertTitle(e.target.value)} />
-                    </div>
-                    <div className="adm-form__group">
-                      <label>Description (optional)</label>
-                      <textarea rows={2} placeholder="Brief description..." value={certDesc}
-                        onChange={e => setCertDesc(e.target.value)} />
-                    </div>
-                    <div className="adm-form__group">
-                      <label>Upload File * <span className="adm-form__hint" style={{display:'inline'}}>PNG, JPG, PDF, DOC, DOCX — Max 10MB</span></label>
-                      <div className="adm-cert-dropzone" onClick={() => document.getElementById('cert-file')?.click()}>
-                        <input id="cert-file" type="file" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
-                          style={{ display: 'none' }}
-                          onChange={e => setCertFile(e.target.files?.[0] || null)} />
-                        {certFile ? (
-                          <div className="adm-cert-dropzone__selected">
-                            <span>{getFileIcon(certFile.type)}</span>
-                            <div>
-                              <div className="adm-cert-dropzone__name">{certFile.name}</div>
-                              <div className="adm-cert-dropzone__size">{formatSize(certFile.size)}</div>
-                            </div>
-                            <button type="button" className="adm-cert-dropzone__remove"
-                              onClick={e => { e.stopPropagation(); setCertFile(null) }}>✕</button>
-                          </div>
-                        ) : (
-                          <div className="adm-cert-dropzone__empty">
-                            <div className="adm-cert-dropzone__icon">📁</div>
-                            <div>Click to select file</div>
-                            <div className="adm-cert-dropzone__hint">PNG, JPG, PDF, DOC, DOCX</div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    {uploadProgress > 0 && uploadProgress < 100 && (
-                      <div className="adm-cert-progress">
-                        <div className="adm-cert-progress__bar" style={{ width: uploadProgress + '%' }} />
-                        <span>{uploadProgress}%</span>
-                      </div>
-                    )}
-                    {uploadMsg && <div className="adm-save-msg">{uploadMsg}</div>}
-                    <button type="submit" className="adm-btn adm-btn--gold" disabled={uploading || !certFile || !certTitle}>
-                      {uploading ? '⏳ Uploading...' : '📤 Upload Certificate'}
-                    </button>
-                  </div>
-                  <div className="adm-cert-info">
-                    <h4>📌 Supported Formats</h4>
-                    <div className="adm-cert-formats">
-                      <div className="adm-cert-format"><span>🖼️</span><div><strong>PNG / JPG</strong><div>Certificate images, scanned documents</div></div></div>
-                      <div className="adm-cert-format"><span>📕</span><div><strong>PDF</strong><div>Official certificates, legal documents</div></div></div>
-                      <div className="adm-cert-format"><span>📘</span><div><strong>DOC / DOCX</strong><div>Word documents, agreements</div></div></div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-
-            {/* Certificates List */}
-            <div className="adm-cert-list">
-              <h3 className="adm-cert-list__title">Uploaded Certificates ({certs.length})</h3>
-              {certsLoading ? <div className="adm-loading">Loading...</div> : (
-                certs.length === 0 ? (
-                  <div className="adm-cert-empty">Koi certificate upload nahi hua abhi tak.</div>
-                ) : (
-                  <div className="adm-cert-grid">
-                    {certs.map(cert => (
-                      <div key={cert.id} className="adm-cert-card">
-                        <div className="adm-cert-card__icon">{getFileIcon(cert.file_type)}</div>
-                        <div className="adm-cert-card__info">
-                          <div className="adm-cert-card__title">{cert.title}</div>
-                          {cert.description && <div className="adm-cert-card__desc">{cert.description}</div>}
-                          <div className="adm-cert-card__meta">
-                            <span>{cert.file_name}</span>
-                            {cert.file_size && <span>{formatSize(cert.file_size)}</span>}
-                            <span>{new Date(cert.created_at).toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                          </div>
-                        </div>
-                        <div className="adm-cert-card__actions">
-                          <a href={cert.file_url} target="_blank" rel="noopener noreferrer"
-                            className="adm-btn adm-btn--sm adm-btn--outline">👁️ View</a>
-                          <button className="adm-btn adm-btn--sm adm-btn--danger"
-                            onClick={() => setDeleteCertId(cert.id)}>🗑️</button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
       </main>
 
-      {/* Delete Post Modal */}
       {deleteId && (
         <div className="adm-modal-overlay" onClick={() => setDeleteId(null)}>
           <div className="adm-modal" onClick={e => e.stopPropagation()}>
@@ -688,21 +255,6 @@ export default function Admin() {
             <div className="adm-modal__actions">
               <button className="adm-btn adm-btn--outline" onClick={() => setDeleteId(null)}>Cancel</button>
               <button className="adm-btn adm-btn--danger" onClick={() => handleDeletePost(deleteId)}>Delete</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Delete Cert Modal */}
-      {deleteCertId && (
-        <div className="adm-modal-overlay" onClick={() => setDeleteCertId(null)}>
-          <div className="adm-modal" onClick={e => e.stopPropagation()}>
-            <h3>Delete Certificate?</h3>
-            <p>File bhi delete ho jayega. Yeh action undo nahi ho sakta.</p>
-            <div className="adm-modal__actions">
-              <button className="adm-btn adm-btn--outline" onClick={() => setDeleteCertId(null)}>Cancel</button>
-              <button className="adm-btn adm-btn--danger"
-                onClick={() => { const c = certs.find(x => x.id === deleteCertId); if (c) handleDeleteCert(c) }}>Delete</button>
             </div>
           </div>
         </div>
