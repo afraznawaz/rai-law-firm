@@ -336,11 +336,24 @@ export default function App() {
 
       {/* 3D SHOWCASE */}
       <section className="ra-3d-section" aria-label="RAI & Associates Law Firm Lahore">
+        {/* TEXT — LEFT */}
+        <div className="ra-3d-text">
+          <h2 className="ra-3d-text__title">Pakistan's Trusted Legal Experts</h2>
+          <p className="ra-3d-text__desc">Best tax lawyer in Lahore — RAI & Associates has delivered justice with integrity, expertise, and dedication since 1993. Serving clients across Pakistan.</p>
+          <div className="ra-3d-text__keywords">
+            <span>Tax Lawyer Lahore</span>
+            <span>FBR Disputes</span>
+            <span>FIA Cybercrime</span>
+            <span>Corporate Law</span>
+            <span>Trademark Pakistan</span>
+          </div>
+          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
+        </div>
+        {/* 3D SCENE — RIGHT */}
         <div className="ra-3d-scene">
           {/* Orbit rings */}
           <div className="ra-3d-ring ra-3d-ring--1" />
           <div className="ra-3d-ring ra-3d-ring--2" />
-
           {/* Orbit nodes ON the ring */}
           <div className="ra-3d-orbit-node ra-3d-orbit-node--1">
             <span className="ra-3d-float__num">30+</span>
@@ -362,7 +375,6 @@ export default function App() {
             <span className="ra-3d-float__num">R&A</span>
             <span className="ra-3d-float__lbl">Est. 1993</span>
           </div>
-
           {/* Main Card — center */}
           <div className="ra-3d-card">
             <div className="ra-3d-card__inner">
@@ -374,7 +386,6 @@ export default function App() {
                 <div className="ra-3d-card__firm">RAI & Associates</div>
                 <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
                 <div className="ra-3d-card__line" />
-                {/* Stats inside card */}
                 <div className="ra-3d-card__stats">
                   <div className="ra-3d-card__stat">
                     <span className="ra-3d-card__stat-num">30+</span>
@@ -396,18 +407,6 @@ export default function App() {
           <div className="ra-3d-particles">
             {[...Array(12)].map((_, i) => <div key={i} className={`ra-3d-particle ra-3d-particle--${i+1}`} />)}
           </div>
-        </div>
-        <div className="ra-3d-text">
-          <h2 className="ra-3d-text__title">Pakistan's Trusted Legal Experts</h2>
-          <p className="ra-3d-text__desc">Best tax lawyer in Lahore — RAI & Associates has delivered justice with integrity, expertise, and dedication since 1993. Serving clients across Pakistan.</p>
-          <div className="ra-3d-text__keywords">
-            <span>Tax Lawyer Lahore</span>
-            <span>FBR Disputes</span>
-            <span>FIA Cybercrime</span>
-            <span>Corporate Law</span>
-            <span>Trademark Pakistan</span>
-          </div>
-          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
         </div>
       </section>
 
