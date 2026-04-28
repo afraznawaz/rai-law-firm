@@ -3,7 +3,7 @@ import './App.css'
 import Admin from './pages/Admin'
 import BlogPost from './pages/BlogPost'
 import ELibrary from './pages/ELibrary'
-import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon } from './components/SocialIcons'
+import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'E-Library', 'Contact']
 
@@ -121,6 +121,7 @@ const SOCIAL_LINKS = [
   { Icon: InstagramIcon, label: 'Instagram', href: 'https://www.instagram.com/rai_associates10', color: '#e1306c' },
   { Icon: YouTubeIcon, label: 'YouTube', href: 'https://www.youtube.com/@raiandassociates', color: '#ff0000' },
   { Icon: WhatsAppIcon, label: 'WhatsApp', href: 'https://wa.me/923164371096', color: '#25d366' },
+  { Icon: LinkedInIcon, label: 'LinkedIn', href: 'https://www.linkedin.com/in/rai-afraz-aa5304217/', color: '#0077b5' },
 ]
 
 const STATS = [
