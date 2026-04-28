@@ -1891,6 +1891,54 @@ ul { list-style: none; }
 
 
 
+/* ===== BRANCHES ===== */
+.ra-branches {
+  background: linear-gradient(135deg, #0a2a12 0%, #0d3d1e 50%, #0a2a12 100%);
+  padding: 70px 0;
+}
+.ra-branches__header { text-align: center; margin-bottom: 48px; }
+.ra-branches__title {
+  font-family: var(--font-serif); font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 900; color: var(--white); margin-bottom: 16px;
+}
+.ra-branches__grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px;
+}
+.ra-branch-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2);
+  border-radius: var(--radius-lg); padding: 28px 22px; text-align: center;
+  transition: all 0.3s; position: relative;
+}
+.ra-branch-card:hover {
+  background: rgba(255,255,255,0.09); border-color: rgba(201,168,76,0.5);
+  transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+}
+.ra-branch-card--main {
+  border-color: rgba(201,168,76,0.6);
+  background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04));
+}
+.ra-branch-card__icon { font-size: 2.2rem; margin-bottom: 10px; }
+.ra-branch-card__city {
+  font-family: var(--font-serif); font-size: 1.3rem; font-weight: 900;
+  color: var(--gold); margin-bottom: 6px;
+}
+.ra-branch-card__badge {
+  display: inline-block; padding: 3px 12px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: var(--green-dark); font-size: 0.72rem; font-weight: 900;
+  letter-spacing: 0.08em; margin-bottom: 10px;
+}
+.ra-branch-card__desc {
+  font-size: 0.83rem; color: rgba(255,255,255,0.65); line-height: 1.6;
+  margin-bottom: 18px;
+}
+.ra-branch-card__btn {
+  display: inline-block; padding: 8px 20px; border-radius: 20px;
+  background: #25d366; color: white; font-size: 0.82rem; font-weight: 700;
+  text-decoration: none; transition: all 0.2s;
+}
+.ra-branch-card__btn:hover { background: #1ebe5d; transform: translateY(-1px); }
+
 /* ===== ADMIN CMS ===== */
 .adm-login {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;

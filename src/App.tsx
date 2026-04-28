@@ -974,32 +974,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="ra-section ra-faq">
-        <div className="ra-container">
-          <div className="ra-section__header">
-            <div className="ra-section__label">Common Questions</div>
-            <h2 className="ra-section__title">Frequently Asked Questions</h2>
-            <div className="ra-divider ra-divider--center" />
-            <p className="ra-section__subtitle">Everything you need to know before getting started</p>
-          </div>
-          <div className="ra-faq__list">
-            {FAQS.map((faq, i) => (
-              <div key={i} className={`ra-faq-item ${openFaq === i ? 'open' : ''}`}>
-                <button className="ra-faq-item__q" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
-                  <span>{faq.q}</span>
-                  <span className="ra-faq-item__icon">{openFaq === i ? '▲' : '▾'}</span>
-                </button>
-                {openFaq === i && <div className="ra-faq-item__a">{faq.a}</div>}
-              </div>
-            ))}
-          </div>
-          <div className="ra-faq__cta">
-            <p>Still have questions? We're here to help.</p>
-            <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Ask Us Directly →</button>
-          </div>
-        </div>
-      </section>
+
 
       {/* PHOTO GALLERY */}
       <section className="ra-section ra-gallery">
@@ -1049,6 +1024,37 @@ export default function App() {
                 <div className="ra-faq__a" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer" style={{display:'none'}}>
                   <p itemProp="text">{item.a}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* BRANCHES */}
+      <section className="ra-branches">
+        <div className="ra-container">
+          <div className="ra-branches__header">
+            <div className="ra-section__label" style={{color:'var(--gold-light)'}}>Our Presence</div>
+            <h2 className="ra-branches__title">Our Branches Across Pakistan</h2>
+            <div className="ra-divider ra-divider--center" />
+          </div>
+          <div className="ra-branches__grid">
+            {[
+              { city: 'Lahore', icon: '🏛️', desc: 'R&A Law Firm, 3-Fane Road, Tehreem Building, Near Lahore High Court', main: true },
+              { city: 'Lahore', icon: '💼', desc: 'Tax Consultancy Office, Near Eiffel Tower, Bahria Town', main: false },
+              { city: 'Islamabad', icon: '🏙️', desc: 'Federal Capital — Available for consultations & court appearances', main: false },
+              { city: 'Karachi', icon: '🌊', desc: 'Sindh High Court & Commercial Court matters', main: false },
+              { city: 'Multan', icon: '🌹', desc: 'South Punjab — Multan High Court Bench', main: false },
+              { city: 'Nankana Sahib', icon: '⭐', desc: 'District Courts — Civil & Revenue matters', main: false },
+            ].map((b, i) => (
+              <div key={i} className={`ra-branch-card ${b.main ? 'ra-branch-card--main' : ''}`}>
+                <div className="ra-branch-card__icon">{b.icon}</div>
+                <div className="ra-branch-card__city">{b.city}</div>
+                {b.main && <div className="ra-branch-card__badge">Head Office</div>}
+                <div className="ra-branch-card__desc">{b.desc}</div>
+                <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-branch-card__btn">
+                  💬 WhatsApp
+                </a>
               </div>
             ))}
           </div>
