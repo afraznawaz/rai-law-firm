@@ -297,12 +297,25 @@ export default function App() {
           </div>
         </div>
         {menuOpen && (
-          <div className="ra-nav__mobile">
-            {NAV_LINKS.map(link => (
-              <button key={link} className="ra-nav__mobile-link" onClick={() => scrollTo(link.toLowerCase())}>{link}</button>
-            ))}
-            <button className="ra-nav__cta ra-nav__cta--mobile" onClick={() => scrollTo('contact')}>Free Consultation</button>
-          </div>
+          <>
+            {/* Backdrop */}
+            <div className="ra-nav__backdrop" onClick={() => setMenuOpen(false)} />
+            <div className="ra-nav__mobile">
+              {/* Close button */}
+              <button className="ra-nav__mobile-close" onClick={() => setMenuOpen(false)}>✕</button>
+              <div className="ra-nav__mobile-logo">
+                <img src="/uploads/upload_1.PNG" alt="RAI" className="ra-nav__mobile-logo-img" />
+                <span>RAI & Associates</span>
+              </div>
+              {NAV_LINKS.map(link => (
+                <button key={link} className="ra-nav__mobile-link" onClick={() => scrollTo(link.toLowerCase())}>{link}</button>
+              ))}
+              <button className="ra-nav__cta ra-nav__cta--mobile" onClick={() => scrollTo('contact')}>Free Consultation</button>
+              <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-nav__mobile-wa">
+                💬 WhatsApp: 0316-4371096
+              </a>
+            </div>
+          </>
         )}
       </nav>
 
