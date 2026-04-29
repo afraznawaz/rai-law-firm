@@ -25,10 +25,8 @@ export default async function handler(req, res) {
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { title, category, year, summary, content } = req.body;
-      const { data, error } = await supabase.from('elibrary')
-        .insert({ title, category, year, summary, content })
-        .select().single();
+      const { title, category, year, summary, content, document_url } = req.body;
+      const { data, error } = await supabase.from('elibrary').insert({ title, category, year, summary, content, document_url }).select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
@@ -37,10 +35,8 @@ export default async function handler(req, res) {
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { id, title, category, year, summary, content } = req.body;
-      const { data, error } = await supabase.from('elibrary')
-        .update({ title, category, year, summary, content })
-        .eq('id', id).select().single();
+      const { id, title, category, year, summary, content, document_url } = req.body;
+      const { data, error } = await supabase.from('elibrary').update({ title, category, year, summary, content, document_url }).eq('id', id).select().single();
       if (error) throw error;
       return res.status(200).json(data);
     }

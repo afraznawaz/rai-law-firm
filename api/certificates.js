@@ -7,47 +7,28 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
 
   try {
-    // GET - fetch all certificates (public)
     if (req.method === 'GET') {
-      const { data, error } = await supabase
-        .from('certificates')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const { data, error } = await supabase.from('certificates').select('*').order('created_at', { ascending: false });
       if (error) throw error;
       return res.status(200).json(data);
     }
-
-    // Verify auth for write operations
     const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) return res.status(401).json({ error: 'Unauthorized' });
     const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
     if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-
-    // POST - save certificate record (file already uploaded to storage)
     if (req.method === 'POST') {
-      const { title, description, file_url, file_name, file_type, file_size } = req.body;
-      if (!title || !file_url) return res.status(400).json({ error: 'Title and file_url required' });
-      const { data, error } = await supabase
-        .from('certificates')
-        .insert({ title, description, file_url, file_name, file_type, file_size })
-        .select().single();
+      const { title, description, file_url, issued_by, issued_date, category } = req.body;
+      if (!title) return res.status(400).json({ error: 'Title required' });
+      const { data, error } = await supabase.from('certificates').insert({ title, description, file_url, issued_by, issued_date, category }).select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
-
-    // DELETE - remove certificate
     if (req.method === 'DELETE') {
-      const { id, file_path } = req.body;
-      if (!id) return res.status(400).json({ error: 'ID required' });
-      // Remove from storage if path provided
-      if (file_path) {
-        await supabase.storage.from('certificates').remove([file_path]);
-      }
+      const { id } = req.body;
       const { error } = await supabase.from('certificates').delete().eq('id', id);
       if (error) throw error;
       return res.status(200).json({ ok: true });
     }
-
     res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
     console.error('Certificates API error:', err);

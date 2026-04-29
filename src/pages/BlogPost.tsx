@@ -59,8 +59,6 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
           <span>📅 {new Date(post.created_at).toLocaleDateString('en-PK', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
         </div>
         <div className="blog-post-body" dangerouslySetInnerHTML={{ __html: renderContent(post.content) }} />
-
-        {/* FOLLOW US SECTION */}
         <div className="blog-post-follow">
           <div className="blog-post-follow__header">
             <span className="blog-post-follow__icon">📲</span>
@@ -69,22 +67,14 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
           <p className="blog-post-follow__sub">Stay updated with latest legal insights & news from Rai & Associates</p>
           <div className="blog-post-follow__links">
             {SOCIAL_LINKS.map((s, i) => (
-              <a
-                key={i}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="blog-post-follow__btn"
-                style={{ '--sc': s.color } as React.CSSProperties}
-              >
+              <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
+                className="blog-post-follow__btn" style={{ '--sc': s.color } as React.CSSProperties}>
                 <span className="blog-post-follow__btn-icon">{s.icon}</span>
                 <span className="blog-post-follow__btn-label">{s.label}</span>
               </a>
             ))}
           </div>
         </div>
-
-        {/* CTA */}
         <div className="blog-post-cta">
           <h3>Need Legal Advice?</h3>
           <p>Contact Rai & Associates for a free consultation.</p>
