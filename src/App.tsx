@@ -222,7 +222,7 @@ export default function App() {
         <nav className="ra-nav ra-nav--scrolled">
           <div className="ra-nav__inner">
             <div className="ra-nav__logo" onClick={() => setShowELibrary(false)} style={{ cursor: 'pointer' }}>
-              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" width="52" height="52" />
               <div className="ra-nav__logo-text">
                 <span className="ra-nav__logo-name">RAI & ASSOCIATES</span>
                 <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
@@ -246,7 +246,7 @@ export default function App() {
         <nav className="ra-nav ra-nav--scrolled">
           <div className="ra-nav__inner">
             <div className="ra-nav__logo" onClick={() => setOpenPost(null)} style={{ cursor: 'pointer' }}>
-              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" width="52" height="52" />
               <div className="ra-nav__logo-text">
                 <span className="ra-nav__logo-name">RAI & ASSOCIATES</span>
                 <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
@@ -271,7 +271,7 @@ export default function App() {
           {/* LEFT — Est. badge */}
           <div className="ra-nav__left">
             <div className="ra-nav__logo" onClick={() => scrollTo('home')}>
-              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" width="52" height="52" />
               <div className="ra-nav__logo-text">
                 <span className="ra-nav__logo-name">RAI & ASSOCIATES</span>
                 <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
@@ -329,7 +329,7 @@ export default function App() {
             <div className="ra-hero3d__ring ra-hero3d__ring--mid" />
             <div className="ra-hero3d__card">
               <div className="ra-hero3d__card-glow" />
-              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-hero3d__logo" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-hero3d__logo" width="200" height="200" fetchPriority="high" />
               <div className="ra-hero3d__firm">RAI & ASSOCIATES</div>
               <div className="ra-hero3d__est">Est. 1993 · Lahore</div>
               <div className="ra-hero3d__divider" />
@@ -425,7 +425,7 @@ export default function App() {
           <div className="ra-about__grid">
             <div className="ra-about__img-col">
               <div className="ra-about__logo-wrap">
-                <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-about__logo" />
+                <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-about__logo" loading="lazy" width="220" height="220" />
                 <div className="ra-about__est">EST. 1993</div>
               </div>
 
@@ -513,8 +513,8 @@ export default function App() {
             <div className="ra-expert-solo ra-expert-solo--founder">
               <div className="ra-expert-solo__photo-wrap">
                 <div className="ra-expert-solo__photo-bg">
-                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
-                  <img src="/uploads/rai-haq-nawaz.jpg" alt="Rai Haq Nawaz Kharal" className="ra-expert-solo__photo" />
+                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" loading="lazy" />
+                  <img src="/uploads/rai-haq-nawaz.jpg" alt="Rai Haq Nawaz Kharal" loading="lazy" className="ra-expert-solo__photo" />
                   <div className="ra-expert-solo__name-overlay">Rai Haq Nawaz ⚖️</div>
                 </div>
               </div>
@@ -554,8 +554,8 @@ export default function App() {
             <div className="ra-expert-solo">
               <div className="ra-expert-solo__photo-wrap">
                 <div className="ra-expert-solo__photo-bg">
-                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
-                  <img src="/uploads/rai-afraz.jpg" alt="Rai Afraz" className="ra-expert-solo__photo"
+                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" loading="lazy" />
+                  <img src="/uploads/rai-afraz.jpg" alt="Rai Afraz" loading="lazy" className="ra-expert-solo__photo"
                     onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
                   <div className="ra-expert-solo__name-overlay">Rai Afraz ⚖️</div>
                 </div>
@@ -797,7 +797,7 @@ export default function App() {
             {CASE_LAWS.map(c => (
               <div key={c.id} className="ra-caselaw-card">
                 <div className="ra-caselaw-card__img-wrap" onClick={() => setLightbox(c.image)}>
-                  <img src={c.image} alt={c.title} className="ra-caselaw-card__img" />
+                  <img src={c.image} alt={c.title} className="ra-caselaw-card__img" loading="lazy" />
                   <div className="ra-caselaw-card__overlay">
                     <span>🔍 View Full Document</span>
                   </div>
@@ -821,7 +821,7 @@ export default function App() {
       {lightbox && (
         <div className="ra-lightbox" onClick={() => setLightbox(null)}>
           <div className="ra-lightbox__close" onClick={() => setLightbox(null)}>×</div>
-          <img src={lightbox} alt="Document" className="ra-lightbox__img" onClick={e => e.stopPropagation()} />
+          <img src={lightbox} alt="Document" loading="lazy" className="ra-lightbox__img" onClick={e => e.stopPropagation()} />
         </div>
       )}
 
@@ -1100,7 +1100,7 @@ export default function App() {
         <div className="ra-container">
           <div className="ra-footer__grid">
             <div className="ra-footer__brand">
-              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-footer__logo" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-footer__logo" loading="lazy" width="80" height="80" />
               <p className="ra-footer__brand-text">Committed to Justice since 1993. Trusted legal advocates serving Lahore and all of Pakistan.</p>
 
             </div>
