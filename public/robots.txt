@@ -1,27 +1,23 @@
 User-agent: *
 Allow: /
-
-# Block admin panel from indexing
 Disallow: /admin
 Disallow: /admin/
-
-# Block API routes
 Disallow: /api/
 
-# Sitemap
-Sitemap: https://raiandassociates.com.pk/sitemap.xml
-
-# Crawl delay
-Crawl-delay: 10
-
-# Google
+# Allow all major crawlers
 User-agent: Googlebot
 Allow: /
-Disallow: /admin
-Disallow: /api/
 
-# Bing
 User-agent: Bingbot
 Allow: /
-Disallow: /admin
-Disallow: /api/
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+Sitemap: https://raiandassociates.com.pk/sitemap.xml
+
+# RAI & Associates Law Firm - Lahore, Pakistan
+# Best Tax Lawyer Lahore | Advocate Rai Afraz | Legal Services Pakistan
