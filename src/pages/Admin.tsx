@@ -84,7 +84,7 @@ export default function Admin() {
   if (!user) return (
     <div className="adm-login">
       <div className="adm-login__box">
-        <div className="adm-login__logo"><img src="/uploads/upload_1.PNG" alt="RAI" /></div>
+        <div className="adm-login__logo"><img src="/uploads/upload_1.webp" alt="RAI & Associates" width="80" height="80" /></div>
         <h1 className="adm-login__title">Admin Panel</h1>
         <p className="adm-login__sub">RAI & Associates Law Firm</p>
         <form onSubmit={async e => { e.preventDefault(); setAuthLoading(true); setAuthError(''); const { error } = await supabase.auth.signInWithPassword({ email, password }); if (error) setAuthError(error.message); setAuthLoading(false) }} className="adm-login__form">
@@ -101,7 +101,7 @@ export default function Admin() {
   return (
     <div className="adm-root">
       <aside className="adm-sidebar">
-        <div className="adm-sidebar__logo"><img src="/uploads/upload_1.PNG" alt="RAI" /><span>Admin Panel</span></div>
+        <div className="adm-sidebar__logo"><img src="/uploads/upload_1.webp" alt="RAI & Associates" width="36" height="36" /><span>Admin Panel</span></div>
         <nav className="adm-sidebar__nav">
           <button className={`adm-sidebar__link ${section==='blog'?'active':''}`} onClick={() => { setSection('blog'); setBlogView('list') }}>📝 Blog Posts</button>
           <button className={`adm-sidebar__link ${section==='elibrary'?'active':''}`} onClick={() => { setSection('elibrary'); setLibView('list') }}>📚 E-Library</button>

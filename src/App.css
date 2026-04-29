@@ -1,5 +1,10 @@
 /* Fonts loaded via HTML preload for performance */
 
+/* ===== PERFORMANCE ===== */
+@font-face { font-display: swap; }
+.ra-section { content-visibility: auto; contain-intrinsic-size: 0 600px; }
+img { max-width: 100%; height: auto; }
+
 /* ===== ROOT VARIABLES ===== */
 :root {
   --green-dark: #0d3d1e;
