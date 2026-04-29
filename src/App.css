@@ -91,7 +91,7 @@ ul { list-style: none; }
 
 /* ===== NAVBAR ===== */
 .ra-nav {
-  position: fixed; top: 0; left: 0; right: 0; width: 100vw; z-index: 1000;
+  position: fixed; top: 0; left: 0; right: 0; width: 100vw; z-index: 1050;
   background: rgba(13, 61, 30, 0.97);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(201,168,76,0.2);
@@ -158,8 +158,31 @@ ul { list-style: none; }
   transition: all 0.2s; box-shadow: 0 2px 8px rgba(201,168,76,0.3);
 }
 .ra-nav__cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,168,76,0.4); }
-.ra-nav__burger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
-.ra-nav__burger span { display: block; width: 24px; height: 2px; background: var(--gold); border-radius: 2px; }
+.ra-nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 8px;
+  background: rgba(201,168,76,0.15);
+  border: 1.5px solid rgba(201,168,76,0.4);
+  border-radius: 6px;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  z-index: 1100;
+  flex-shrink: 0;
+}
+.ra-nav__burger span {
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background: var(--gold);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+.ra-nav__burger:hover { background: rgba(201,168,76,0.25); border-color: var(--gold); }
 .ra-nav__mobile {
   display: flex; flex-direction: column; padding: 12px 24px 20px;
   border-top: 1px solid rgba(201,168,76,0.15);
@@ -2324,12 +2347,25 @@ ul { list-style: none; }
 @media (max-width: 768px) {
 
   /* --- NAVBAR --- */
-  .ra-nav__inner { padding: 10px 16px; }
+  .ra-nav { z-index: 1050 !important; }
+  .ra-nav__inner {
+    padding: 10px 16px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
   .ra-nav__logo-img { height: 40px; width: 40px; }
   .ra-nav__logo-name { font-size: 1rem; }
   .ra-nav__logo-sub { font-size: 0.6rem; }
   .ra-nav__links { display: none !important; }
-  .ra-nav__burger { display: flex !important; }
+  .ra-nav__burger {
+    display: flex !important;
+    position: relative;
+    z-index: 1100 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+  }
 
   /* --- MOBILE MENU --- */
   .ra-nav__mobile {
