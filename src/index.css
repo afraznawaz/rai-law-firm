@@ -1,18 +1,34 @@
 @import "tailwindcss";
 
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  max-width: 100vw !important;
-  overflow-x: hidden !important;
+/* Critical CSS only - rest is in App.css */
+*, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-#root {
-  width: 100% !important;
-  max-width: 100vw !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow-x: hidden !important;
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Lato', system-ui, -apple-system, sans-serif;
+  background: #f8f5ef;
+  color: #1a1a1a;
+  overflow-x: hidden;
+  /* Prevent layout shift */
+  min-height: 100vh;
+}
+
+/* Reserve space for images to prevent CLS */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent invisible text during font load */
+@font-face {
+  font-display: swap;
 }

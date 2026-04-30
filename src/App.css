@@ -1,9 +1,43 @@
-/* Fonts loaded via HTML preload for performance */
+/* Fonts loaded via HTML non-blocking preload */
 
 /* ===== PERFORMANCE ===== */
-@font-face { font-display: swap; }
-.ra-section { content-visibility: auto; contain-intrinsic-size: 0 600px; }
-img { max-width: 100%; height: auto; }
+/* Prevent layout shift from font swap */
+@font-face {
+  font-family: 'Playfair Display';
+  font-display: swap;
+  size-adjust: 105%;
+}
+@font-face {
+  font-family: 'Lato';
+  font-display: swap;
+  size-adjust: 100%;
+}
+
+/* content-visibility for off-screen sections = faster paint */
+.ra-about, .ra-services, .ra-experts, .ra-blog, .ra-reviews, .ra-contact, .ra-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px;
+}
+
+/* Prevent CLS from images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* GPU-accelerated animations only */
+.ra-scales__beam, .ra-scales__pan--left, .ra-scales__pan--right {
+  will-change: transform;
+}
+.ra-blog-card, .ra-service-card, .ra-review-card, .ra-expert-card {
+  will-change: auto;
+}
+
+/* Reduce paint on scroll */
+.ra-nav {
+  will-change: background-color, box-shadow;
+}
 
 /* ===== ROOT VARIABLES ===== */
 :root {

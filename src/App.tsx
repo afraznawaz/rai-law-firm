@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import './App.css'
-import Admin from './pages/Admin'
-import BlogPost from './pages/BlogPost'
+
+// Lazy load heavy pages — reduces initial JS bundle
+const Admin = lazy(() => import('./pages/Admin'))
+const BlogPost = lazy(() => import('./pages/BlogPost'))
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Contact']
 
