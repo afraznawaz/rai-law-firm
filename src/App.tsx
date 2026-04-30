@@ -192,6 +192,46 @@ export default function App() {
         </div>
       </section>
 
+      {/* 3D SHOWCASE */}
+      <section className="ra-3d-section">
+        <div className="ra-3d-scene">
+          <div className="ra-3d-card">
+            <div className="ra-3d-card__inner">
+              <div className="ra-3d-card__glow" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates Law Firm Logo" className="ra-3d-card__logo" />
+              <div className="ra-3d-card__firm">RAI & Associates</div>
+              <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
+              <div className="ra-3d-card__line" />
+              <div className="ra-3d-card__tagline">"Committed to Justice"</div>
+              <div className="ra-3d-card__reg">Punjab Bar Reg. No. 144840</div>
+            </div>
+          </div>
+          <div className="ra-3d-particles">
+            {[...Array(14)].map((_, i) => <div key={i} className={`ra-3d-particle p${i+1}`} />)}
+          </div>
+          <div className="ra-3d-ring ra-3d-ring--1" />
+          <div className="ra-3d-ring ra-3d-ring--2" />
+          <div className="ra-3d-ring ra-3d-ring--3" />
+          <div className="ra-3d-float f1"><span className="ra-3d-float__num">30+</span><span className="ra-3d-float__lbl">Years</span></div>
+          <div className="ra-3d-float f2"><span className="ra-3d-float__num">5K+</span><span className="ra-3d-float__lbl">Cases Won</span></div>
+          <div className="ra-3d-float f3"><span className="ra-3d-float__num">⚖️</span><span className="ra-3d-float__lbl">Justice</span></div>
+          <div className="ra-3d-float f4"><span className="ra-3d-float__num">98%</span><span className="ra-3d-float__lbl">Success</span></div>
+        </div>
+        <div className="ra-3d-text">
+          <div className="ra-section__label">Why Choose Us</div>
+          <h2 className="ra-3d-text__title">Trusted Legal Excellence<br />Since 1993</h2>
+          <div className="ra-divider" />
+          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication. From tax tribunals to the Supreme Court — we fight for your rights.</p>
+          <div className="ra-3d-text__points">
+            <div className="ra-3d-point"><span>✓</span> Lahore High Court Practice</div>
+            <div className="ra-3d-point"><span>✓</span> Tax Bar Association Member</div>
+            <div className="ra-3d-point"><span>✓</span> FIA & Cybercrime Specialists</div>
+            <div className="ra-3d-point"><span>✓</span> IPO Trademark Registration</div>
+          </div>
+          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
+        </div>
+      </section>
+
       {/* STATS */}
       <section className="ra-stats" aria-label="Key statistics">
         {STATS.map((s, i) => (
