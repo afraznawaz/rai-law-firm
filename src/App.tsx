@@ -302,7 +302,7 @@ export default function App() {
           {/* RIGHT — CTA */}
           <div className="ra-nav__right">
             <button className="ra-nav__cta" onClick={() => scrollTo('contact')}>Free Consultation</button>
-            <button className="ra-nav__burger" onClick={() => setMenuOpen(!menuOpen)}>
+            <button className={`ra-nav__burger ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
               <span /><span /><span />
             </button>
           </div>
