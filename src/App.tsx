@@ -1042,7 +1042,7 @@ export default function App() {
       </section>
 
       {/* FAQ SECTION — SEO Optimized */}
-      <section id="faq" className="ra-section ra-faq" itemScope itemType="https://schema.org/FAQPage">
+      <section id="faq" className="ra-section ra-faq">
         <div className="ra-container">
           <div className="ra-section__header">
             <div className="ra-section__label">Common Questions</div>
@@ -1061,13 +1061,13 @@ export default function App() {
               { q: 'How to get bail in a criminal case in Pakistan?', a: 'Contact RAI & Associates immediately after arrest. We apply for pre-arrest bail (anticipatory bail) before arrest or post-arrest bail after. Bail applications are filed in the Sessions Court or High Court depending on the offense. Call 0304-4840937 for urgent criminal matters.' },
               { q: 'How to file a writ petition in Lahore High Court?', a: 'A writ petition under Article 199 of the Constitution is filed when a fundamental right is violated or a public authority acts illegally. RAI & Associates has extensive experience filing writ petitions in the Lahore High Court for illegal detention, service matters, and government authority abuse.' },
             ].map((item, i) => (
-              <div key={i} className="ra-faq__item" itemScope itemProp="mainEntity" itemType="https://schema.org/Question">
+              <div key={i} className="ra-faq__item">
                 <button className="ra-faq__q" onClick={e => { const el = e.currentTarget.nextElementSibling as HTMLElement; el.style.display = el.style.display === 'none' ? 'block' : 'none'; e.currentTarget.classList.toggle('open') }}>
-                  <span itemProp="name">{item.q}</span>
+                  <span>{item.q}</span>
                   <span className="ra-faq__arrow">▼</span>
                 </button>
-                <div className="ra-faq__a" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer" style={{display:'none'}}>
-                  <p itemProp="text">{item.a}</p>
+                <div className="ra-faq__a" style={{display:'none'}}>
+                  <p>{item.a}</p>
                 </div>
               </div>
             ))}
