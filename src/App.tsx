@@ -126,9 +126,9 @@ const SOCIAL_LINKS = [
 
 const STATS = [
   { value: '30+', label: 'Years of Excellence' },
-  { value: '5000+', label: 'Cases Won' },
+  { value: '2000+', label: 'Cases Won' },
   { value: '98%', label: 'Client Satisfaction' },
-  { value: '1', label: 'Dedicated Expert' }
+  { value: '2', label: 'Dedicated Experts' }
 ]
 
 interface Post {
@@ -366,6 +366,38 @@ export default function App() {
             <span>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</span>
             <span>🌐 <a href="https://www.raiandassociates.com.pk" target="_blank" rel="noopener noreferrer" className="ra-hero__web-link">www.raiandassociates.com.pk</a></span>
           </div>
+        </div>
+      </section>
+
+      {/* 3D LOGO CARD — After Free Consultation */}
+      <section className="ra-3d-hero-card">
+        <div className="ra-3d-hero-card__scene">
+          <div className="ra-3d-hero-card__ring ra-3d-hero-card__ring--1" />
+          <div className="ra-3d-hero-card__ring ra-3d-hero-card__ring--2" />
+          <div className="ra-3d-hero-card__ring ra-3d-hero-card__ring--3" />
+          <div className="ra-3d-hero-card__card">
+            <div className="ra-3d-hero-card__shine" />
+            <div className="ra-3d-hero-card__glow" />
+            <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-hero-card__logo" />
+            <div className="ra-3d-hero-card__name">RAI & ASSOCIATES</div>
+            <div className="ra-3d-hero-card__divider" />
+            <div className="ra-3d-hero-card__sub">Law Firm · Est. 1993 · Lahore</div>
+            <div className="ra-3d-hero-card__tagline">⚖️ Committed to Justice</div>
+          </div>
+          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--1"><span>30+</span><small>Years</small></div>
+          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--2"><span>5K+</span><small>Cases</small></div>
+          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--3"><span>98%</span><small>Success</small></div>
+          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--4"><span>⚖️</span><small>Justice</small></div>
+          {[...Array(10)].map((_, i) => <div key={i} className={`ra-3d-hero-card__particle ra-3d-hero-card__p${i+1}`} />)}
+        </div>
+        <div className="ra-3d-hero-card__text">
+          <h2 className="ra-3d-hero-card__title">Pakistan's Trusted Legal Experts</h2>
+          <p className="ra-3d-hero-card__desc">Three decades of legal excellence — Tax Law, FIA Cases, Corporate Law, Trademark & Cybercrime Defense. Serving clients across Pakistan from Lahore.</p>
+          <div className="ra-3d-hero-card__chips">
+            <span>Tax Lawyer Lahore</span><span>FBR Disputes</span><span>FIA Cybercrime</span>
+            <span>Corporate Law</span><span>Trademark Pakistan</span>
+          </div>
+          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
         </div>
       </section>
 
@@ -790,6 +822,12 @@ export default function App() {
               <h3 className="ra-cert-card__title">Stanford University</h3>
               <p className="ra-cert-card__num">Certificate of Completion</p>
               <p className="ra-cert-card__desc">Advanced Legal Studies — Stanford Law School Online Program · Continuing Legal Education</p>
+            </div>
+            <div className="ra-cert-card ra-cert-card--intl">
+              <div className="ra-cert-card__icon">🌐</div>
+              <h3 className="ra-cert-card__title">Association of International Lawyers</h3>
+              <p className="ra-cert-card__num">Certified Member</p>
+              <p className="ra-cert-card__desc">Certified Member of the Association of International Lawyers — Global Legal Network & International Law Practice</p>
             </div>
           </div>
         </div>
