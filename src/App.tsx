@@ -166,6 +166,8 @@ export default function App() {
   const [reviewsLoading, setReviewsLoading] = useState(true)
   const [activeReview, setActiveReview] = useState(0)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
+  const toggleSection = (key: string) => setOpenSections(p => ({ ...p, [key]: !p[key] }))
 
   useEffect(() => {
     fetch('/api/blog').then(r => r.json()).then(d => { setPosts(Array.isArray(d) ? d : []); setPostsLoading(false) }).catch(() => setPostsLoading(false))
@@ -465,6 +467,15 @@ export default function App() {
       {/* ABOUT */}
       <section id="about" className="ra-section ra-about">
         <div className="ra-container">
+          <div className="ra-section-header-toggle" onClick={() => toggleSection('about')}>
+            <div className="ra-section-header-toggle__left">
+              <div className="ra-section-header-toggle__label">Who We Are</div>
+              <h2 className="ra-section-header-toggle__title">About RAI & Associates</h2>
+              <p className="ra-section-header-toggle__sub">Est. 1993 · Punjab Bar Reg. No. 144840 · Lahore</p>
+            </div>
+            <div className={`ra-section-header-toggle__arrow ${openSections['about'] ? 'open' : ''}`}>▼</div>
+          </div>
+          <div className={`ra-collapse-body ${openSections['about'] ? 'open' : ''}`}>
           <div className="ra-about__grid">
             <div className="ra-about__img-col">
               <div className="ra-about__logo-wrap">
@@ -516,18 +527,22 @@ export default function App() {
               </div>
             </div>
           </div>
+          </div>{/* end collapse about */}
         </div>
       </section>
 
       {/* SERVICES */}
       <section id="services" className="ra-section ra-services">
         <div className="ra-container">
-          <div className="ra-section__header">
-            <div className="ra-section__label">What We Do</div>
-            <h2 className="ra-section__title">Our Legal Services</h2>
-            <div className="ra-divider ra-divider--center" />
-            <p className="ra-section__subtitle">Comprehensive legal solutions tailored to protect your rights and interests</p>
+          <div className="ra-section-header-toggle" onClick={() => toggleSection('services')}>
+            <div className="ra-section-header-toggle__left">
+              <div className="ra-section-header-toggle__label">What We Do</div>
+              <h2 className="ra-section-header-toggle__title">Our Legal Services</h2>
+              <p className="ra-section-header-toggle__sub">Tax Law · Corporate · Cybercrime · IP · Civil · Criminal & more</p>
+            </div>
+            <div className={`ra-section-header-toggle__arrow ${openSections['services'] ? 'open' : ''}`}>▼</div>
           </div>
+          <div className={`ra-collapse-body ${openSections['services'] ? 'open' : ''}`}>
           <div className="ra-services__grid">
             {SERVICES.map((s, i) => (
               <div key={i} className="ra-service-card">
@@ -538,6 +553,7 @@ export default function App() {
               </div>
             ))}
           </div>
+          </div>{/* end collapse services */}
         </div>
       </section>
 
@@ -641,12 +657,15 @@ export default function App() {
       {/* BLOG */}
       <section id="blog" className="ra-section ra-blog">
         <div className="ra-container">
-          <div className="ra-section__header">
-            <div className="ra-section__label">Knowledge Hub</div>
-            <h2 className="ra-section__title">Legal Insights</h2>
-            <div className="ra-divider ra-divider--center" />
-            <p className="ra-section__subtitle">Expert legal articles and updates from <strong>RAI & ASSOCIATES</strong></p>
+          <div className="ra-section-header-toggle" onClick={() => toggleSection('blog')}>
+            <div className="ra-section-header-toggle__left">
+              <div className="ra-section-header-toggle__label">Knowledge Hub</div>
+              <h2 className="ra-section-header-toggle__title">Legal Insights</h2>
+              <p className="ra-section-header-toggle__sub">{posts.length} articles · Tax, Corporate, Family, Criminal & more</p>
+            </div>
+            <div className={`ra-section-header-toggle__arrow ${openSections['blog'] ? 'open' : ''}`}>▼</div>
           </div>
+          <div className={`ra-collapse-body ${openSections['blog'] ? 'open' : ''}`}>
           <div className="ra-blog__filters">
             {categories.map(cat => (
               <button key={cat} className={`ra-blog__filter ${blogFilter === cat ? 'active' : ''}`} onClick={() => setBlogFilter(cat)}>{cat}</button>
@@ -700,18 +719,22 @@ export default function App() {
               </a>
             </div>
           </div>
+          </div>{/* end collapse blog */}
         </div>
       </section>
 
       {/* REVIEWS */}
       <section id="reviews" className="ra-section ra-reviews">
         <div className="ra-container">
-          <div className="ra-section__header">
-            <div className="ra-section__label">Client Testimonials</div>
-            <h2 className="ra-section__title">What Our Clients Say</h2>
-            <div className="ra-divider ra-divider--center" />
-            <p className="ra-section__subtitle">Genuine reviews from our clients across Pakistan</p>
+          <div className="ra-section-header-toggle" onClick={() => toggleSection('reviews')}>
+            <div className="ra-section-header-toggle__left">
+              <div className="ra-section-header-toggle__label">Client Testimonials</div>
+              <h2 className="ra-section-header-toggle__title">What Our Clients Say</h2>
+              <p className="ra-section-header-toggle__sub">⭐⭐⭐⭐⭐ · {reviews.length} verified reviews from across Pakistan</p>
+            </div>
+            <div className={`ra-section-header-toggle__arrow ${openSections['reviews'] ? 'open' : ''}`}>▼</div>
           </div>
+          <div className={`ra-collapse-body ${openSections['reviews'] ? 'open' : ''}`}>
 
           {reviewsLoading ? (
             <div className="ra-reviews__loading">
@@ -773,6 +796,7 @@ export default function App() {
 
             </>
           )}
+          </div>{/* end collapse reviews */}
         </div>
       </section>
 
@@ -881,7 +905,7 @@ export default function App() {
             <div className="ra-section__label">Get In Touch</div>
             <h2 className="ra-section__title">Contact Us</h2>
             <div className="ra-divider ra-divider--center" />
-            <p className="ra-section__subtitle">Schedule a consultation with our legal experts today</p>
+            <p className="ra-section__subtitle">Schedule a free consultation with our legal experts today</p>
           </div>
           <div className="ra-contact__grid">
             <div className="ra-contact__info">
