@@ -3,6 +3,7 @@ import './App.css'
 import Admin from './pages/Admin'
 import BlogPost from './pages/BlogPost'
 import ELibrary from './pages/ELibrary'
+import SectionPreview from './components/SectionPreview'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'E-Library', 'Contact']
@@ -141,6 +142,7 @@ export default function App() {
   if (path === '/admin') return <Admin />
 
   const [activeSection, setActiveSection] = useState('home')
+  const [showAboutFull, setShowAboutFull] = useState(false)
   const [lightbox, setLightbox] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
@@ -449,7 +451,7 @@ export default function App() {
         </div>
         {/* TEXT — RIGHT */}
         <div className="ra-3d-text">
-          <h2 className="ra-3d-text__title">Pakistan's Trusted Legal Experts</h2>
+          <h2 className="ra-3d-text__title">Your Legal Partner Since 1993</h2>
           <p className="ra-3d-text__desc">Best tax lawyer in Lahore — RAI & Associates has delivered justice with integrity, expertise, and dedication since 1993. Serving clients across Pakistan.</p>
           <div className="ra-3d-text__keywords">
             <span>Tax Lawyer Lahore</span>
@@ -486,41 +488,63 @@ export default function App() {
               <h2 className="ra-section__title">Welcome to <span className="ra-brand-caps">RAI & ASSOCIATES</span> ⚖️</h2>
               <p className="ra-about__tagline">Legal Solutions for the Modern World</p>
               <div className="ra-divider" />
-              <p className="ra-about__para">We are a <strong>Professional Law Firm</strong> based in Lahore, offering expert legal services designed for the complexities of today's world. From corporate disputes to digital crimes, we provide legal clarity and protection at every step.</p>
-              <div className="ra-about__services-list">
-                <div className="ra-about__sitem"><span>📑</span><span><strong>Tax & Corporate Law Litigation</strong> — Expert handling of tax disputes and corporate legal matters before all tribunals.</span></div>
-                <div className="ra-about__sitem"><span>™️</span><span><strong>Intellectual Property (IPO & Trademark Registration)</strong> — Protecting your brand, inventions, and creative works.</span></div>
-                <div className="ra-about__sitem"><span>🧑‍💻</span><span><strong>Cybercrime & FIA Matters</strong> — Specialized defense and advisory for digital crimes and FIA investigations.</span></div>
-              </div>
-              <p className="ra-about__para" style={{ marginTop: '16px' }}>We're here to provide <strong>legal clarity and protection</strong> 👨🏻‍⚖️</p>
-              <div className="ra-about__offices">
-                <h4 className="ra-about__offices-title">🏢 Our Offices</h4>
-                <div className="ra-about__office">
-                  <span className="ra-about__office-icon">📍</span>
-                  <div><div className="ra-about__office-name">R&A Law Firm</div><div className="ra-about__office-addr">3-Fane Road, Tehreem Building, Lahore</div></div>
+
+              {/* SUMMARY — always visible */}
+              <p className="ra-about__para">
+                We are a <strong>Professional Law Firm</strong> based in Lahore, offering expert legal services
+                in Tax Law, Corporate Law, Cybercrime, Intellectual Property, and more — delivering
+                <strong> legal clarity and protection</strong> since 1993. 👨🏻‍⚖️
+              </p>
+
+              {/* EXPAND BUTTON */}
+              {!showAboutFull && (
+                <button className="ra-about__readmore" onClick={() => setShowAboutFull(true)}>
+                  Read More About Us <span>↓</span>
+                </button>
+              )}
+
+              {/* FULL CONTENT — shown on click */}
+              {showAboutFull && (
+                <div className="ra-about__full">
+                  <div className="ra-about__services-list">
+                    <div className="ra-about__sitem"><span>📑</span><span><strong>Tax & Corporate Law Litigation</strong> — Expert handling of tax disputes and corporate legal matters before all tribunals.</span></div>
+                    <div className="ra-about__sitem"><span>™️</span><span><strong>Intellectual Property (IPO & Trademark Registration)</strong> — Protecting your brand, inventions, and creative works.</span></div>
+                    <div className="ra-about__sitem"><span>🧑‍💻</span><span><strong>Cybercrime & FIA Matters</strong> — Specialized defense and advisory for digital crimes and FIA investigations.</span></div>
+                  </div>
+                  <div className="ra-about__offices">
+                    <h4 className="ra-about__offices-title">🏢 Our Offices</h4>
+                    <div className="ra-about__office">
+                      <span className="ra-about__office-icon">📍</span>
+                      <div><div className="ra-about__office-name">R&A Law Firm</div><div className="ra-about__office-addr">3-Fane Road, Tehreem Building, Lahore</div></div>
+                    </div>
+                    <div className="ra-about__office">
+                      <span className="ra-about__office-icon">📍</span>
+                      <div><div className="ra-about__office-name">Tax Consultancy Office</div><div className="ra-about__office-addr">Near Eiffel Tower, Bahria Town, Lahore</div></div>
+                    </div>
+                  </div>
+                  <div className="ra-about__social">
+                    <h4 className="ra-about__social-title">📲 Follow Us</h4>
+                    <div className="ra-about__social-links">
+                      {SOCIAL_LINKS.map((s, i) => (
+                        <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="ra-about__social-btn" style={{ '--sc': s.color } as React.CSSProperties}>
+                          <s.Icon size={16} /><span>{s.label}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  <button className="ra-about__readmore ra-about__readmore--less" onClick={() => setShowAboutFull(false)}>
+                    Show Less <span>↑</span>
+                  </button>
                 </div>
-                <div className="ra-about__office">
-                  <span className="ra-about__office-icon">📍</span>
-                  <div><div className="ra-about__office-name">Tax Consultancy Office</div><div className="ra-about__office-addr">Near Eiffel Tower, Bahria Town, Lahore</div></div>
-                </div>
-              </div>
-              <div className="ra-about__social">
-                <h4 className="ra-about__social-title">📲 Follow Us</h4>
-                <div className="ra-about__social-links">
-                  {SOCIAL_LINKS.map((s, i) => (
-                    <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="ra-about__social-btn" style={{ '--sc': s.color } as React.CSSProperties}>
-                      <s.Icon size={16} /><span>{s.label}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
       </section>
 
       {/* SERVICES */}
-      <section id="services" className="ra-section ra-services">
+      <SectionPreview id="services" label="What We Do" title="Our Legal Services" summary="Tax Law, Civil & Criminal Litigation, Corporate Law, Family Law, Property, Cybercrime, Constitutional Law and more." icon="⚖️">
+      <section className="ra-section ra-services">
         <div className="ra-container">
           <div className="ra-section__header">
             <div className="ra-section__label">What We Do</div>
@@ -540,9 +564,11 @@ export default function App() {
           </div>
         </div>
       </section>
+      </SectionPreview>
 
       {/* EXPERTS */}
-      <section id="expert" className="ra-section ra-experts">
+      <SectionPreview id="expert" label="Meet The Team" title="Our Legal Experts" summary="Rai Haq Nawaz Kharal (Founder) and Rai Afraz (CEO) — combined 30+ years of legal excellence before all courts of Pakistan." icon="👨‍⚖️">
+      <section className="ra-section ra-experts">
         <div className="ra-container">
           <div className="ra-section__header">
             <div className="ra-section__label">Meet Our Experts</div>
@@ -637,9 +663,11 @@ export default function App() {
           </div>
         </div>
       </section>
+      </SectionPreview>
 
       {/* BLOG */}
-      <section id="blog" className="ra-section ra-blog">
+      <SectionPreview id="blog" label="Knowledge Hub" title="Legal Insights & Articles" summary="Expert legal articles on Tax Law, FIA Cases, Corporate Law, Family Law, Cybercrime, Revenue Law and more — written by Rai Afraz." icon="📝">
+      <section className="ra-section ra-blog">
         <div className="ra-container">
           <div className="ra-section__header">
             <div className="ra-section__label">Knowledge Hub</div>
@@ -702,9 +730,11 @@ export default function App() {
           </div>
         </div>
       </section>
+      </SectionPreview>
 
       {/* REVIEWS */}
-      <section id="reviews" className="ra-section ra-reviews">
+      <SectionPreview id="reviews" label="Client Testimonials" title="What Our Clients Say" summary="Genuine 5-star reviews from clients across Lahore, Faisalabad, Islamabad, Multan and more — verified Pakistani clients." icon="⭐">
+      <section className="ra-section ra-reviews">
         <div className="ra-container">
           <div className="ra-section__header">
             <div className="ra-section__label">Client Testimonials</div>
@@ -775,9 +805,11 @@ export default function App() {
           )}
         </div>
       </section>
+      </SectionPreview>
 
       {/* CERTIFICATES */}
-      <section id="certificates" className="ra-section ra-certs">
+      <SectionPreview id="certificates" label="Official Documents" title="Certificates & Memberships" summary="Punjab Bar Council Reg. 144840 · Lahore Tax Bar Association · HarvardX Contract Law · Association of International Lawyers." icon="🎓">
+      <section className="ra-section ra-certs">
         <div className="ra-container">
           <div className="ra-section__header">
             <div className="ra-section__label">Official Documents</div>
@@ -832,9 +864,11 @@ export default function App() {
           </div>
         </div>
       </section>
+      </SectionPreview>
 
       {/* CASE LAWS */}
-      <section id="case-laws" className="ra-section ra-caselaws">
+      <SectionPreview id="case-laws" label="Court Orders & Judgments" title="Case Laws" summary="Actual Lahore High Court judgments where Rai Afraz Kharal appeared as Advocate — Tax Law cases decided in favour of taxpayers." icon="🏛️">
+      <section className="ra-section ra-caselaws">
         <div className="ra-container">
           <div className="ra-section__header">
             <div className="ra-section__label">Court Orders & Judgments</div>
@@ -865,6 +899,7 @@ export default function App() {
           </div>
         </div>
       </section>
+      </SectionPreview>
 
       {/* LIGHTBOX */}
       {lightbox && (
@@ -957,6 +992,7 @@ export default function App() {
       </section>
 
       {/* WHY CLIENTS TRUST US */}
+      <SectionPreview id="trust" label="Our Promise" title="Why Clients Trust Us" summary="Specialized Tax expertise · High Court experience · 24-48hr response · Strict confidentiality · Nationwide coverage across Pakistan." icon="🤝">
       <section className="ra-section ra-trust">
         <div className="ra-container">
           <div className="ra-section__header">
@@ -977,7 +1013,10 @@ export default function App() {
         </div>
       </section>
 
+      </SectionPreview>
+
       {/* SIGNATURE SERVICE LINES */}
+      <SectionPreview id="signature" label="Core Offerings" title="Signature Service Lines" summary="Returns & Filings · Audit & Notices · Corporate & SECP · Provincial Sales Tax — complete legal & tax support for your business." icon="📋">
       <section className="ra-section ra-signature">
         <div className="ra-container">
           <div className="ra-section__header">
@@ -1011,7 +1050,10 @@ export default function App() {
         </div>
       </section>
 
+      </SectionPreview>
+
       {/* HOW WE WORK */}
+      <SectionPreview id="how-we-work" label="Our Process" title="How We Work" summary="Discovery → Strategy → Execution → Ongoing Care. A clear 4-step process from first consultation to final resolution." icon="⚙️">
       <section className="ra-section ra-howwork">
         <div className="ra-container">
           <div className="ra-section__header">
@@ -1035,7 +1077,10 @@ export default function App() {
         </div>
       </section>
 
+      </SectionPreview>
+
       {/* IMPORTANT LINKS */}
+      <SectionPreview id="important-links" label="Quick Access" title="Important Legal Links" summary="Direct links to FBR, SECP, NADRA, IPO, PLRA, Lahore High Court, Supreme Court, FIA and all key Pakistani legal portals." icon="🔗">
       <section className="ra-section ra-links">
         <div className="ra-container">
           <div className="ra-section__header">
@@ -1059,7 +1104,10 @@ export default function App() {
 
 
 
+      </SectionPreview>
+
       {/* PHOTO GALLERY */}
+      <SectionPreview id="gallery" label="Our World" title="Inside RAI & Associates" summary="A visual glimpse into our legal practice — Lahore High Court, FBR, SECP, SBP, Supreme Court and more." icon="🖼️">
       <section className="ra-section ra-gallery">
         <div className="ra-container">
           <div className="ra-section__header">
@@ -1079,8 +1127,11 @@ export default function App() {
         </div>
       </section>
 
+      </SectionPreview>
+
       {/* FAQ SECTION — SEO Optimized */}
-      <section id="faq" className="ra-section ra-faq">
+      <SectionPreview id="faq" label="Common Questions" title="Frequently Asked Questions" summary="Answers about tax notices, FBR disputes, FIA cases, trademark registration, bail, writ petitions and more — by Advocate Rai Afraz." icon="❓">
+      <section className="ra-section ra-faq">
         <div className="ra-container">
           <div className="ra-section__header">
             <div className="ra-section__label">Common Questions</div>
@@ -1113,7 +1164,10 @@ export default function App() {
         </div>
       </section>
 
+      </SectionPreview>
+
       {/* BRANCHES */}
+      <SectionPreview id="branches" label="Our Presence" title="Our Branches Across Pakistan" summary="Lahore (2 offices) · Islamabad · Karachi · Multan · Nankana Sahib — serving clients across Pakistan." icon="📍">
       <section className="ra-branches">
         <div className="ra-container">
           <div className="ra-branches__header">
@@ -1143,6 +1197,8 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      </SectionPreview>
 
       {/* FOOTER */}
       <footer className="ra-footer">
