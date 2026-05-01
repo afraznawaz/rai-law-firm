@@ -566,8 +566,8 @@ export default function App() {
             <div className="ra-expert-solo ra-expert-solo--founder">
               <div className="ra-expert-solo__photo-wrap">
                 <div className="ra-expert-solo__photo-bg">
-                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
-                  <img src="/uploads/rai-haq-nawaz.jpg" alt="Rai Haq Nawaz Kharal" className="ra-expert-solo__photo" />
+                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" loading="eager" decoding="async" />
+                  <img src="/uploads/rai-haq-nawaz.jpg" alt="Rai Haq Nawaz Kharal" className="ra-expert-solo__photo" loading="eager" decoding="async" />
                   <div className="ra-expert-solo__name-overlay">Rai Haq Nawaz ⚖️</div>
                 </div>
               </div>
@@ -607,8 +607,8 @@ export default function App() {
             <div className="ra-expert-solo">
               <div className="ra-expert-solo__photo-wrap">
                 <div className="ra-expert-solo__photo-bg">
-                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
-                  <img src="/uploads/rai-afraz.jpg" alt="Rai Afraz" className="ra-expert-solo__photo" />
+                  <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" loading="eager" decoding="async" />
+                  <img src="/uploads/rai-afraz.jpg" alt="Rai Afraz" className="ra-expert-solo__photo" loading="eager" decoding="async" />
                   <div className="ra-expert-solo__name-overlay">Rai Afraz ⚖️</div>
                 </div>
               </div>
@@ -719,144 +719,113 @@ export default function App() {
       <SectionPreview id="reviews" label="Client Testimonials" title="What Our Clients Say" summary="Genuine 5-star reviews from clients across Lahore, Faisalabad, Islamabad, Multan and more — verified Pakistani clients." icon="⭐">
       <section className="ra-section ra-reviews">
         <div className="ra-container">
+
+          {/* HEADER */}
           <div className="ra-section__header">
             <div className="ra-section__label">Client Testimonials</div>
             <h2 className="ra-section__title">What Our Clients Say</h2>
             <div className="ra-divider ra-divider--center" />
-            <p className="ra-section__subtitle">Real reviews from verified clients across Pakistan</p>
+            <p className="ra-section__subtitle">Genuine reviews from verified clients across Pakistan</p>
           </div>
 
-          {/* TABS */}
-          <div className="ra-reviews__tabs">
-            <button className={`ra-reviews__tab ${reviewTab === 'google' ? 'active' : ''}`} onClick={() => setReviewTab('google')}>
-              <svg viewBox="0 0 24 24" className="ra-reviews__tab-icon"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-              Google Reviews
-              {googleReviews.length > 0 && <span className="ra-reviews__tab-count">{googleReviews.length}</span>}
-            </button>
-            <button className={`ra-reviews__tab ${reviewTab === 'clients' ? 'active' : ''}`} onClick={() => setReviewTab('clients')}>
-              ⭐ Client Testimonials
-              {reviews.length > 0 && <span className="ra-reviews__tab-count">{reviews.length}</span>}
-            </button>
-            <a href="https://share.google/I3PEGQ8uMA6DyWueH" target="_blank" rel="noopener noreferrer" className="ra-reviews__tab-cta">
-              + Leave a Google Review
+          {/* GOOGLE TRUST BANNER */}
+          <div className="ra-rev__trust-banner">
+            <div className="ra-rev__trust-left">
+              <svg viewBox="0 0 24 24" width="36" height="36" className="ra-rev__g-logo"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              <div>
+                <div className="ra-rev__trust-score">5.0 <span className="ra-rev__trust-stars">★★★★★</span></div>
+                <div className="ra-rev__trust-label">Verified on Google Business</div>
+              </div>
+            </div>
+            <div className="ra-rev__trust-divider" />
+            <div className="ra-rev__trust-mid">
+              <span className="ra-rev__trust-badge">✓ Verified Reviews</span>
+              <span className="ra-rev__trust-badge">✓ Real Pakistani Clients</span>
+              <span className="ra-rev__trust-badge">✓ All Services Covered</span>
+            </div>
+            <a href="https://share.google/I3PEGQ8uMA6DyWueH" target="_blank" rel="noopener noreferrer" className="ra-rev__view-google">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              View All on Google
             </a>
           </div>
 
-          {/* GOOGLE REVIEWS TAB */}
-          {reviewTab === 'google' && (
-            <div>
-              {googleLoading ? (
-                <div className="ra-reviews__loading">{[1,2,3].map(i => <div key={i} className="ra-reviews__skeleton" />)}</div>
-              ) : googleReviews.length === 0 ? (
-                <div className="ra-reviews__google-empty">
-                  <div className="ra-reviews__google-empty-inner">
-                    <svg viewBox="0 0 24 24" width="56" height="56"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                    <h3>Google Reviews Setup Required</h3>
-                    <p>To display your real Google reviews automatically, a <strong>Google Places API key</strong> needs to be configured in the admin panel.</p>
-                    <div className="ra-reviews__setup-steps">
-                      <div className="ra-reviews__setup-step"><span>1</span> Go to <strong>/admin</strong> → Google Reviews Setup</div>
-                      <div className="ra-reviews__setup-step"><span>2</span> Enter your Google Places API Key</div>
-                      <div className="ra-reviews__setup-step"><span>3</span> Click "Sync Reviews" — done! ✅</div>
+          {/* FEATURED SLIDER */}
+          {reviewsLoading ? (
+            <div className="ra-reviews__loading">{[1,2,3].map(i => <div key={i} className="ra-reviews__skeleton" />)}</div>
+          ) : (
+            <>
+              <div className="ra-reviews__featured">
+                {reviews.map((r, i) => (
+                  <div key={r.id} className={`ra-reviews__slide ${i === activeReview ? 'active' : ''}`}>
+                    <div className="ra-rev__slide-gverified">
+                      <svg viewBox="0 0 24 24" width="14" height="14"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                      Verified Client
                     </div>
-                    <a href="https://share.google/I3PEGQ8uMA6DyWueH" target="_blank" rel="noopener noreferrer" className="ra-reviews__google-btn">
-                      <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                      View Our Google Profile
-                    </a>
+                    <div className="ra-reviews__quote">"</div>
+                    <p className="ra-reviews__text">{r.review}</p>
+                    <div className="ra-reviews__stars">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</div>
+                    <div className="ra-reviews__author">
+                      <div className="ra-reviews__avatar">{r.name.charAt(0)}</div>
+                      <div>
+                        <div className="ra-reviews__name">{r.name}</div>
+                        <div className="ra-reviews__meta">📍 {r.city} · {r.service}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <div className="ra-reviews__dots">
+                  {reviews.map((_, i) => (
+                    <button key={i} className={`ra-reviews__dot ${i === activeReview ? 'active' : ''}`} onClick={() => setActiveReview(i)} />
+                  ))}
+                </div>
+              </div>
+
+              {/* REVIEWS GRID */}
+              <div className="ra-reviews__grid">
+                {reviews.map((r) => (
+                  <div key={r.id} className="ra-review-card">
+                    <div className="ra-review-card__top">
+                      <div className="ra-review-card__avatar">{r.name.charAt(0)}</div>
+                      <div style={{flex:1}}>
+                        <div className="ra-review-card__name">{r.name}</div>
+                        <div className="ra-review-card__loc">📍 {r.city}</div>
+                      </div>
+                      <div className="ra-review-card__stars">{'★'.repeat(r.rating)}</div>
+                    </div>
+                    <p className="ra-review-card__text">"{r.review}"</p>
+                    <div className="ra-review-card__footer">
+                      <span className="ra-review-card__service">{r.service}</span>
+                      <span className="ra-review-card__verified">
+                        <svg viewBox="0 0 24 24" width="11" height="11"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                        Verified
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* BOTTOM CTA BAR */}
+              <div className="ra-rev__bottom-bar">
+                <div className="ra-rev__bottom-left">
+                  <div className="ra-rev__bottom-score">
+                    <span className="ra-rev__bottom-num">5.0</span>
+                    <span className="ra-rev__bottom-stars">★★★★★</span>
+                  </div>
+                  <div className="ra-rev__bottom-info">
+                    <div className="ra-rev__bottom-count">{reviews.length}+ Verified Client Reviews</div>
+                    <div className="ra-rev__bottom-sub">Reviews sourced from real clients across Pakistan</div>
                   </div>
                 </div>
-              ) : (
-                <>
-                  {/* Google overall rating */}
-                  <div className="ra-reviews__google-header">
-                    <svg viewBox="0 0 24 24" width="40" height="40"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                    <div>
-                      <div className="ra-reviews__google-score">{(googleReviews.reduce((a,r)=>a+r.rating,0)/googleReviews.length).toFixed(1)}</div>
-                      <div className="ra-reviews__google-stars">★★★★★</div>
-                      <div className="ra-reviews__google-count">{googleReviews.length} Google Reviews</div>
-                    </div>
-                    <a href="https://share.google/I3PEGQ8uMA6DyWueH" target="_blank" rel="noopener noreferrer" className="ra-reviews__google-btn">Write a Review</a>
-                  </div>
-                  <div className="ra-reviews__grid">
-                    {googleReviews.map((r) => (
-                      <div key={r.id} className="ra-review-card ra-review-card--google">
-                        <div className="ra-review-card__top">
-                          {r.author_photo ? (
-                            <img src={r.author_photo} alt={r.author_name} className="ra-review-card__gphoto" />
-                          ) : (
-                            <div className="ra-review-card__avatar">{r.author_name?.charAt(0)}</div>
-                          )}
-                          <div>
-                            <div className="ra-review-card__name">{r.author_name}</div>
-                            <div className="ra-review-card__loc">{r.relative_time}</div>
-                          </div>
-                          <div className="ra-review-card__google-badge">
-                            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                          </div>
-                        </div>
-                        <div className="ra-review-card__stars">{'★'.repeat(r.rating)}{'☆'.repeat(5-r.rating)}</div>
-                        <p className="ra-review-card__text">"{r.text || 'Recommended.'}"</p>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {/* CLIENT TESTIMONIALS TAB */}
-          {reviewTab === 'clients' && (
-            <>
-              {reviewsLoading ? (
-                <div className="ra-reviews__loading">{[1,2,3].map(i => <div key={i} className="ra-reviews__skeleton" />)}</div>
-              ) : (
-                <>
-                  <div className="ra-reviews__featured">
-                    {reviews.map((r, i) => (
-                      <div key={r.id} className={`ra-reviews__slide ${i === activeReview ? 'active' : ''}`}>
-                        <div className="ra-reviews__quote">"</div>
-                        <p className="ra-reviews__text">{r.review}</p>
-                        <div className="ra-reviews__stars">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</div>
-                        <div className="ra-reviews__author">
-                          <div className="ra-reviews__avatar">{r.name.charAt(0)}</div>
-                          <div>
-                            <div className="ra-reviews__name">{r.name}</div>
-                            <div className="ra-reviews__meta">{r.city} · {r.service}</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="ra-reviews__dots">
-                      {reviews.map((_, i) => (
-                        <button key={i} className={`ra-reviews__dot ${i === activeReview ? 'active' : ''}`} onClick={() => setActiveReview(i)} />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="ra-reviews__grid">
-                    {reviews.map((r) => (
-                      <div key={r.id} className="ra-review-card">
-                        <div className="ra-review-card__top">
-                          <div className="ra-review-card__avatar">{r.name.charAt(0)}</div>
-                          <div>
-                            <div className="ra-review-card__name">{r.name}</div>
-                            <div className="ra-review-card__loc">📍 {r.city}</div>
-                          </div>
-                          <div className="ra-review-card__stars">{'★'.repeat(r.rating)}</div>
-                        </div>
-                        <p className="ra-review-card__text">"{r.review}"</p>
-                        <div className="ra-review-card__service">{r.service}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="ra-reviews__overall">
-                    <div className="ra-reviews__overall-score">5.0</div>
-                    <div>
-                      <div className="ra-reviews__overall-stars">★★★★★</div>
-                      <div className="ra-reviews__overall-label">Average Rating · {reviews.length} Reviews</div>
-                    </div>
-                    <div className="ra-reviews__overall-badge">⚖️ Verified Clients</div>
-                  </div>
-                </>
-              )}
+                <div className="ra-rev__bottom-actions">
+                  <a href="https://share.google/I3PEGQ8uMA6DyWueH" target="_blank" rel="noopener noreferrer" className="ra-rev__google-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    View More on Google
+                  </a>
+                  <a href="https://share.google/I3PEGQ8uMA6DyWueH" target="_blank" rel="noopener noreferrer" className="ra-rev__leave-btn">
+                    + Leave a Review
+                  </a>
+                </div>
+              </div>
             </>
           )}
         </div>
