@@ -2395,6 +2395,120 @@ ul { list-style: none; }
   .ra-side-text { display: none; }
 }
 
+/* ===== GOOGLE REVIEWS TABS ===== */
+.ra-reviews__tabs {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 36px; border-bottom: 2px solid rgba(255,255,255,0.1);
+  padding-bottom: 0;
+}
+.ra-reviews__tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border-radius: 8px 8px 0 0;
+  font-size: 0.9rem; font-weight: 700; color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.04); border: none; cursor: pointer;
+  transition: all 0.2s; position: relative; bottom: -2px;
+  border-bottom: 2px solid transparent;
+}
+.ra-reviews__tab.active {
+  color: var(--gold); background: rgba(201,168,76,0.1);
+  border-bottom: 2px solid var(--gold);
+}
+.ra-reviews__tab:hover { color: var(--gold-light); }
+.ra-reviews__tab-icon { width: 18px; height: 18px; }
+.ra-reviews__tab-count {
+  background: var(--gold); color: var(--green-dark);
+  font-size: 0.7rem; font-weight: 900; padding: 2px 7px;
+  border-radius: 10px; min-width: 20px; text-align: center;
+}
+.ra-reviews__tab-cta {
+  margin-left: auto; padding: 8px 18px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--green-dark); font-size: 0.82rem; font-weight: 700;
+  border-radius: 20px; text-decoration: none; transition: all 0.2s;
+  white-space: nowrap;
+}
+.ra-reviews__tab-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(201,168,76,0.4); }
+
+/* Google Reviews Header */
+.ra-reviews__google-header {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(201,168,76,0.2);
+  border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 28px;
+}
+.ra-reviews__google-score {
+  font-family: var(--font-serif); font-size: 2.8rem; font-weight: 900; color: var(--gold);
+}
+.ra-reviews__google-stars { color: #f59e0b; font-size: 1.1rem; letter-spacing: 2px; }
+.ra-reviews__google-count { font-size: 0.8rem; color: rgba(255,255,255,0.55); margin-top: 2px; }
+.ra-reviews__google-btn {
+  margin-left: auto; display: flex; align-items: center; gap: 8px;
+  padding: 10px 20px; background: white; color: #333;
+  border-radius: 6px; font-size: 0.85rem; font-weight: 700;
+  text-decoration: none; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.ra-reviews__google-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+.ra-review-card__gphoto {
+  width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+}
+.ra-review-card__google-badge { margin-left: auto; flex-shrink: 0; }
+.ra-review-card--google .ra-review-card__stars {
+  color: #f59e0b; font-size: 0.9rem; margin-bottom: 10px; display: block;
+}
+
+/* Google Empty State */
+.ra-reviews__google-empty {
+  display: flex; justify-content: center; padding: 20px 0 40px;
+}
+.ra-reviews__google-empty-inner {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(201,168,76,0.2);
+  border-radius: var(--radius-lg); padding: 48px 40px; max-width: 560px;
+  text-align: center;
+}
+.ra-reviews__google-empty-inner h3 {
+  font-family: var(--font-serif); color: var(--white); font-size: 1.3rem; margin: 16px 0 8px;
+}
+.ra-reviews__google-empty-inner p { color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-bottom: 24px; }
+.ra-reviews__setup-steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; text-align: left; }
+.ra-reviews__setup-step {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px 16px;
+  font-size: 0.85rem; color: rgba(255,255,255,0.75);
+}
+.ra-reviews__setup-step span {
+  width: 24px; height: 24px; background: var(--gold); color: var(--green-dark);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 0.75rem; flex-shrink: 0;
+}
+
+/* Admin Google Panel */
+.adm-google-panel {
+  background: white; border-radius: 10px; padding: 28px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1px solid #e8e8e0;
+}
+.adm-google-panel__header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+  padding-bottom: 16px; border-bottom: 1px solid #eee;
+}
+.adm-google-panel__header h3 { font-family: var(--font-serif); color: var(--green-dark); font-size: 1.1rem; }
+.adm-google-panel__header p { font-size: 0.82rem; color: #888; margin-top: 2px; }
+.adm-google-steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+.adm-google-step {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: #f8f8f5; border-radius: 8px; padding: 14px 16px;
+}
+.adm-google-step span {
+  width: 28px; height: 28px; background: var(--green-dark); color: var(--gold);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 0.8rem; flex-shrink: 0;
+}
+.adm-google-step strong { display: block; color: var(--green-dark); font-size: 0.9rem; margin-bottom: 4px; }
+.adm-google-step p { font-size: 0.82rem; color: #666; line-height: 1.5; margin: 0; }
+.adm-google-step a { color: var(--green-mid); text-decoration: underline; }
+.adm-google-step code {
+  background: #e8f5e9; color: var(--green-dark); padding: 1px 6px;
+  border-radius: 3px; font-size: 0.8rem; font-family: monospace;
+}
+
 /* ===== ADMIN CMS ===== */
 .adm-login {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;

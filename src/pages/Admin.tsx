@@ -7,7 +7,7 @@ const LIB_CATS = ['Constitutional Law','Criminal Law','Civil Litigation','Tax La
 const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:'', author:'Rai Afraz (Advocate)', published:true, document_url:'' }
 const EMPTY_LIB = { title:'', category:'Constitutional Law', year:'', summary:'', content:'', document_url:'' }
 
-type Section = 'blog' | 'elibrary' | 'messages'
+type Section = 'blog' | 'elibrary' | 'messages' | 'google'
 
 export default function Admin() {
   const [user, setUser] = useState<any>(null)
@@ -17,6 +17,12 @@ export default function Admin() {
   const [authLoading, setAuthLoading] = useState(false)
   const [section, setSection] = useState<Section>('blog')
   const [posts, setPosts] = useState<any[]>([])
+  const [googleSyncMsg, setGoogleSyncMsg] = useState('')
+  const [syncing, setSyncing] = useState(false)
+  const [googleReviews, setGoogleReviews] = useState<any[]>([])
+  const [placeId, setPlaceId] = useState('ChIJ...')
+  const [apiKey, setApiKey] = useState('')
+  const [manualReview, setManualReview] = useState({ author_name: '', rating: 5, text: '', relative_time: 'Recently' })
   const [postsLoading, setPostsLoading] = useState(false)
   const [blogView, setBlogView] = useState<'list'|'new'|'edit'>('list')
   const [editPost, setEditPost] = useState<any>(EMPTY_POST)
@@ -43,7 +49,45 @@ export default function Admin() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => { if (!user) return; fetchPosts(); fetchBooks(); fetchMessages() }, [user])
+  useEffect(() => { if (!user) return; fetchPosts(); fetchBooks(); fetchMessages(); fetchGoogleReviews() }, [user])
+
+  const fetchGoogleReviews = async () => {
+    const res = await fetch('/api/google-reviews')
+    const d = await res.json()
+    setGoogleReviews(Array.isArray(d.reviews) ? d.reviews : [])
+  }
+
+  const handleSync = async () => {
+    setSyncing(true); setGoogleSyncMsg('')
+    try {
+      const token = await getToken()
+      const res = await fetch('/api/google-reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ action: 'sync' })
+      })
+      const d = await res.json()
+      if (d.error) setGoogleSyncMsg(`❌ ${d.error} ${d.setup_required ? '— Please add API key in Vercel env vars' : ''}`)
+      else setGoogleSyncMsg(`✅ Synced! ${d.new_inserted} new reviews added. Total: ${d.total_from_google}`)
+      fetchGoogleReviews()
+    } catch(e: any) { setGoogleSyncMsg('❌ ' + e.message) }
+    setSyncing(false)
+  }
+
+  const handleManualReview = async (e: React.FormEvent) => {
+    e.preventDefault(); setSyncing(true); setGoogleSyncMsg('')
+    try {
+      const token = await getToken()
+      const res = await fetch('/api/google-reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ action: 'manual_add', ...manualReview })
+      })
+      if (res.ok) { setGoogleSyncMsg('✅ Review added to website!'); setManualReview({ author_name: '', rating: 5, text: '', relative_time: 'Recently' }); fetchGoogleReviews() }
+      else setGoogleSyncMsg('❌ Error adding review')
+    } catch(e: any) { setGoogleSyncMsg('❌ ' + e.message) }
+    setSyncing(false)
+  }
 
   const getToken = async () => { const { data: { session } } = await supabase.auth.getSession(); return session?.access_token || '' }
 
@@ -106,6 +150,7 @@ export default function Admin() {
           <button className={`adm-sidebar__link ${section==='blog'?'active':''}`} onClick={() => { setSection('blog'); setBlogView('list') }}>📝 Blog Posts</button>
           <button className={`adm-sidebar__link ${section==='elibrary'?'active':''}`} onClick={() => { setSection('elibrary'); setLibView('list') }}>📚 E-Library</button>
           <button className={`adm-sidebar__link ${section==='messages'?'active':''}`} onClick={() => { setSection('messages'); setOpenMsg(null) }}>💬 Messages {unread > 0 && <span className="adm-badge">{unread}</span>}</button>
+          <button className={`adm-sidebar__link ${section==='google'?'active':''}`} onClick={() => setSection('google')}>⭐ Google Reviews</button>
           <div className="adm-sidebar__divider" />
           <a href="/" className="adm-sidebar__link">🌐 View Website</a>
         </nav>
@@ -165,6 +210,71 @@ export default function Admin() {
               <div className="adm-msgs-layout">
                 <div className="adm-msgs-list">{messages.length === 0 && <div className="adm-msgs-empty">📭 No messages yet</div>}{messages.map(m => (<div key={m.id} className={`adm-msg-item ${!m.read?'unread':''} ${openMsg?.id===m.id?'active':''}`} onClick={() => { setOpenMsg(m); if (!m.read) markRead(m) }}><div className="adm-msg-item__top"><span className="adm-msg-item__name">{m.name}</span>{!m.read && <span className="adm-msg-item__dot" />}</div><div className="adm-msg-item__sub">{m.subject || 'General Inquiry'}</div><div className="adm-msg-item__preview">{m.message?.substring(0,60)}...</div><div className="adm-msg-item__date">{new Date(m.created_at).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'})}</div></div>))}</div>
                 <div className="adm-msg-detail">{!openMsg ? <div className="adm-msg-detail__empty"><div className="adm-msg-detail__empty-icon">💬</div><p>Select a message to read</p></div> : (<><div className="adm-msg-detail__header"><div><h2 className="adm-msg-detail__subject">{openMsg.subject || 'General Inquiry'}</h2><div className="adm-msg-detail__from">From: <strong>{openMsg.name}</strong></div></div><button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => setDeleteMsgId(openMsg.id)}>🗑️ Delete</button></div><div className="adm-msg-detail__meta">{openMsg.phone && <span>📞 {openMsg.phone}</span>}{openMsg.email && <span>✉️ {openMsg.email}</span>}<span>🕐 {new Date(openMsg.created_at).toLocaleString('en-PK')}</span></div><div className="adm-msg-detail__body">{openMsg.message}</div><div className="adm-msg-detail__actions">{openMsg.phone && <a href={`tel:${openMsg.phone}`} className="adm-btn adm-btn--gold">📞 Call Back</a>}{openMsg.phone && <a href={`https://wa.me/92${openMsg.phone.replace(/^0/,'')}`} target="_blank" rel="noopener noreferrer" className="adm-btn adm-btn--outline">💬 WhatsApp</a>}{openMsg.email && <a href={`mailto:${openMsg.email}`} className="adm-btn adm-btn--outline">✉️ Email</a>}</div></>)}</div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* GOOGLE REVIEWS SECTION */}
+        {section === 'google' && (
+          <div>
+            <div className="adm-header">
+              <div><h1 className="adm-header__title">⭐ Google Reviews</h1><p className="adm-header__sub">Sync & manage your Google Business Profile reviews</p></div>
+            </div>
+
+            {/* Sync Panel */}
+            <div className="adm-google-panel">
+              <div className="adm-google-panel__header">
+                <svg viewBox="0 0 24 24" width="32" height="32"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                <div>
+                  <h3>Auto-Sync Google Reviews</h3>
+                  <p>Fetch reviews directly from your Google Business Profile</p>
+                </div>
+              </div>
+              <div className="adm-google-steps">
+                <div className="adm-google-step"><span>1</span><div><strong>Get Google Places API Key</strong><p>Go to <a href="https://console.cloud.google.com" target="_blank" rel="noopener noreferrer">console.cloud.google.com</a> → Enable "Places API" → Create API Key</p></div></div>
+                <div className="adm-google-step"><span>2</span><div><strong>Add to Vercel Environment Variables</strong><p>Vercel Dashboard → Your Project → Settings → Environment Variables → Add:<br/><code>GOOGLE_PLACES_API_KEY</code> = your key<br/><code>GOOGLE_PLACE_ID</code> = <code>ChIJN1t_tDeuEmsRUsoyG83frY4</code> (find yours below)</p></div></div>
+                <div className="adm-google-step"><span>3</span><div><strong>Find Your Place ID</strong><p><a href="https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder" target="_blank" rel="noopener noreferrer">Click here to find Place ID</a> → Search "Rai & Associates Law Firm Lahore"</p></div></div>
+                <div className="adm-google-step"><span>4</span><div><strong>Click Sync</strong><p>After adding env vars and redeploying, click Sync to import all Google reviews automatically</p></div></div>
+              </div>
+              {googleSyncMsg && <div className="adm-save-msg" style={{marginBottom:'12px'}}>{googleSyncMsg}</div>}
+              <button className="adm-btn adm-btn--gold" onClick={handleSync} disabled={syncing}>
+                {syncing ? '🔄 Syncing...' : '🔄 Sync Google Reviews Now'}
+              </button>
+              <span style={{marginLeft:'12px', fontSize:'0.8rem', color:'#888'}}>{googleReviews.length} reviews currently on website</span>
+            </div>
+
+            {/* Manual Add */}
+            <div className="adm-google-panel" style={{marginTop:'24px'}}>
+              <h3 style={{marginBottom:'16px', fontFamily:'var(--font-serif)', color:'var(--green-dark)'}}>➕ Manually Add a Google Review</h3>
+              <p style={{fontSize:'0.85rem', color:'#666', marginBottom:'16px'}}>If a client left a review on Google, you can manually add it here to display on website.</p>
+              <form onSubmit={handleManualReview}>
+                <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px'}}>
+                  <div className="adm-form__group"><label>Reviewer Name *</label><input required placeholder="e.g. Muhammad Ali" value={manualReview.author_name} onChange={e => setManualReview({...manualReview, author_name: e.target.value})} /></div>
+                  <div className="adm-form__group"><label>Rating *</label><select value={manualReview.rating} onChange={e => setManualReview({...manualReview, rating: +e.target.value})}><option value={5}>★★★★★ (5)</option><option value={4}>★★★★☆ (4)</option><option value={3}>★★★☆☆ (3)</option><option value={2}>★★☆☆☆ (2)</option><option value={1}>★☆☆☆☆ (1)</option></select></div>
+                </div>
+                <div className="adm-form__group"><label>Review Text</label><textarea rows={3} placeholder="What the client wrote on Google..." value={manualReview.text} onChange={e => setManualReview({...manualReview, text: e.target.value})} /></div>
+                <div className="adm-form__group"><label>Time (e.g. "2 weeks ago")</label><input placeholder="e.g. 3 days ago" value={manualReview.relative_time} onChange={e => setManualReview({...manualReview, relative_time: e.target.value})} /></div>
+                <button type="submit" className="adm-btn adm-btn--gold" disabled={syncing}>Add Review to Website</button>
+              </form>
+            </div>
+
+            {/* Current Google Reviews */}
+            {googleReviews.length > 0 && (
+              <div style={{marginTop:'24px'}}>
+                <h3 style={{fontFamily:'var(--font-serif)', color:'var(--green-dark)', marginBottom:'16px'}}>Reviews on Website ({googleReviews.length})</h3>
+                <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
+                  {googleReviews.map((r: any) => (
+                    <div key={r.id} className="adm-post-card">
+                      <div className="adm-post-card__left">
+                        <div style={{color:'#f59e0b', marginBottom:'4px'}}>{'★'.repeat(r.rating)}</div>
+                        <div className="adm-post-card__title">{r.author_name}</div>
+                        <div className="adm-post-card__meta"><span>{r.relative_time}</span></div>
+                        <p className="adm-post-card__excerpt">{r.text?.substring(0,120)}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
