@@ -398,7 +398,7 @@ export default function App() {
           {[...Array(10)].map((_, i) => <div key={i} className={`ra-3d-hero-card__particle ra-3d-hero-card__p${i+1}`} />)}
         </div>
         <div className="ra-3d-hero-card__text">
-          <h2 className="ra-3d-hero-card__title">Pakistan's Trusted Legal Experts</h2>
+          <h2 className="ra-3d-hero-card__title">Pakistan's Trusted Legal Experts — Since 1993</h2>
           <p className="ra-3d-hero-card__desc">Three decades of legal excellence — Tax Law, FIA Cases, Corporate Law, Trademark & Cybercrime Defense. Serving clients across Pakistan from Lahore.</p>
           <div className="ra-3d-hero-card__chips">
             <span>Tax Lawyer Lahore</span><span>FBR Disputes</span><span>FIA Cybercrime</span>
@@ -434,40 +434,7 @@ export default function App() {
         ))}
       </section>
 
-      {/* 3D SHOWCASE */}
-      <section className="ra-3d-section" aria-label="RAI & Associates Law Firm Lahore">
-        {/* 3D LOGO — LEFT */}
-        <div className="ra-3d-logo-wrap">
-          <div className="ra-3d-logo-scene">
-            <div className="ra-3d-logo-card">
-              <div className="ra-3d-logo-card__shine" />
-              <div className="ra-3d-logo-card__glow" />
-              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-logo-card__img" />
-              <div className="ra-3d-logo-card__name">RAI & Associates</div>
-              <div className="ra-3d-logo-card__bar" />
-              <div className="ra-3d-logo-card__sub">Law Firm · Est. 1993</div>
-            </div>
-            <div className="ra-3d-logo-ring ra-3d-logo-ring--1" />
-            <div className="ra-3d-logo-ring ra-3d-logo-ring--2" />
-            <div className="ra-3d-logo-orb ra-3d-logo-orb--1" />
-            <div className="ra-3d-logo-orb ra-3d-logo-orb--2" />
-            <div className="ra-3d-logo-orb ra-3d-logo-orb--3" />
-          </div>
-        </div>
-        {/* TEXT — RIGHT */}
-        <div className="ra-3d-text">
-          <h2 className="ra-3d-text__title">Your Legal Partner Since 1993</h2>
-          <p className="ra-3d-text__desc">Best tax lawyer in Lahore — RAI & Associates has delivered justice with integrity, expertise, and dedication since 1993. Serving clients across Pakistan.</p>
-          <div className="ra-3d-text__keywords">
-            <span>Tax Lawyer Lahore</span>
-            <span>FBR Disputes</span>
-            <span>FIA Cybercrime</span>
-            <span>Corporate Law</span>
-            <span>Trademark Pakistan</span>
-          </div>
-          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
-        </div>
-      </section>
+
 
       {/* ABOUT */}
       <section id="about" className="ra-section ra-about">
@@ -637,8 +604,7 @@ export default function App() {
               <div className="ra-expert-solo__photo-wrap">
                 <div className="ra-expert-solo__photo-bg">
                   <img src="/images/expert-bg.png" alt="Legal Background" className="ra-expert-solo__bg-img" />
-                  <img src="/uploads/rai-afraz.jpg" alt="Rai Afraz" className="ra-expert-solo__photo"
-                    onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} />
+                  <img src="/uploads/rai-afraz.jpg" alt="Rai Afraz" className="ra-expert-solo__photo" />
                   <div className="ra-expert-solo__name-overlay">Rai Afraz ⚖️</div>
                 </div>
               </div>
