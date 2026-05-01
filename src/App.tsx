@@ -4,6 +4,7 @@ import Admin from './pages/Admin'
 import BlogPost from './pages/BlogPost'
 import ELibrary from './pages/ELibrary'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
+import { Analytics } from '@vercel/analytics/react'
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'E-Library', 'Contact']
 
@@ -1268,6 +1269,7 @@ export default function App() {
 
 
 
+      <Analytics />
     </div>
   )
 }
