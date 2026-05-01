@@ -105,14 +105,18 @@ const GALLERY_IMAGES = [
 ]
 
 const SERVICES = [
-  { icon: '⚖️', title: 'Tax Law', desc: 'Comprehensive tax advisory, planning, and litigation services for individuals and corporations. We navigate complex tax codes to protect your financial interests.' },
-  { icon: '🏛️', title: 'Civil Litigation', desc: 'Skilled representation in civil disputes, contract matters, property conflicts, and commercial litigation before all courts of Pakistan.' },
-  { icon: '📋', title: 'Corporate Law', desc: 'Company formation, mergers & acquisitions, corporate governance, and regulatory compliance for businesses of all sizes.' },
-  { icon: '🏠', title: 'Property & Real Estate', desc: 'Property transactions, title disputes, lease agreements, land acquisition, and real estate litigation across Punjab and beyond.' },
-  { icon: '👨‍👩‍👧', title: 'Family Law', desc: 'Sensitive and professional handling of divorce, custody, inheritance, guardianship, and matrimonial property matters.' },
-  { icon: '🔏', title: 'Criminal Defense', desc: 'Vigorous criminal defense representation at trial and appellate levels, ensuring every client receives a fair and just process.' },
-  { icon: '📝', title: 'Contract Drafting', desc: 'Precise drafting, review, and negotiation of commercial contracts, MOUs, NDAs, and all forms of legal agreements.' },
-  { icon: '🌐', title: 'Constitutional Law', desc: 'High Court and Supreme Court petitions, constitutional challenges, fundamental rights enforcement, and writ jurisdiction matters.' }
+  { icon: '⚖️', title: 'Tax Law', summary: 'Expert tax advisory & FBR litigation for individuals and businesses.', desc: 'Comprehensive tax advisory, planning, and litigation services for individuals and corporations. We navigate complex tax codes, respond to FBR notices, represent clients before tax tribunals, and ensure full legal compliance while minimizing your tax liability.' },
+  { icon: '🏛️', title: 'Civil Litigation', summary: 'Professional representation in civil disputes before all courts.', desc: 'Skilled representation in civil disputes, contract matters, property conflicts, money recovery, and commercial litigation before all courts of Pakistan including District Courts, High Court, and Supreme Court.' },
+  { icon: '📋', title: 'Corporate Law', summary: 'Company formation, governance & regulatory compliance.', desc: 'Company formation, mergers & acquisitions, corporate governance, SECP compliance, shareholder agreements, joint ventures, and regulatory compliance for businesses of all sizes from startups to large corporations.' },
+  { icon: '🏠', title: 'Property & Real Estate', summary: 'Title verification, mutations & property dispute resolution.', desc: 'Property transactions, title verification, mutation assistance, lease agreements, land acquisition, housing society disputes, and real estate litigation across Punjab and all of Pakistan.' },
+  { icon: '👨‍👩‍👧', title: 'Family Law', summary: 'Divorce, custody, inheritance & matrimonial matters handled sensitively.', desc: 'Sensitive and professional handling of divorce (talaq & khula), child custody, maintenance, inheritance distribution, guardianship, and all matrimonial property matters before Family Courts.' },
+  { icon: '🔏', title: 'Criminal Defense', summary: 'Strong defense in criminal cases from FIR to acquittal.', desc: 'Vigorous criminal defense from FIR registration to acquittal — including pre-arrest bail, post-arrest bail, trial representation, and appeals before Sessions Court, High Court, and Supreme Court.' },
+  { icon: '📝', title: 'Contract Drafting', summary: 'Precise drafting & review of all commercial agreements.', desc: 'Precise drafting, review, and negotiation of commercial contracts, MOUs, NDAs, employment agreements, lease deeds, sale agreements, and all forms of legal documents.' },
+  { icon: '🌐', title: 'Constitutional Law', summary: 'Writ petitions & fundamental rights enforcement in High Court.', desc: 'High Court and Supreme Court writ petitions, constitutional challenges, habeas corpus, fundamental rights enforcement, quo warranto, mandamus, and all constitutional law matters.' },
+  { icon: '™️', title: 'Intellectual Property', summary: 'Trademark, copyright & IPO registration services.', desc: 'Complete trademark registration through IPO Pakistan, copyright protection, patent advisory, trade secret protection, IP infringement litigation, and brand protection strategies.' },
+  { icon: '🧑‍💻', title: 'Cybercrime & FIA', summary: 'PECA defense & FIA cybercrime case representation.', desc: 'Specialized defense in FIA cybercrime cases under PECA 2016 — including online harassment, defamation, electronic fraud, unauthorized access, and social media related offenses.' },
+  { icon: '🌿', title: 'Environmental Law', summary: 'EPA complaints, EIA compliance & environmental rights.', desc: 'Environmental compliance advisory, EPA complaint filing, Environmental Impact Assessment (EIA) guidance, pollution disputes, and constitutional petitions for environmental rights enforcement.' },
+  { icon: '📜', title: 'Revenue Law', summary: 'Land records, mutations & property revenue disputes.', desc: 'Land record disputes, fraudulent mutation challenges, fard verification, pre-emption rights, revenue court representation, and complete Punjab Land Records Authority (PLRA) matters.' }
 ]
 
 const SOCIAL_LINKS = [
@@ -168,6 +172,7 @@ export default function App() {
   const [reviewsLoading, setReviewsLoading] = useState(true)
   const [activeReview, setActiveReview] = useState(0)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [openService, setOpenService] = useState<number | null>(null)
 
   useEffect(() => {
     fetch('/api/blog').then(r => r.json()).then(d => { setPosts(Array.isArray(d) ? d : []); setPostsLoading(false) }).catch(() => setPostsLoading(false))
@@ -554,11 +559,19 @@ export default function App() {
           </div>
           <div className="ra-services__grid">
             {SERVICES.map((s, i) => (
-              <div key={i} className="ra-service-card">
+              <div key={i} className="ra-service-card" onClick={() => setOpenService(openService === i ? null : i)}>
                 <div className="ra-service-card__icon">{s.icon}</div>
                 <h3 className="ra-service-card__title">{s.title}</h3>
-                <p className="ra-service-card__desc">{s.desc}</p>
-                <button className="ra-service-card__link" onClick={() => scrollTo('contact')}>Enquire →</button>
+                <p className="ra-service-card__summary">{s.summary}</p>
+                {openService === i && (
+                  <p className="ra-service-card__desc ra-service-card__desc--expanded">{s.desc}</p>
+                )}
+                <div className="ra-service-card__footer">
+                  <button className="ra-service-card__toggle">
+                    {openService === i ? 'Show Less ↑' : 'View Details ↓'}
+                  </button>
+                  <button className="ra-service-card__link" onClick={e => { e.stopPropagation(); scrollTo('contact') }}>Enquire →</button>
+                </div>
               </div>
             ))}
           </div>
