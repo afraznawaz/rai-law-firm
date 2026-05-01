@@ -4,6 +4,7 @@ import Admin from './pages/Admin'
 import BlogPost from './pages/BlogPost'
 import ELibrary from './pages/ELibrary'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'E-Library', 'Contact']
 
@@ -1267,6 +1268,7 @@ export default function App() {
       </a>
 
 
+      <SpeedInsights />
 
     </div>
   )
