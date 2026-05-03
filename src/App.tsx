@@ -8,7 +8,7 @@ import ELibrary from './pages/ELibrary'
 import SectionPreview from './components/SectionPreview'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
 
-const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Contact']
+const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'News & Events', 'Certificates', 'Contact']
 
 const CASE_LAWS = [
   {
@@ -219,7 +219,7 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
-    if (lower === 'news') {
+    if (lower === 'news' || lower === 'news & events') {
       setShowNews(true)
       setShowCerts(false)
       setShowELibrary(false)
@@ -227,7 +227,7 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
-    if (lower === 'certificates') {
+    if (lower === 'certificates' || lower === 'certificates & memberships') {
       setShowCerts(true)
       setShowNews(false)
       setShowELibrary(false)
