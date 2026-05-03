@@ -7,7 +7,10 @@ const LIB_CATS = ['Constitutional Law','Criminal Law','Civil Litigation','Tax La
 const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:'', author:'Rai Afraz (Advocate)', published:true, document_url:'' }
 const EMPTY_LIB = { title:'', category:'Constitutional Law', year:'', summary:'', content:'', document_url:'' }
 
-type Section = 'blog' | 'elibrary' | 'messages' | 'google'
+type Section = 'blog' | 'elibrary' | 'messages' | 'google' | 'news' | 'certificates'
+const CERT_CATS = ['Membership','Enrollment','Recognition','Specialization','Award']
+const EMPTY_NEWS = { title:'', description:'', image_url:'', file_url:'', file_type:'image', event_date:'2025', published:true }
+const EMPTY_CERT = { title:'', description:'', file_url:'', issued_by:'', issued_date:'', category:'Membership' }
 
 export default function Admin() {
   const [user, setUser] = useState<any>(null)
@@ -16,6 +19,18 @@ export default function Admin() {
   const [authError, setAuthError] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
   const [section, setSection] = useState<Section>('blog')
+  const [newsItems, setNewsItems] = useState<any[]>([])
+  const [newsLoading, setNewsLoading] = useState(false)
+  const [newsView, setNewsView] = useState<'list'|'new'|'edit'>('list')
+  const [editNews, setEditNews] = useState<any>(EMPTY_NEWS)
+  const [newsSaving, setNewsSaving] = useState(false)
+  const [newsMsg, setNewsMsg] = useState('')
+  const [certItems, setCertItems] = useState<any[]>([])
+  const [certLoading, setCertLoading] = useState(false)
+  const [certView, setCertView] = useState<'list'|'new'|'edit'>('list')
+  const [editCert, setEditCert] = useState<any>(EMPTY_CERT)
+  const [certSaving, setCertSaving] = useState(false)
+  const [certMsg, setCertMsg] = useState('')
   const [posts, setPosts] = useState<any[]>([])
   const [googleSyncMsg, setGoogleSyncMsg] = useState('')
   const [syncing, setSyncing] = useState(false)
@@ -49,7 +64,7 @@ export default function Admin() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => { if (!user) return; fetchPosts(); fetchBooks(); fetchMessages(); fetchGoogleReviews() }, [user])
+  useEffect(() => { if (!user) return; fetchPosts(); fetchBooks(); fetchMessages(); fetchGoogleReviews(); fetchNews(); fetchCerts() }, [user])
 
   const fetchGoogleReviews = async () => {
     const res = await fetch('/api/google-reviews')
@@ -92,6 +107,8 @@ export default function Admin() {
   const getToken = async () => { const { data: { session } } = await supabase.auth.getSession(); return session?.access_token || '' }
 
   const fetchPosts = async () => { setPostsLoading(true); const token = await getToken(); const res = await fetch('/api/blog?admin=1', { headers: { Authorization: `Bearer ${token}` } }); const d = await res.json(); setPosts(Array.isArray(d) ? d : []); setPostsLoading(false) }
+  const fetchNews = async () => { setNewsLoading(true); const res = await fetch('/api/news?admin=1'); const d = await res.json(); setNewsItems(Array.isArray(d) ? d : []); setNewsLoading(false) }
+  const fetchCerts = async () => { setCertLoading(true); const res = await fetch('/api/certificates'); const d = await res.json(); setCertItems(Array.isArray(d) ? d : []); setCertLoading(false) }
   const slugify = (t: string) => t.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').trim()
 
   const uploadDoc = async (file: File, type: 'blog' | 'lib') => {
@@ -149,6 +166,8 @@ export default function Admin() {
         <nav className="adm-sidebar__nav">
           <button className={`adm-sidebar__link ${section==='blog'?'active':''}`} onClick={() => { setSection('blog'); setBlogView('list') }}>📝 Blog Posts</button>
           <button className={`adm-sidebar__link ${section==='elibrary'?'active':''}`} onClick={() => { setSection('elibrary'); setLibView('list') }}>📚 E-Library</button>
+          <button className={`adm-sidebar__link ${section==='news'?'active':''}`} onClick={() => { setSection('news'); setNewsView('list') }}>📰 News & Events</button>
+          <button className={`adm-sidebar__link ${section==='certificates'?'active':''}`} onClick={() => { setSection('certificates'); setCertView('list') }}>🏅 Certificates</button>
           <button className={`adm-sidebar__link ${section==='messages'?'active':''}`} onClick={() => { setSection('messages'); setOpenMsg(null) }}>💬 Messages {unread > 0 && <span className="adm-badge">{unread}</span>}</button>
           <button className={`adm-sidebar__link ${section==='google'?'active':''}`} onClick={() => setSection('google')}>⭐ Google Reviews</button>
           <div className="adm-sidebar__divider" />
@@ -279,6 +298,146 @@ export default function Admin() {
             )}
           </div>
         )}
+
+        {/* NEWS & EVENTS */}
+        {section === 'news' && (
+          <div>
+            <div className="adm-header">
+              <div><h1 className="adm-header__title">📰 News & Events</h1><p className="adm-header__sub">{newsItems.length} items total</p></div>
+              <button className="adm-btn adm-btn--gold" onClick={() => { setEditNews({...EMPTY_NEWS}); setNewsView('new') }}>+ Add New</button>
+            </div>
+            {newsView === 'list' && (
+              newsLoading ? <div className="adm-loading">Loading...</div> : (
+                <div className="adm-posts">
+                  {newsItems.map(item => (
+                    <div key={item.id} className="adm-post-card">
+                      <div className="adm-post-card__left">
+                        <span className={`adm-post-card__status ${item.published ? 'published' : 'draft'}`}>{item.published ? '🟢 Published' : '🟡 Hidden'}</span>
+                        <h3 className="adm-post-card__title">{item.title}</h3>
+                        <div className="adm-post-card__meta"><span>📅 {item.event_date}</span></div>
+                        {item.image_url && <div style={{fontSize:'0.78rem',color:'#888',marginTop:'4px'}}>🖼️ {item.image_url}</div>}
+                        <p className="adm-post-card__excerpt">{item.description?.substring(0,100)}...</p>
+                      </div>
+                      <div className="adm-post-card__actions">
+                        <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setEditNews({...item}); setNewsView('edit') }}>✏️ Edit</button>
+                        <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={async () => { const token = await getToken(); await fetch('/api/news', { method:'DELETE', headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`}, body:JSON.stringify({id:item.id}) }); fetchNews() }}>🗑️ Delete</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            )}
+            {(newsView === 'new' || newsView === 'edit') && (
+              <div>
+                <div className="adm-header">
+                  <h1 className="adm-header__title">{newsView === 'new' ? 'Add News/Event' : 'Edit News/Event'}</h1>
+                  <button className="adm-btn adm-btn--outline" onClick={() => setNewsView('list')}>← Back</button>
+                </div>
+                <form onSubmit={async (e) => { e.preventDefault(); setNewsSaving(true); setNewsMsg(''); try { const token = await getToken(); const method = newsView === 'new' ? 'POST' : 'PUT'; const res = await fetch('/api/news', { method, headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`}, body:JSON.stringify(editNews) }); if (!res.ok) throw new Error('Save failed'); setNewsMsg('✅ Saved!'); await fetchNews(); setTimeout(() => { setNewsMsg(''); setNewsView('list') }, 1200) } catch(err:any) { setNewsMsg('❌ ' + err.message) } finally { setNewsSaving(false) }}} className="adm-editor">
+                  <div className="adm-editor__grid">
+                    <div className="adm-editor__main">
+                      <div className="adm-form__group"><label>Title *</label><input required value={editNews.title} onChange={e => setEditNews({...editNews, title: e.target.value})} placeholder="Event title..." /></div>
+                      <div className="adm-form__group"><label>Description</label><textarea rows={4} value={editNews.description} onChange={e => setEditNews({...editNews, description: e.target.value})} placeholder="Describe the event..." /></div>
+                      <div className="adm-form__group">
+                        <label>📸 Upload Image</label>
+                        <input type="file" accept="image/*,application/pdf" onChange={async (e) => {
+                          const file = e.target.files?.[0]; if (!file) return;
+                          const fname = `news-${Date.now()}-${file.name.replace(/\s+/g,'-')}`;
+                          const { data, error } = await supabase.storage.from('documents').upload(fname, file, { contentType: file.type, upsert: false });
+                          if (!error) { const { data: u } = supabase.storage.from('documents').getPublicUrl(fname); setEditNews((n:any) => ({...n, image_url: u.publicUrl, file_url: u.publicUrl, file_type: file.type.includes('pdf') ? 'pdf' : 'image'})) }
+                          else { const reader = new FileReader(); reader.onload = ev => { const url = ev.target?.result as string; setEditNews((n:any) => ({...n, image_url: url, file_url: url, file_type: file.type.includes('pdf') ? 'pdf' : 'image'})) }; reader.readAsDataURL(file) }
+                        }} />
+                        {editNews.image_url && <div style={{marginTop:'8px'}}><img src={editNews.image_url} alt="" style={{maxHeight:'120px',borderRadius:'6px',objectFit:'cover'}} /></div>}
+                        <div className="adm-form__hint">Or paste URL below</div>
+                      </div>
+                      <div className="adm-form__group"><label>Image URL</label><input value={editNews.image_url} onChange={e => setEditNews({...editNews, image_url: e.target.value})} placeholder="/uploads/news-1.jpg or https://..." /></div>
+                      <div className="adm-form__group"><label>File/Document URL (optional)</label><input value={editNews.file_url} onChange={e => setEditNews({...editNews, file_url: e.target.value})} placeholder="PDF or additional file URL..." /></div>
+                    </div>
+                    <div className="adm-editor__sidebar">
+                      <div className="adm-editor__panel">
+                        <h3>Settings</h3>
+                        <div className="adm-form__group"><label>Event Date</label><input value={editNews.event_date} onChange={e => setEditNews({...editNews, event_date: e.target.value})} placeholder="e.g. 2025 or Jan 2025" /></div>
+                        <div className="adm-form__group"><label>Status</label><select value={editNews.published ? 'published' : 'draft'} onChange={e => setEditNews({...editNews, published: e.target.value === 'published'})}><option value="published">🟢 Published</option><option value="draft">🟡 Hidden</option></select></div>
+                        {newsMsg && <div className="adm-save-msg">{newsMsg}</div>}
+                        <button type="submit" className="adm-btn adm-btn--gold adm-btn--full" disabled={newsSaving}>{newsSaving ? 'Saving...' : newsView === 'new' ? '🚀 Publish' : '💾 Save Changes'}</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* CERTIFICATES & MEMBERSHIPS */}
+        {section === 'certificates' && (
+          <div>
+            <div className="adm-header">
+              <div><h1 className="adm-header__title">🏅 Certificates & Memberships</h1><p className="adm-header__sub">{certItems.length} certificates total</p></div>
+              <button className="adm-btn adm-btn--gold" onClick={() => { setEditCert({...EMPTY_CERT}); setCertView('new') }}>+ Add New</button>
+            </div>
+            {certView === 'list' && (
+              certLoading ? <div className="adm-loading">Loading...</div> : (
+                <div className="adm-posts">
+                  {certItems.map(item => (
+                    <div key={item.id} className="adm-post-card">
+                      <div className="adm-post-card__left">
+                        {item.category && <span className="adm-post-card__status published">{item.category}</span>}
+                        <h3 className="adm-post-card__title">{item.title}</h3>
+                        <div className="adm-post-card__meta"><span>{item.issued_by}</span><span>📅 {item.issued_date}</span></div>
+                        {item.file_url && <div style={{fontSize:'0.78rem',color:'#888',marginTop:'4px'}}>{item.file_url.endsWith('.pdf') ? '📄' : '🖼️'} {item.file_url}</div>}
+                      </div>
+                      <div className="adm-post-card__actions">
+                        <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setEditCert({...item}); setCertView('edit') }}>✏️ Edit</button>
+                        <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={async () => { const token = await getToken(); await fetch('/api/certificates', { method:'DELETE', headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`}, body:JSON.stringify({id:item.id}) }); fetchCerts() }}>🗑️ Delete</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            )}
+            {(certView === 'new' || certView === 'edit') && (
+              <div>
+                <div className="adm-header">
+                  <h1 className="adm-header__title">{certView === 'new' ? 'Add Certificate' : 'Edit Certificate'}</h1>
+                  <button className="adm-btn adm-btn--outline" onClick={() => setCertView('list')}>← Back</button>
+                </div>
+                <form onSubmit={async (e) => { e.preventDefault(); setCertSaving(true); setCertMsg(''); try { const token = await getToken(); const method = certView === 'new' ? 'POST' : 'PUT'; const res = await fetch('/api/certificates', { method, headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`}, body:JSON.stringify(editCert) }); if (!res.ok) throw new Error('Save failed'); setCertMsg('✅ Saved!'); await fetchCerts(); setTimeout(() => { setCertMsg(''); setCertView('list') }, 1200) } catch(err:any) { setCertMsg('❌ ' + err.message) } finally { setCertSaving(false) }}} className="adm-editor">
+                  <div className="adm-editor__grid">
+                    <div className="adm-editor__main">
+                      <div className="adm-form__group"><label>Certificate Title *</label><input required value={editCert.title} onChange={e => setEditCert({...editCert, title: e.target.value})} placeholder="e.g. Life Membership — Lahore Tax Bar" /></div>
+                      <div className="adm-form__group"><label>Description</label><textarea rows={3} value={editCert.description} onChange={e => setEditCert({...editCert, description: e.target.value})} placeholder="Brief description..." /></div>
+                      <div className="adm-form__group">
+                        <label>📸 Upload Image or PDF</label>
+                        <input type="file" accept="image/*,application/pdf" onChange={async (e) => {
+                          const file = e.target.files?.[0]; if (!file) return;
+                          const fname = `cert-${Date.now()}-${file.name.replace(/\s+/g,'-')}`;
+                          const { data, error } = await supabase.storage.from('documents').upload(fname, file, { contentType: file.type, upsert: false });
+                          if (!error) { const { data: u } = supabase.storage.from('documents').getPublicUrl(fname); setEditCert((c:any) => ({...c, file_url: u.publicUrl})) }
+                          else { const reader = new FileReader(); reader.onload = ev => { const url = ev.target?.result as string; setEditCert((c:any) => ({...c, file_url: url})) }; reader.readAsDataURL(file) }
+                        }} />
+                        {editCert.file_url && (editCert.file_url.endsWith('.pdf') ? <div style={{marginTop:'8px',padding:'8px',background:'#f0f0f0',borderRadius:'6px',fontSize:'0.82rem'}}>📄 PDF uploaded: {editCert.file_url.split('/').pop()}</div> : <div style={{marginTop:'8px'}}><img src={editCert.file_url} alt="" style={{maxHeight:'120px',borderRadius:'6px',objectFit:'cover'}} /></div>)}
+                        <div className="adm-form__hint">Or paste URL below</div>
+                      </div>
+                      <div className="adm-form__group"><label>File URL (Image or PDF)</label><input value={editCert.file_url} onChange={e => setEditCert({...editCert, file_url: e.target.value})} placeholder="/uploads/cert-new-1.jpg or PDF URL..." /></div>
+                    </div>
+                    <div className="adm-editor__sidebar">
+                      <div className="adm-editor__panel">
+                        <h3>Details</h3>
+                        <div className="adm-form__group"><label>Issued By</label><input value={editCert.issued_by} onChange={e => setEditCert({...editCert, issued_by: e.target.value})} placeholder="e.g. Punjab Bar Council" /></div>
+                        <div className="adm-form__group"><label>Issue Date</label><input value={editCert.issued_date} onChange={e => setEditCert({...editCert, issued_date: e.target.value})} placeholder="e.g. 25-07-2025" /></div>
+                        <div className="adm-form__group"><label>Category</label><select value={editCert.category} onChange={e => setEditCert({...editCert, category: e.target.value})}>{CERT_CATS.map(c => <option key={c}>{c}</option>)}</select></div>
+                        {certMsg && <div className="adm-save-msg">{certMsg}</div>}
+                        <button type="submit" className="adm-btn adm-btn--gold adm-btn--full" disabled={certSaving}>{certSaving ? 'Saving...' : certView === 'new' ? '🚀 Add Certificate' : '💾 Save Changes'}</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
+        )}
+
       </main>
       {deleteBlogId && <div className="adm-modal-overlay" onClick={() => setDeleteBlogId(null)}><div className="adm-modal" onClick={e => e.stopPropagation()}><h3>Delete Post?</h3><p>Cannot be undone.</p><div className="adm-modal__actions"><button className="adm-btn adm-btn--outline" onClick={() => setDeleteBlogId(null)}>Cancel</button><button className="adm-btn adm-btn--danger" onClick={() => deletePost(deleteBlogId)}>Delete</button></div></div></div>}
       {deleteLibId && <div className="adm-modal-overlay" onClick={() => setDeleteLibId(null)}><div className="adm-modal" onClick={e => e.stopPropagation()}><h3>Delete Document?</h3><p>Cannot be undone.</p><div className="adm-modal__actions"><button className="adm-btn adm-btn--outline" onClick={() => setDeleteLibId(null)}>Cancel</button><button className="adm-btn adm-btn--danger" onClick={() => deleteBook(deleteLibId)}>Delete</button></div></div></div>}
