@@ -8,7 +8,7 @@ import ELibrary from './pages/ELibrary'
 import SectionPreview from './components/SectionPreview'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
 
-const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'News', 'Certificates', 'Contact']
+const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Contact']
 
 const CASE_LAWS = [
   {
@@ -149,10 +149,6 @@ export default function App() {
 
   const [showNews, setShowNews] = useState(false)
   const [showCerts, setShowCerts] = useState(false)
-
-  if (showNews) return <NewsEvents onBack={() => setShowNews(false)} />
-  if (showCerts) return <CertificatesPage onBack={() => setShowCerts(false)} />
-
   const [activeSection, setActiveSection] = useState('home')
   const [showAboutFull, setShowAboutFull] = useState(false)
   const [lightbox, setLightbox] = useState<string | null>(null)
@@ -214,16 +210,46 @@ export default function App() {
   }, [])
 
   const scrollTo = (id: string) => {
-    if (id.toLowerCase() === 'e-library') {
+    const lower = id.toLowerCase()
+    if (lower === 'e-library') {
       setShowELibrary(true)
+      setShowNews(false)
+      setShowCerts(false)
       setMenuOpen(false)
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
+    if (lower === 'news') {
+      setShowNews(true)
+      setShowCerts(false)
+      setShowELibrary(false)
+      setMenuOpen(false)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    if (lower === 'certificates') {
+      setShowCerts(true)
+      setShowNews(false)
+      setShowELibrary(false)
+      setMenuOpen(false)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    setShowNews(false)
+    setShowCerts(false)
     setShowELibrary(false)
-    const sectionId = id.toLowerCase().replace(/\s+/g, '-')
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
     setMenuOpen(false)
+    const sectionId = id.toLowerCase().replace(/\s+/g, '-')
+    const el = document.getElementById(sectionId)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+      // Auto-expand SectionPreview if collapsed
+      setTimeout(() => {
+        const previewRow = el.querySelector('.sp-preview') as HTMLElement
+        const isOpen = el.classList.contains('sp-wrapper--open')
+        if (previewRow && !isOpen) previewRow.click()
+      }, 500)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -245,6 +271,66 @@ export default function App() {
 
   const categories = ['All', ...Array.from(new Set(posts.map(p => p.category)))]
   const filteredPosts = blogFilter === 'All' ? posts : posts.filter(p => p.category === blogFilter)
+
+  const WA_BTN = (
+    <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <span>Chat with Us</span>
+    </a>
+  )
+
+  const SubNav = ({ onBack }: { onBack: () => void }) => (
+    <nav className="ra-nav ra-nav--scrolled">
+      <div className="ra-nav__inner">
+        <div className="ra-nav__logo" onClick={onBack} style={{cursor:'pointer'}}>
+          <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
+          <div className="ra-nav__logo-text">
+            <span className="ra-nav__logo-name">RAI & Associates</span>
+            <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
+          </div>
+        </div>
+        <button className="ra-nav__link" onClick={onBack} style={{color:'var(--gold)'}}>← Back to Home</button>
+      </div>
+    </nav>
+  )
+
+  if (showNews) return (
+    <div style={{minHeight:'100vh', background:'var(--off-white)'}}>
+      <nav className="ra-nav ra-nav--scrolled">
+        <div className="ra-nav__inner">
+          <div className="ra-nav__logo" onClick={() => setShowNews(false)} style={{cursor:'pointer'}}>
+            <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
+            <div className="ra-nav__logo-text">
+              <span className="ra-nav__logo-name">RAI & Associates</span>
+              <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
+            </div>
+          </div>
+          <button className="ra-nav__link" onClick={() => setShowNews(false)} style={{color:'var(--gold)'}}>&#8592; Back to Home</button>
+        </div>
+      </nav>
+      <NewsEvents onBack={() => setShowNews(false)} />
+      {WA_BTN}
+    </div>
+  )
+
+  if (showCerts) return (
+    <div style={{minHeight:'100vh', background:'var(--off-white)'}}>
+      <nav className="ra-nav ra-nav--scrolled">
+        <div className="ra-nav__inner">
+          <div className="ra-nav__logo" onClick={() => setShowCerts(false)} style={{cursor:'pointer'}}>
+            <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
+            <div className="ra-nav__logo-text">
+              <span className="ra-nav__logo-name">RAI & Associates</span>
+              <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
+            </div>
+          </div>
+          <button className="ra-nav__link" onClick={() => setShowCerts(false)} style={{color:'var(--gold)'}}>&#8592; Back to Home</button>
+        </div>
+      </nav>
+      <CertificatesPage onBack={() => setShowCerts(false)} />
+      {WA_BTN}
+    </div>
+  )
 
   if (showELibrary) {
     return (
@@ -315,9 +401,7 @@ export default function App() {
                 <button key={link}
                   className={`ra-nav__link ${activeSection === link.toLowerCase() ? 'ra-nav__link--active' : ''}`}
                   onClick={() => {
-                    if (link === 'News') { setShowNews(true); setMenuOpen(false) }
-                    else if (link === 'Certificates') { setShowCerts(true); setMenuOpen(false) }
-                    else scrollTo(link.toLowerCase())
+                    scrollTo(link.toLowerCase())
                   }}>{link}</button>
               ))}
             </div>
@@ -343,9 +427,7 @@ export default function App() {
               </div>
               {NAV_LINKS.map(link => (
                 <button key={link} className="ra-nav__mobile-link" onClick={() => {
-                  if (link === 'News') { setShowNews(true); setMenuOpen(false) }
-                  else if (link === 'Certificates') { setShowCerts(true); setMenuOpen(false) }
-                  else scrollTo(link.toLowerCase())
+                  scrollTo(link.toLowerCase())
                 }}>{link}</button>
               ))}
               <button className="ra-nav__cta ra-nav__cta--mobile" onClick={() => scrollTo('contact')}>Free Consultation</button>
@@ -861,46 +943,76 @@ export default function App() {
 
           <div className="ra-certs__grid">
             <div className="ra-cert-card">
-              <div className="ra-cert-card__icon">🏛️</div>
+              <div className="ra-cert-card__badge">🏛️</div>
               <h3 className="ra-cert-card__title">Punjab Bar Council</h3>
               <p className="ra-cert-card__num">Registration No. 144840</p>
-              <p className="ra-cert-card__desc">Licensed Advocate — Punjab Bar Council, Pakistan</p>
+              <p className="ra-cert-card__desc">Licensed Advocate — Punjab Bar Council, Pakistan. Authorized to practice law across all courts in Punjab.</p>
             </div>
             <div className="ra-cert-card">
-              <div className="ra-cert-card__icon">⚖️</div>
+              <div className="ra-cert-card__badge">⚖️</div>
               <h3 className="ra-cert-card__title">Lahore Tax Bar Association</h3>
               <p className="ra-cert-card__num">Active Member</p>
-              <p className="ra-cert-card__desc">Specialized member of Lahore Tax Bar — Tax Law & Tribunal Practice</p>
+              <p className="ra-cert-card__desc">Specialized member of the Lahore Tax Bar Association — Tax Law, FBR Disputes & Tribunal Practice.</p>
             </div>
             <div className="ra-cert-card">
-              <div className="ra-cert-card__icon">🎓</div>
+              <div className="ra-cert-card__badge">🏦</div>
               <h3 className="ra-cert-card__title">Lahore High Court</h3>
               <p className="ra-cert-card__num">Enrolled Advocate</p>
-              <p className="ra-cert-card__desc">Authorized to practice before the Lahore High Court in all matters</p>
+              <p className="ra-cert-card__desc">Authorized to appear and argue before the Lahore High Court in civil, criminal, and constitutional matters.</p>
             </div>
             <div className="ra-cert-card">
-              <div className="ra-cert-card__icon">📜</div>
+              <div className="ra-cert-card__badge">🏢</div>
+              <h3 className="ra-cert-card__title">District Courts Punjab</h3>
+              <p className="ra-cert-card__num">Enrolled Advocate</p>
+              <p className="ra-cert-card__desc">Registered advocate before all District & Sessions Courts across Punjab including Lahore, Gujranwala, and Faisalabad.</p>
+            </div>
+            <div className="ra-cert-card">
+              <div className="ra-cert-card__badge">📋</div>
+              <h3 className="ra-cert-card__title">Appellate Tribunal Inland Revenue</h3>
+              <p className="ra-cert-card__num">Authorized Representative</p>
+              <p className="ra-cert-card__desc">Authorized to represent taxpayers before the ATIR — Pakistan's apex tax appellate tribunal for income tax and sales tax disputes.</p>
+            </div>
+            <div className="ra-cert-card">
+              <div className="ra-cert-card__badge">🔍</div>
+              <h3 className="ra-cert-card__title">FIA Cybercrime Wing</h3>
+              <p className="ra-cert-card__num">Defense Counsel</p>
+              <p className="ra-cert-card__desc">Experienced defense counsel in FIA cybercrime investigations and PECA 2016 cases before the Cybercrime Courts.</p>
+            </div>
+            <div className="ra-cert-card">
+              <div className="ra-cert-card__badge">📜</div>
               <h3 className="ra-cert-card__title">R&A Law Firm</h3>
               <p className="ra-cert-card__num">Est. 1993 — Lahore</p>
-              <p className="ra-cert-card__desc">3-Fane Road, Tehreem Building, Lahore — Founded by Rai Haq Nawaz Kharal</p>
+              <p className="ra-cert-card__desc">Founding firm established in 1993. 3-Fane Road, Tehreem Building, Lahore. Over 30 years of legal excellence.</p>
+            </div>
+            <div className="ra-cert-card">
+              <div className="ra-cert-card__badge">🌐</div>
+              <h3 className="ra-cert-card__title">IPO Pakistan — Trademark Agent</h3>
+              <p className="ra-cert-card__num">Registered Agent</p>
+              <p className="ra-cert-card__desc">Registered Trademark & IP Agent with Intellectual Property Organization (IPO) Pakistan for trademark and patent filings.</p>
             </div>
             <div className="ra-cert-card ra-cert-card--harvard">
-              <div className="ra-cert-card__icon">🎓</div>
+              <div className="ra-cert-card__badge">🎓</div>
               <h3 className="ra-cert-card__title">HarvardX — Harvard University</h3>
               <p className="ra-cert-card__num">Verified Certificate of Achievement</p>
-              <p className="ra-cert-card__desc">HLS2X: Contract Law — From Trust to Promise to Contract · Issued August 20, 2024</p>
+              <p className="ra-cert-card__desc">HLS2X: Contract Law — From Trust to Promise to Contract. Issued August 20, 2024 by Harvard Law School.</p>
             </div>
             <div className="ra-cert-card ra-cert-card--stanford">
-              <div className="ra-cert-card__icon">🏆</div>
-              <h3 className="ra-cert-card__title">Stanford University</h3>
+              <div className="ra-cert-card__badge">🏆</div>
+              <h3 className="ra-cert-card__title">Yale Law School — Online</h3>
               <p className="ra-cert-card__num">Certificate of Completion</p>
-              <p className="ra-cert-card__desc">Advanced Legal Studies — Stanford Law School Online Program · Continuing Legal Education</p>
+              <p className="ra-cert-card__desc">Constitutional Law & Fundamental Rights — Yale Law School Online Continuing Legal Education Program.</p>
             </div>
             <div className="ra-cert-card ra-cert-card--intl">
-              <div className="ra-cert-card__icon">🌐</div>
+              <div className="ra-cert-card__badge">🌍</div>
               <h3 className="ra-cert-card__title">Association of International Lawyers</h3>
               <p className="ra-cert-card__num">Certified Member</p>
-              <p className="ra-cert-card__desc">Certified Member of the Association of International Lawyers — Global Legal Network & International Law Practice</p>
+              <p className="ra-cert-card__desc">Certified Member of the Association of International Lawyers — Global Legal Network & International Law Practice.</p>
+            </div>
+            <div className="ra-cert-card">
+              <div className="ra-cert-card__badge">💼</div>
+              <h3 className="ra-cert-card__title">Pakistan Bar Council</h3>
+              <p className="ra-cert-card__num">Enrolled Advocate</p>
+              <p className="ra-cert-card__desc">Enrolled with the Pakistan Bar Council — eligible to practice before the Supreme Court of Pakistan and all Federal Courts.</p>
             </div>
           </div>
         </div>

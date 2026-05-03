@@ -2645,7 +2645,9 @@ ul { list-style: none; }
 
 /* ===== NEWS & EVENTS PAGE ===== */
 .ne-page, .cert-page {
-  min-height: 100vh; background: var(--off-white);
+  min-height: calc(100vh - 72px);
+  background: var(--off-white);
+  padding-top: 0;
   padding-bottom: 60px;
 }
 .ne-header {
@@ -2702,6 +2704,22 @@ ul { list-style: none; }
   color: var(--green-dark); margin-bottom: 8px; line-height: 1.4;
 }
 .ne-card__desc { font-size: 0.83rem; color: var(--text-mid); line-height: 1.55; }
+.ne-card__img-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+}
+.ne-empty {
+  text-align: center; padding: 80px 24px;
+  color: var(--text-mid); font-size: 1rem;
+}
+.ne-empty p { margin-bottom: 16px; }
+.ne-retry {
+  padding: 10px 24px; background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: var(--green-dark); font-weight: 700; border-radius: 6px;
+  font-size: 0.88rem; cursor: pointer; border: none; transition: all 0.2s;
+}
+.ne-retry:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(201,168,76,0.3); }
+
 .ne-skeleton {
   height: 280px; border-radius: var(--radius-lg);
   background: linear-gradient(90deg, #e8e0d0 25%, #f0e8d8 50%, #e8e0d0 75%);
@@ -2710,7 +2728,7 @@ ul { list-style: none; }
 
 /* News Detail */
 .ne-detail {
-  min-height: 100vh; background: var(--off-white); padding: 32px;
+  min-height: 100vh; background: var(--off-white); padding: 104px 32px 60px;
   max-width: 1000px; margin: 0 auto;
 }
 .ne-detail__wrap {
@@ -2783,7 +2801,7 @@ ul { list-style: none; }
 
 /* Cert Detail */
 .cert-detail {
-  min-height: 100vh; background: var(--off-white); padding: 32px;
+  min-height: 100vh; background: var(--off-white); padding: 104px 32px 60px;
   max-width: 1000px; margin: 0 auto;
 }
 .cert-detail__wrap {
@@ -3276,7 +3294,7 @@ ul { list-style: none; }
 /* ===== CERTIFICATES ===== */
 .ra-certs { background: var(--off-white); }
 .ra-certs__grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px;
 }
 .ra-cert-card {
   background: var(--white); border-radius: var(--radius-lg);
@@ -3289,6 +3307,7 @@ ul { list-style: none; }
 }
 .ra-cert-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 .ra-cert-card__icon { font-size: 2.5rem; margin-bottom: 16px; }
+.ra-cert-card__badge { font-size: 2.5rem; margin-bottom: 16px; }
 .ra-cert-card__title {
   font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700;
   color: var(--green-dark); margin-bottom: 8px;
