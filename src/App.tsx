@@ -10,6 +10,8 @@ import CertificatesPage from './pages/CertificatesPage'
 import ELibrary from './pages/ELibrary'
 import SectionPreview from './components/SectionPreview'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
+import NoorChatbot from './components/NoorChatbot'
+import './components/NoorChatbot.css'
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'News & Events', 'Certificates', 'Contact']
 
@@ -1509,6 +1511,9 @@ export default function App() {
         </button>
         <button className="pwa-banner__close" onClick={() => { import('./pwa').then(m => m.hideInstallBanner()) }}>✕</button>
       </div>
+
+      {/* NOOR AI CHATBOT */}
+      <NoorChatbot enabled={true} />
 
     </div>
   )
