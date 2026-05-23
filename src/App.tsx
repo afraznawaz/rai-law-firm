@@ -190,7 +190,7 @@ export default function App() {
   const [reviewsLoading, setReviewsLoading] = useState(true)
   const [activeReview, setActiveReview] = useState(0)
   const [googleReviews, setGoogleReviews] = useState<any[]>([])
-  const [googleLoading, setGoogleLoading] = useState(true)
+  const [googleLoading, setGoogleLoading] = useState(false)
   const [reviewTab, setReviewTab] = useState<'google' | 'clients'>('google')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [openService, setOpenService] = useState<number | null>(null)
@@ -198,7 +198,7 @@ export default function App() {
   useEffect(() => {
     fetch('/api/blog').then(r => r.json()).then(d => { setPosts(Array.isArray(d) ? d : []); setPostsLoading(false) }).catch(() => setPostsLoading(false))
     fetch('/api/reviews').then(r => r.json()).then(d => { setReviews(Array.isArray(d) ? d : []); setReviewsLoading(false) }).catch(() => setReviewsLoading(false))
-    fetch('/api/google-reviews').then(r => r.json()).then(d => { setGoogleReviews(Array.isArray(d.reviews) ? d.reviews : []); setGoogleLoading(false) }).catch(() => setGoogleLoading(false))
+    // google-reviews not used
   }, [])
 
   useEffect(() => {
