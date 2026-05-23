@@ -90,7 +90,7 @@ export default function NoorChatbot({ enabled = true }: { enabled?: boolean }) {
     } catch {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'I apologize, I am temporarily unavailable. Please contact our legal team directly.',
+        content: 'Network issue detected. Please try again or contact us directly:\n\n💬 **WhatsApp:** 0316-4371096\n📞 **Call:** 0304-4840937',
         time: formatTime()
       }])
     } finally {

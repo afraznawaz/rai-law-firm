@@ -1,6 +1,5 @@
 import supabase from './_supabase.js';
 
-// Rate limiting store (in-memory, resets on cold start)
 const rateLimitStore = new Map();
 
 const FIRM_CONTEXT = `
@@ -54,6 +53,101 @@ IMPORTANT RULES:
 - If asked about fees, say fees vary by case complexity and recommend contacting the firm
 `;
 
+// Call OpenAI with retry logic
+async function callOpenAI(messages, retries = 3) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  
+  if (!apiKey) {
+    throw new Error('OPENAI_API_KEY not configured');
+  }
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages,
+          max_tokens: 500,
+          temperature: 0.7
+        })
+      });
+
+      if (res.status === 429) {
+        // Rate limited — wait and retry
+        const wait = attempt * 2000;
+        console.log(`OpenAI rate limited. Retrying in ${wait}ms (attempt ${attempt}/${retries})`);
+        await new Promise(r => setTimeout(r, wait));
+        continue;
+      }
+
+      if (res.status === 401) {
+        throw new Error('Invalid OpenAI API key');
+      }
+
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        console.error(`OpenAI error ${res.status}:`, errBody);
+        if (attempt < retries) {
+          await new Promise(r => setTimeout(r, 1500 * attempt));
+          continue;
+        }
+        throw new Error(`OpenAI API error: ${res.status}`);
+      }
+
+      const data = await res.json();
+      const reply = data.choices?.[0]?.message?.content;
+      if (!reply) throw new Error('Empty response from OpenAI');
+      return reply;
+
+    } catch (err) {
+      if (attempt === retries) throw err;
+      console.log(`Attempt ${attempt} failed: ${err.message}. Retrying...`);
+      await new Promise(r => setTimeout(r, 1500 * attempt));
+    }
+  }
+}
+
+// Smart fallback answers for common questions (when AI is truly unreachable)
+function getSmartFallback(message) {
+  const msg = message.toLowerCase();
+  
+  if (msg.includes('tax') || msg.includes('fbr') || msg.includes('ntn')) {
+    return `For tax and FBR matters, Rai Afraz (Advocate) is a specialist member of the Lahore Tax Bar Association. We handle FBR notices, tax tribunal cases, income tax, sales tax, and all FBR disputes.\n\n📞 Call: 0304-4840937\n💬 WhatsApp: 0316-4371096`;
+  }
+  if (msg.includes('fia') || msg.includes('cyber') || msg.includes('peca')) {
+    return `For FIA cybercrime cases and PECA 2016 matters, we provide specialized defense. Our team handles FIA investigations, cybercrime wing cases, and digital rights protection.\n\n📞 Call: 0304-4840937\n💬 WhatsApp: 0316-4371096`;
+  }
+  if (msg.includes('company') || msg.includes('secp') || msg.includes('smc') || msg.includes('business')) {
+    return `For company registration and corporate law, we handle SECP registration, SMC formation, partnerships, and corporate compliance.\n\n📞 Call: 0304-4840937\n💬 WhatsApp: 0316-4371096`;
+  }
+  if (msg.includes('divorce') || msg.includes('khula') || msg.includes('custody') || msg.includes('family')) {
+    return `For family law matters including divorce, khula, and child custody, our team handles all family court proceedings with sensitivity and professionalism.\n\n📞 Call: 0304-4840937\n💬 WhatsApp: 0316-4371096`;
+  }
+  if (msg.includes('property') || msg.includes('zameen') || msg.includes('plot') || msg.includes('mutation')) {
+    return `For property and land disputes, we handle mutations, fard verification, title disputes, and all revenue court matters across Punjab.\n\n📞 Call: 0304-4840937\n💬 WhatsApp: 0316-4371096`;
+  }
+  if (msg.includes('trademark') || msg.includes('ipo') || msg.includes('brand')) {
+    return `For trademark registration through IPO Pakistan and intellectual property protection, we handle the complete registration process.\n\n📞 Call: 0304-4840937\n💬 WhatsApp: 0316-4371096`;
+  }
+  if (msg.includes('fir') || msg.includes('bail') || msg.includes('arrest') || msg.includes('criminal')) {
+    return `For criminal matters including FIR defense and bail applications, contact us immediately. Time is critical in criminal cases.\n\n📞 Call: 0304-4840937\n💬 WhatsApp: 0316-4371096`;
+  }
+  if (msg.includes('fee') || msg.includes('cost') || msg.includes('charge') || msg.includes('price')) {
+    return `Our fees vary depending on the nature and complexity of your case. Please contact us for a free initial consultation to discuss your matter.\n\n📞 Call: 0304-4840937\n💬 WhatsApp: 0316-4371096`;
+  }
+  if (msg.includes('address') || msg.includes('office') || msg.includes('location') || msg.includes('where')) {
+    return `**Our Offices:**\n📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore\n📍 Tax Consultancy Office, Near Eiffel Tower, Bahria Town, Lahore\n\n📞 Call: 0304-4840937\n💬 WhatsApp: 0316-4371096`;
+  }
+  
+  // Default smart fallback
+  return `Thank you for reaching out to R&A Law Firm! For detailed guidance on your legal matter, please contact us directly:\n\n📞 **Call:** 0304-4840937\n💬 **WhatsApp:** 0316-4371096\n✉️ **Email:** afrazrai4457@gmail.com\n\nOur team is available Mon–Sat, 9AM–6PM.`;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -65,56 +159,41 @@ export default async function handler(req, res) {
     const { message, sessionId, history = [] } = req.body;
     if (!message || !sessionId) return res.status(400).json({ error: 'Missing message or sessionId' });
 
-    // Rate limiting: max 20 messages per session
+    // Rate limiting: max 20 messages per session per hour
     const now = Date.now();
     const sessionData = rateLimitStore.get(sessionId) || { count: 0, resetAt: now + 3600000 };
     if (now > sessionData.resetAt) { sessionData.count = 0; sessionData.resetAt = now + 3600000; }
     if (sessionData.count >= 20) {
-      return res.status(429).json({ reply: 'You have reached the message limit for this session. Please contact us directly for further assistance.', limitReached: true });
+      return res.status(200).json({
+        reply: `You've reached the session limit. For further assistance:\n\n📞 **Call:** 0304-4840937\n💬 **WhatsApp:** 0316-4371096`,
+        limitReached: true
+      });
     }
     sessionData.count++;
     rateLimitStore.set(sessionId, sessionData);
 
-    // Build messages array for OpenAI
-    const messages = [
+    // Build messages for OpenAI
+    const aiMessages = [
       { role: 'system', content: FIRM_CONTEXT },
       ...history.slice(-8).map(h => ({ role: h.role, content: h.content })),
       { role: 'user', content: message }
     ];
 
-    // Call OpenAI API
-    const openaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages,
-        max_tokens: 400,
-        temperature: 0.7
-      })
-    });
-
-    if (!openaiRes.ok) {
-      const err = await openaiRes.json();
-      console.error('OpenAI error:', err);
-      return res.status(200).json({
-        reply: 'I apologize, I am temporarily unavailable. Please contact our legal team directly for assistance.',
-        fallback: true
-      });
+    try {
+      // Try OpenAI with retry
+      const reply = await callOpenAI(aiMessages, 3);
+      return res.status(200).json({ reply, messagesLeft: 20 - sessionData.count });
+    } catch (aiError) {
+      console.error('AI failed after retries:', aiError.message);
+      // Use smart fallback based on message content
+      const fallbackReply = getSmartFallback(message);
+      return res.status(200).json({ reply: fallbackReply, fallback: true });
     }
-
-    const data = await openaiRes.json();
-    const reply = data.choices?.[0]?.message?.content || 'I apologize, I could not process your request. Please contact our team directly.';
-
-    return res.status(200).json({ reply, messagesLeft: 20 - sessionData.count });
 
   } catch (err) {
     console.error('Chat API error:', err);
     return res.status(200).json({
-      reply: 'I apologize, I am temporarily unavailable. Please contact our legal team directly for assistance.',
+      reply: `For immediate assistance, please contact us on WhatsApp:\n\n💬 **WhatsApp:** 0316-4371096\n📞 **Call:** 0304-4840937`,
       fallback: true
     });
   }
