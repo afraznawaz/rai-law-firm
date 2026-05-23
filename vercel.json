@@ -1,7 +1,1 @@
-{
-  "functions": {
-    "api/blog.js": { "maxDuration": 30 },
-    "api/reviews.js": { "maxDuration": 30 },
-    "api/upload.js": { "maxDuration": 30 }
-  }
-}
+{}
