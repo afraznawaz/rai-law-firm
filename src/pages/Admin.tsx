@@ -4,7 +4,7 @@ import supabase from '../lib/supabase'
 interface Post {
   id: number; title: string; slug: string; category: string
   excerpt: string; content: string; author: string; published: boolean; created_at: string
-  video_links?: string
+  video_links?: string; documents?: string
 }
 interface Booking {
   id: number; name: string; phone: string; email: string; case_type: string
@@ -14,8 +14,8 @@ interface TimeSlot {
   id: number; day: string; time_slot: string; is_available: boolean
 }
 
-const CATEGORIES = ['Tax Law','Cybercrime & FIA','Intellectual Property','Corporate Law','Civil Litigation','Criminal Law','Family Law','Environmental Law','Revenue Law','Constitutional Law','General Legal Advice']
-const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:'', author:'Rai Afraz (Advocate)', published:true, video_links: [] as string[] }
+const CATEGORIES = ['Tax Law','Cybercrime & FIA','Intellectual Property','Corporate Law','Civil Litigation','Criminal Law','Family Law','Environmental Law','Revenue Law','Constitutional Law','Case Law','General Legal Advice']
+const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:'', author:'Rai Afraz (Advocate)', published:true, video_links: [] as string[], documents: [] as {name:string,url:string,type:string,size:number}[] }
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 const TIME_OPTIONS = ['09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM']
 
@@ -44,6 +44,8 @@ export default function Admin() {
   const [newSlotDay, setNewSlotDay]       = useState('Monday')
   const [newSlotTime, setNewSlotTime]     = useState('09:00 AM')
   const [bookingMenuOpen, setBookingMenuOpen] = useState(false)
+  const [uploading, setUploading]         = useState(false)
+  const [uploadMsg, setUploadMsg]         = useState('')
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
@@ -104,12 +106,47 @@ export default function Admin() {
 
   const generateSlug = (t: string) => t.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim()
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+    setUploading(true)
+    setUploadMsg('')
+    try {
+      const token = await getToken()
+      for (const file of Array.from(files)) {
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData
+        })
+        if (!res.ok) {
+          const err = await res.json()
+          setUploadMsg('❌ ' + (err.error || 'Upload failed'))
+          continue
+        }
+        const doc = await res.json()
+        setEditPost((prev: any) => ({
+          ...prev,
+          documents: [...(prev.documents || []), doc]
+        }))
+        setUploadMsg('✅ ' + file.name + ' uploaded!')
+      }
+    } catch(err: any) {
+      setUploadMsg('❌ Error: ' + err.message)
+    }
+    setUploading(false)
+    e.target.value = ''
+  }
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault(); setSaving(true); setSaveMsg('')
     try {
       const token = await getToken()
       const method = view === 'new' ? 'POST' : 'PUT'
-      const res = await fetch('/api/blog', { method, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(editPost) })
+      const payload = { ...editPost, video_links: JSON.stringify(editPost.video_links || []), documents: JSON.stringify(editPost.documents || []) }
+      const res = await fetch('/api/blog', { method, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(payload) })
       if (!res.ok) throw new Error('Save failed')
       setSaveMsg('✅ Saved!')
       await fetchPosts()
@@ -303,7 +340,9 @@ export default function Admin() {
                       <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => {
                         let vl: string[] = []
                         try { vl = post.video_links ? JSON.parse(post.video_links) : [] } catch {}
-                        setEditPost({...post, video_links: vl})
+                          let docs: any[] = []
+                        try { docs = post.documents ? (typeof post.documents === 'string' ? JSON.parse(post.documents) : post.documents) : [] } catch {}
+                        setEditPost({...post, video_links: vl, documents: docs})
                         setView('edit')
                       }}>✏️ Edit</button>
                       <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => setDeleteId(post.id)}>🗑️ Delete</button>
@@ -331,6 +370,34 @@ export default function Admin() {
                     <label>Full Article Content *</label>
                     <div className="adm-form__hint">Use **bold** for important terms. Separate paragraphs with blank lines.</div>
                     <textarea rows={18} required placeholder="Write full article here..." value={editPost.content} onChange={e => setEditPost({...editPost, content: e.target.value})} />
+                  </div>
+
+                  {/* FILE UPLOADS */}
+                  <div className="adm-upload-section">
+                    <div className="adm-upload-section__header">
+                      <h3 className="adm-upload-section__title">📎 Attach Documents</h3>
+                      <span className="adm-upload-section__sub">PDF, Word (.doc/.docx), Images (JPG, PNG, GIF) — Max 10MB each</span>
+                    </div>
+                    <label className="adm-upload-btn">
+                      <input type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp" onChange={handleFileUpload} style={{display:'none'}} />
+                      {uploading ? '⏳ Uploading...' : '📁 Choose Files to Upload'}
+                    </label>
+                    {uploadMsg && <div className="adm-upload-msg">{uploadMsg}</div>}
+                    {(editPost.documents || []).length > 0 && (
+                      <div className="adm-docs-list">
+                        {(editPost.documents || []).map((doc: any, i: number) => (
+                          <div key={i} className="adm-doc-item">
+                            <span className="adm-doc-item__icon">
+                              {doc.type === 'pdf' ? '📄' : doc.type === 'doc' || doc.type === 'docx' ? '📝' : '🖼️'}
+                            </span>
+                            <a href={doc.url} target="_blank" rel="noopener noreferrer" className="adm-doc-item__name">{doc.name}</a>
+                            <span className="adm-doc-item__size">{doc.size ? (doc.size / 1024).toFixed(1) + ' KB' : ''}</span>
+                            <button type="button" className="adm-doc-item__remove"
+                              onClick={() => setEditPost((prev: any) => ({...prev, documents: (prev.documents||[]).filter((_: any, j: number) => j !== i)}))}>✕</button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   {/* VIDEO LINKS */}

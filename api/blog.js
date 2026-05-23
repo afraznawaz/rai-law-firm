@@ -31,10 +31,11 @@ export default async function handler(req, res) {
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { title, slug, category, excerpt, content, author, published, video_links } = req.body;
+      const { title, slug, category, excerpt, content, author, published, video_links, documents } = req.body;
       const { data, error } = await supabase.from('blog_posts')
         .insert({ title, slug, category, excerpt, content, author, published,
-          ...(video_links !== undefined ? { video_links: JSON.stringify(video_links) } : {}) })
+          ...(video_links !== undefined ? { video_links: typeof video_links === 'string' ? video_links : JSON.stringify(video_links) } : {}),
+          ...(documents !== undefined ? { documents: typeof documents === 'string' ? documents : JSON.stringify(documents) } : {}) })
         .select().single();
       if (error) throw error;
       return res.status(201).json(data);
@@ -45,11 +46,12 @@ export default async function handler(req, res) {
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { id, title, slug, category, excerpt, content, author, published, video_links } = req.body;
+      const { id, title, slug, category, excerpt, content, author, published, video_links, documents } = req.body;
       const { data, error } = await supabase.from('blog_posts')
         .update({ title, slug, category, excerpt, content, author, published,
           updated_at: new Date().toISOString(),
-          ...(video_links !== undefined ? { video_links: JSON.stringify(video_links) } : {}) })
+          ...(video_links !== undefined ? { video_links: typeof video_links === 'string' ? video_links : JSON.stringify(video_links) } : {}),
+          ...(documents !== undefined ? { documents: typeof documents === 'string' ? documents : JSON.stringify(documents) } : {}) })
         .eq('id', id).select().single();
       if (error) throw error;
       return res.status(200).json(data);
