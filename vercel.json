@@ -2,13 +2,6 @@
   "functions": {
     "api/blog.js": { "maxDuration": 30 },
     "api/reviews.js": { "maxDuration": 30 },
-    "api/upload.js": { "maxDuration": 30 },
-    "api/_wake.js": { "maxDuration": 30 }
-  },
-  "rewrites": [
-    { "source": "/api/blog", "destination": "/api/blog" },
-    { "source": "/api/reviews", "destination": "/api/reviews" },
-    { "source": "/api/upload", "destination": "/api/upload" },
-    { "source": "/api/_wake", "destination": "/api/_wake" }
-  ]
+    "api/upload.js": { "maxDuration": 30 }
+  }
 }
