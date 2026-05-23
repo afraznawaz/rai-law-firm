@@ -1496,7 +1496,20 @@ export default function App() {
         <span className="ra-wa-btn-fixed__text">WhatsApp</span>
       </a>
 
-
+      {/* PWA INSTALL BANNER */}
+      <div id="pwa-banner" className="pwa-banner" style={{ display: 'none' }}>
+        <div className="pwa-banner__icon">
+          <img src="/icons/icon-96x96.png" alt="RAI & Associates" />
+        </div>
+        <div className="pwa-banner__text">
+          <div className="pwa-banner__title">Install RAI & Associates</div>
+          <div className="pwa-banner__sub">Add to home screen for quick access</div>
+        </div>
+        <button className="pwa-banner__install" onClick={() => { import('./pwa').then(m => m.triggerInstall()) }}>
+          Install App
+        </button>
+        <button className="pwa-banner__close" onClick={() => { import('./pwa').then(m => m.hideInstallBanner()) }}>✕</button>
+      </div>
 
     </div>
   )

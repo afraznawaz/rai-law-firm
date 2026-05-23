@@ -1,6 +1,11 @@
 import { StrictMode, lazy, Suspense, Component, ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import { registerSW, initPWA } from './pwa'
+
+// Register service worker & init PWA install prompt
+registerSW()
+initPWA()
 
 // ── Global Error Boundary ─────────────────────────────────────────────────────
 class GlobalErrorBoundary extends Component<
