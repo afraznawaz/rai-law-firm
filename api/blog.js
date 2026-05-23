@@ -31,10 +31,10 @@ export default async function handler(req, res) {
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-
-      const { title, slug, category, excerpt, content, author, published } = req.body;
+      const { title, slug, category, excerpt, content, author, published, video_links } = req.body;
       const { data, error } = await supabase.from('blog_posts')
-        .insert({ title, slug, category, excerpt, content, author, published })
+        .insert({ title, slug, category, excerpt, content, author, published,
+          ...(video_links !== undefined ? { video_links: JSON.stringify(video_links) } : {}) })
         .select().single();
       if (error) throw error;
       return res.status(201).json(data);
@@ -45,10 +45,11 @@ export default async function handler(req, res) {
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-
-      const { id, title, slug, category, excerpt, content, author, published } = req.body;
+      const { id, title, slug, category, excerpt, content, author, published, video_links } = req.body;
       const { data, error } = await supabase.from('blog_posts')
-        .update({ title, slug, category, excerpt, content, author, published, updated_at: new Date().toISOString() })
+        .update({ title, slug, category, excerpt, content, author, published,
+          updated_at: new Date().toISOString(),
+          ...(video_links !== undefined ? { video_links: JSON.stringify(video_links) } : {}) })
         .eq('id', id).select().single();
       if (error) throw error;
       return res.status(200).json(data);
@@ -59,7 +60,6 @@ export default async function handler(req, res) {
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-
       const { id } = req.body;
       const { error } = await supabase.from('blog_posts').delete().eq('id', id);
       if (error) throw error;

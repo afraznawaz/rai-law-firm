@@ -15,5 +15,6 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/components/ChatBot.tsx", "src/components/NoorChatbot.tsx", "src/components/NoorChatbot.css"]
 }

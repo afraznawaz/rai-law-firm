@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import VideoEmbed from '../components/VideoEmbed'
 
 interface Post {
   id: number
@@ -10,6 +11,7 @@ interface Post {
   author: string
   published: boolean
   created_at: string
+  video_links?: string
 }
 
 const SOCIAL_LINKS = [
@@ -34,6 +36,16 @@ function renderContent(text: string) {
     .join('')
 }
 
+function parseVideoLinks(raw: string | undefined): string[] {
+  if (!raw) return []
+  try {
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? parsed.filter(Boolean) : []
+  } catch {
+    return []
+  }
+}
+
 export default function BlogPost({ slug, onBack }: { slug: string; onBack: () => void }) {
   const [post, setPost] = useState<Post | null>(null)
   const [loading, setLoading] = useState(true)
@@ -48,6 +60,8 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
   if (loading) return <div className="blog-post-loading">Loading...</div>
   if (!post) return <div className="blog-post-loading">Post not found.</div>
 
+  const videoLinks = parseVideoLinks(post.video_links)
+
   return (
     <div className="blog-post-page">
       <button className="blog-post-back" onClick={onBack}>← Back to Legal Insights</button>
@@ -58,7 +72,23 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
           <span>✍️ {post.author}</span>
           <span>📅 {new Date(post.created_at).toLocaleDateString('en-PK', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
         </div>
+
+        {/* Article Content */}
         <div className="blog-post-body" dangerouslySetInnerHTML={{ __html: renderContent(post.content) }} />
+
+        {/* Video Section */}
+        {videoLinks.length > 0 && (
+          <div className="blog-post-videos">
+            <h3 className="blog-post-videos__title">🎥 Related Videos</h3>
+            <div className="blog-post-videos__grid">
+              {videoLinks.map((url, i) => (
+                <VideoEmbed key={i} url={url} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Follow Us */}
         <div className="blog-post-follow">
           <div className="blog-post-follow__header">
             <span className="blog-post-follow__icon">📲</span>
@@ -75,6 +105,8 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
             ))}
           </div>
         </div>
+
+        {/* CTA */}
         <div className="blog-post-cta">
           <h3>Need Legal Advice?</h3>
           <p>Contact Rai & Associates for a free consultation.</p>
