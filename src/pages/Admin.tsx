@@ -19,7 +19,7 @@ const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 const TIME_OPTIONS = ['09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM']
 
-type View = 'list'|'edit'|'new'|'bookings'|'slots'|'notifications'|'leads'|'chatbot'|'export'
+type View = 'list'|'edit'|'new'|'bookings'|'slots'|'notifications'|'leads'|'chatbot'|'export'|'certificates'|'news-events'
 
 export default function Admin() {
   const [user, setUser]             = useState<any>(null)
@@ -47,13 +47,62 @@ export default function Admin() {
   const [uploading, setUploading]         = useState(false)
   const [uploadMsg, setUploadMsg]         = useState('')
 
+  // Certificates
+  const [certs, setCerts]                 = useState<any[]>([])
+  const [certForm, setCertForm]           = useState<any>({ id:0, title:'', description:'', file_url:'', file_name:'', file_type:'', issued_by:'', issued_date:'', published:true })
+  const [certView, setCertView]           = useState<'list'|'new'|'edit'>('list')
+  const [certSaving, setCertSaving]       = useState(false)
+  const [certMsg, setCertMsg]             = useState('')
+  const [certUploading, setCertUploading] = useState(false)
+
+  // News & Events
+  const [news, setNews]                   = useState<any[]>([])
+  const [newsForm, setNewsForm]           = useState<any>({ id:0, title:'', type:'news', description:'', content:'', event_date:'', location:'', file_url:'', file_name:'', file_type:'', published:true })
+  const [newsView, setNewsView]           = useState<'list'|'new'|'edit'>('list')
+  const [newsSaving, setNewsSaving]       = useState(false)
+  const [newsMsg, setNewsMsg]             = useState('')
+  const [newsUploading, setNewsUploading] = useState(false)
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => setUser(session?.user ?? null))
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => { if (user) { fetchPosts(); fetchBookings(); fetchSettings(); fetchSlots() } }, [user])
+  useEffect(() => { if (user) { fetchPosts(); fetchBookings(); fetchSettings(); fetchSlots(); fetchCerts(); fetchNews() } }, [user])
+
+  const fetchCerts = async () => {
+    try { const res = await fetch('/api/certificates'); const d = await res.json(); setCerts(Array.isArray(d)?d:[]) } catch(e) {}
+  }
+  const fetchNews = async () => {
+    try { const token = await getToken(); const res = await fetch('/api/news-events',{headers:{Authorization:`Bearer ${token}`}}); const d = await res.json(); setNews(Array.isArray(d)?d:[]) } catch(e) {}
+  }
+  const handleCertFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; if (!file) return; setCertUploading(true)
+    try { const token = await getToken(); const fd = new FormData(); fd.append('file', file); const res = await fetch('/api/upload',{method:'POST',headers:{Authorization:`Bearer ${token}`},body:fd}); if (!res.ok) throw new Error('Upload failed'); const doc = await res.json(); setCertForm((p:any)=>({...p,file_url:doc.url,file_name:doc.name,file_type:doc.type})); setCertMsg('✅ '+file.name+' uploaded!') } catch(err:any){setCertMsg('❌ '+err.message)}
+    setCertUploading(false); e.target.value=''
+  }
+  const handleNewsFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; if (!file) return; setNewsUploading(true)
+    try { const token = await getToken(); const fd = new FormData(); fd.append('file', file); const res = await fetch('/api/upload',{method:'POST',headers:{Authorization:`Bearer ${token}`},body:fd}); if (!res.ok) throw new Error('Upload failed'); const doc = await res.json(); setNewsForm((p:any)=>({...p,file_url:doc.url,file_name:doc.name,file_type:doc.type})); setNewsMsg('✅ '+file.name+' uploaded!') } catch(err:any){setNewsMsg('❌ '+err.message)}
+    setNewsUploading(false); e.target.value=''
+  }
+  const handleCertSave = async (e: React.FormEvent) => {
+    e.preventDefault(); setCertSaving(true); setCertMsg('')
+    try { const token = await getToken(); const method = certView==='new'?'POST':'PUT'; const res = await fetch('/api/certificates',{method,headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify(certForm)}); if (!res.ok) throw new Error('Save failed'); setCertMsg('✅ Saved!'); await fetchCerts(); setTimeout(()=>{setCertMsg('');setCertView('list')},1500) } catch(err:any){setCertMsg('❌ '+err.message)}
+    setCertSaving(false)
+  }
+  const handleCertDelete = async (id: number) => {
+    try { const token = await getToken(); await fetch('/api/certificates',{method:'DELETE',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id})}); await fetchCerts() } catch(e) {}
+  }
+  const handleNewsSave = async (e: React.FormEvent) => {
+    e.preventDefault(); setNewsSaving(true); setNewsMsg('')
+    try { const token = await getToken(); const method = newsView==='new'?'POST':'PUT'; const res = await fetch('/api/news-events',{method,headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify(newsForm)}); if (!res.ok) throw new Error('Save failed'); setNewsMsg('✅ Saved!'); await fetchNews(); setTimeout(()=>{setNewsMsg('');setNewsView('list')},1500) } catch(err:any){setNewsMsg('❌ '+err.message)}
+    setNewsSaving(false)
+  }
+  const handleNewsDelete = async (id: number) => {
+    try { const token = await getToken(); await fetch('/api/news-events',{method:'DELETE',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id})}); await fetchNews() } catch(e) {}
+  }
 
   const getToken = async () => {
     const { data: { session } } = await supabase.auth.getSession()
@@ -302,6 +351,10 @@ export default function Admin() {
               </button>
             </div>
           )}
+
+          <div className="adm-sidebar__section-label" style={{marginTop:'12px'}}>DOCUMENTS</div>
+          <button className={`adm-sidebar__link ${view==='certificates'?'active':''}`} onClick={() => { navTo('certificates'); setCertView('list') }}>🏆 Certificates</button>
+          <button className={`adm-sidebar__link ${view==='news-events'?'active':''}`} onClick={() => { navTo('news-events'); setNewsView('list') }}>📰 News & Events</button>
 
           <div className="adm-sidebar__section-label" style={{marginTop:'12px'}}>SITE</div>
           <a href="/" className="adm-sidebar__link">🌐 View Website</a>
@@ -688,6 +741,165 @@ export default function Admin() {
                 }}>⬇️ Download Posts CSV</button>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ── CERTIFICATES ── */}
+        {view === 'certificates' && (
+          <div>
+            <div className="adm-header">
+              <div><h1 className="adm-header__title">🏆 Certificates</h1><p className="adm-header__sub">{certs.length} certificates total</p></div>
+              {certView === 'list' && <button className="adm-btn adm-btn--gold" onClick={() => { setCertForm({ id:0, title:'', description:'', file_url:'', file_name:'', file_type:'', issued_by:'', issued_date:'', published:true }); setCertMsg(''); setCertView('new') }}>+ Add Certificate</button>}
+              {certView !== 'list' && <button className="adm-btn adm-btn--outline" onClick={() => setCertView('list')}>← Back</button>}
+            </div>
+            {certView === 'list' && (
+              <div className="adm-posts">
+                {certs.length === 0 && <div className="adm-loading">No certificates yet. Add your first one!</div>}
+                {certs.map(c => (
+                  <div key={c.id} className="adm-post-card">
+                    <div className="adm-post-card__left">
+                      <span className={`adm-post-card__status ${c.published?'published':'draft'}`}>{c.published?'🟢 Published':'🟡 Draft'}</span>
+                      <h3 className="adm-post-card__title">🏆 {c.title}</h3>
+                      <div className="adm-post-card__meta">
+                        {c.issued_by && <span>Issued by: {c.issued_by}</span>}
+                        {c.issued_date && <span>📅 {c.issued_date}</span>}
+                      </div>
+                      {c.description && <p className="adm-post-card__excerpt">{c.description?.substring(0,100)}...</p>}
+                      {c.file_url && (
+                        <a href={c.file_url} target="_blank" rel="noopener noreferrer" className="adm-doc-item__name" style={{marginTop:'6px',display:'inline-block'}}>
+                          {c.file_type==='pdf'?'📄':c.file_type==='docx'||c.file_type==='doc'?'📝':'🖼️'} {c.file_name}
+                        </a>
+                      )}
+                    </div>
+                    <div className="adm-post-card__actions">
+                      <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setCertForm({...c}); setCertMsg(''); setCertView('edit') }}>✏️ Edit</button>
+                      <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => handleCertDelete(c.id)}>🗑️ Delete</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {(certView === 'new' || certView === 'edit') && (
+              <form onSubmit={handleCertSave}>
+                <div className="adm-editor__grid">
+                  <div className="adm-editor__main">
+                    <div className="adm-form__group"><label>Certificate Title *</label><input required placeholder="e.g. Punjab Bar Council Membership" value={certForm.title} onChange={e => setCertForm({...certForm, title: e.target.value})} /></div>
+                    <div className="adm-form__group"><label>Description</label><textarea rows={3} placeholder="Brief description..." value={certForm.description} onChange={e => setCertForm({...certForm, description: e.target.value})} /></div>
+                    <div className="adm-form__group"><label>Issued By</label><input placeholder="e.g. Punjab Bar Council" value={certForm.issued_by} onChange={e => setCertForm({...certForm, issued_by: e.target.value})} /></div>
+                    <div className="adm-form__group"><label>Issue Date</label><input placeholder="e.g. January 2024" value={certForm.issued_date} onChange={e => setCertForm({...certForm, issued_date: e.target.value})} /></div>
+                    <div className="adm-upload-section">
+                      <div className="adm-upload-section__header">
+                        <h3 className="adm-upload-section__title">📎 Upload Certificate Document</h3>
+                        <span className="adm-upload-section__sub">PDF, Word (.doc/.docx), or Image (JPG, PNG) — Max 10MB</span>
+                      </div>
+                      <label className="adm-upload-btn">
+                        <input type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp" onChange={handleCertFileUpload} style={{display:'none'}} />
+                        {certUploading ? '⏳ Uploading...' : '📁 Choose File to Upload'}
+                      </label>
+                      {certMsg && <div className="adm-upload-msg">{certMsg}</div>}
+                      {certForm.file_url && (
+                        <div className="adm-docs-list">
+                          <div className="adm-doc-item">
+                            <span className="adm-doc-item__icon">{certForm.file_type==='pdf'?'📄':certForm.file_type==='docx'||certForm.file_type==='doc'?'📝':'🖼️'}</span>
+                            <a href={certForm.file_url} target="_blank" rel="noopener noreferrer" className="adm-doc-item__name">{certForm.file_name}</a>
+                            <button type="button" className="adm-doc-item__remove" onClick={() => setCertForm({...certForm, file_url:'', file_name:'', file_type:''})}>✕</button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="adm-editor__sidebar">
+                    <div className="adm-editor__panel">
+                      <h3>Settings</h3>
+                      <div className="adm-form__group"><label>Status</label><select value={certForm.published?'published':'draft'} onChange={e => setCertForm({...certForm, published: e.target.value==='published'})}><option value="published">🟢 Published</option><option value="draft">🟡 Draft</option></select></div>
+                      {certMsg && <div className="adm-save-msg">{certMsg}</div>}
+                      <button type="submit" className="adm-btn adm-btn--gold adm-btn--full" disabled={certSaving}>{certSaving ? 'Saving...' : certView==='new' ? '🚀 Add Certificate' : '💾 Save Changes'}</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
+
+        {/* ── NEWS & EVENTS ── */}
+        {view === 'news-events' && (
+          <div>
+            <div className="adm-header">
+              <div><h1 className="adm-header__title">📰 News & Events</h1><p className="adm-header__sub">{news.length} items total</p></div>
+              {newsView === 'list' && <button className="adm-btn adm-btn--gold" onClick={() => { setNewsForm({ id:0, title:'', type:'news', description:'', content:'', event_date:'', location:'', file_url:'', file_name:'', file_type:'', published:true }); setNewsMsg(''); setNewsView('new') }}>+ Add News / Event</button>}
+              {newsView !== 'list' && <button className="adm-btn adm-btn--outline" onClick={() => setNewsView('list')}>← Back</button>}
+            </div>
+            {newsView === 'list' && (
+              <div className="adm-posts">
+                {news.length === 0 && <div className="adm-loading">No news or events yet. Add your first one!</div>}
+                {news.map(n => (
+                  <div key={n.id} className="adm-post-card">
+                    <div className="adm-post-card__left">
+                      <span className={`adm-post-card__status ${n.published?'published':'draft'}`}>{n.published?'🟢 Published':'🟡 Draft'}</span>
+                      <h3 className="adm-post-card__title">{n.type==='event'?'📅':'📰'} {n.title}</h3>
+                      <div className="adm-post-card__meta">
+                        <span className="adm-post-card__cat">{n.type==='event'?'Event':'News'}</span>
+                        {n.event_date && <span>📅 {n.event_date}</span>}
+                        {n.location && <span>📍 {n.location}</span>}
+                      </div>
+                      {n.description && <p className="adm-post-card__excerpt">{n.description?.substring(0,100)}...</p>}
+                      {n.file_url && (
+                        <a href={n.file_url} target="_blank" rel="noopener noreferrer" className="adm-doc-item__name" style={{marginTop:'6px',display:'inline-block'}}>
+                          {n.file_type==='pdf'?'📄':n.file_type==='docx'||n.file_type==='doc'?'📝':'🖼️'} {n.file_name}
+                        </a>
+                      )}
+                    </div>
+                    <div className="adm-post-card__actions">
+                      <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setNewsForm({...n}); setNewsMsg(''); setNewsView('edit') }}>✏️ Edit</button>
+                      <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => handleNewsDelete(n.id)}>🗑️ Delete</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {(newsView === 'new' || newsView === 'edit') && (
+              <form onSubmit={handleNewsSave}>
+                <div className="adm-editor__grid">
+                  <div className="adm-editor__main">
+                    <div className="adm-form__group"><label>Title *</label><input required placeholder="e.g. Rai & Associates wins landmark tax case" value={newsForm.title} onChange={e => setNewsForm({...newsForm, title: e.target.value})} /></div>
+                    <div className="adm-form__group"><label>Type</label><select value={newsForm.type} onChange={e => setNewsForm({...newsForm, type: e.target.value})}><option value="news">📰 News</option><option value="event">📅 Event</option></select></div>
+                    <div className="adm-form__group"><label>Short Description</label><textarea rows={3} placeholder="Brief summary..." value={newsForm.description} onChange={e => setNewsForm({...newsForm, description: e.target.value})} /></div>
+                    <div className="adm-form__group"><label>Full Content</label><textarea rows={8} placeholder="Full article or event details..." value={newsForm.content} onChange={e => setNewsForm({...newsForm, content: e.target.value})} /></div>
+                    <div className="adm-form__group"><label>Date</label><input placeholder="e.g. March 15, 2025" value={newsForm.event_date} onChange={e => setNewsForm({...newsForm, event_date: e.target.value})} /></div>
+                    <div className="adm-form__group"><label>Location (for events)</label><input placeholder="e.g. Lahore High Court, Lahore" value={newsForm.location} onChange={e => setNewsForm({...newsForm, location: e.target.value})} /></div>
+                    <div className="adm-upload-section">
+                      <div className="adm-upload-section__header">
+                        <h3 className="adm-upload-section__title">📎 Attach Document</h3>
+                        <span className="adm-upload-section__sub">PDF, Word (.doc/.docx), or Image (JPG, PNG) — Max 10MB</span>
+                      </div>
+                      <label className="adm-upload-btn">
+                        <input type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp" onChange={handleNewsFileUpload} style={{display:'none'}} />
+                        {newsUploading ? '⏳ Uploading...' : '📁 Choose File to Upload'}
+                      </label>
+                      {newsMsg && <div className="adm-upload-msg">{newsMsg}</div>}
+                      {newsForm.file_url && (
+                        <div className="adm-docs-list">
+                          <div className="adm-doc-item">
+                            <span className="adm-doc-item__icon">{newsForm.file_type==='pdf'?'📄':newsForm.file_type==='docx'||newsForm.file_type==='doc'?'📝':'🖼️'}</span>
+                            <a href={newsForm.file_url} target="_blank" rel="noopener noreferrer" className="adm-doc-item__name">{newsForm.file_name}</a>
+                            <button type="button" className="adm-doc-item__remove" onClick={() => setNewsForm({...newsForm, file_url:'', file_name:'', file_type:''})}>✕</button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="adm-editor__sidebar">
+                    <div className="adm-editor__panel">
+                      <h3>Settings</h3>
+                      <div className="adm-form__group"><label>Status</label><select value={newsForm.published?'published':'draft'} onChange={e => setNewsForm({...newsForm, published: e.target.value==='published'})}><option value="published">🟢 Published</option><option value="draft">🟡 Draft</option></select></div>
+                      {newsMsg && <div className="adm-save-msg">{newsMsg}</div>}
+                      <button type="submit" className="adm-btn adm-btn--gold adm-btn--full" disabled={newsSaving}>{newsSaving ? 'Saving...' : newsView==='new' ? '🚀 Publish' : '💾 Save Changes'}</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            )}
           </div>
         )}
 

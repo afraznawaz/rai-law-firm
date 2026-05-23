@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const { data, error } = await supabase.from('certificates').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase.from('news_events').select('*').eq('published', true).order('created_at', { ascending: false });
       if (error) throw error;
       return res.status(200).json(data);
     }
@@ -18,20 +18,20 @@ export default async function handler(req, res) {
     if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
 
     if (req.method === 'POST') {
-      const { title, description, file_url, file_name, file_type, issued_by, issued_date, published } = req.body;
-      const { data, error } = await supabase.from('certificates').insert({ title, description, file_url, file_name, file_type, issued_by, issued_date, published }).select().single();
+      const { title, type, description, content, event_date, location, file_url, file_name, file_type, published } = req.body;
+      const { data, error } = await supabase.from('news_events').insert({ title, type, description, content, event_date, location, file_url, file_name, file_type, published }).select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
     if (req.method === 'PUT') {
-      const { id, title, description, file_url, file_name, file_type, issued_by, issued_date, published } = req.body;
-      const { data, error } = await supabase.from('certificates').update({ title, description, file_url, file_name, file_type, issued_by, issued_date, published }).eq('id', id).select().single();
+      const { id, title, type, description, content, event_date, location, file_url, file_name, file_type, published } = req.body;
+      const { data, error } = await supabase.from('news_events').update({ title, type, description, content, event_date, location, file_url, file_name, file_type, published }).eq('id', id).select().single();
       if (error) throw error;
       return res.status(200).json(data);
     }
     if (req.method === 'DELETE') {
       const { id } = req.body;
-      const { error } = await supabase.from('certificates').delete().eq('id', id);
+      const { error } = await supabase.from('news_events').delete().eq('id', id);
       if (error) throw error;
       return res.status(200).json({ ok: true });
     }

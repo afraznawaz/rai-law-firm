@@ -549,11 +549,6 @@ export default function App() {
           <div className="ra-3d-ring ra-3d-ring--1" />
           <div className="ra-3d-ring ra-3d-ring--2" />
         </div>
-        <div className="ra-3d-text">
-          <h2 className="ra-3d-text__title">Trusted Legal Excellence Since 1993</h2>
-          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication. Specializing in Tax Law, Corporate Law, Cybercrime, and more.</p>
-          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
-        </div>
       </section>
 
       {/* STATS */}
