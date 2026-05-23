@@ -426,7 +426,6 @@ export default function App() {
             <div className="ra-nav__backdrop" onClick={() => setMenuOpen(false)} />
             <div className="ra-nav__mobile">
               {/* Close button */}
-              <button className="ra-nav__mobile-close" onClick={() => setMenuOpen(false)}>✕</button>
               <div className="ra-nav__mobile-logo">
                 <img src="/uploads/upload_1.PNG" alt="RAI" className="ra-nav__mobile-logo-img" />
                 <span>RAI & Associates</span>
