@@ -1,8 +1,13 @@
 User-agent: *
 Allow: /
+Allow: /blog/
 
-# Disallow admin
+# Disallow admin and API
 Disallow: /admin
+Disallow: /api/
+
+# Allow sitemap API specifically
+Allow: /api/sitemap
 
 # Sitemap
 Sitemap: https://raiandassociates.com.pk/api/sitemap
