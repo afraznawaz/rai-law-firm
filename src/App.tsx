@@ -13,6 +13,8 @@ import CertificatesPage from './pages/CertificatesPage'
 import ELibrary from './pages/ELibrary'
 import BlogArticles from './pages/BlogArticles'
 import LawyerAuth from './pages/LawyerAuth'
+import LawyerDashboard from './pages/LawyerDashboard'
+import './styles/dashboard.css'
 import LawyerList from './pages/LawyerList'
 import SectionPreview from './components/SectionPreview'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
@@ -429,6 +431,10 @@ export default function App() {
       onBack={() => { setShowLawyerLogin(false); setShowLawyerRegister(false) }}
       onSuccess={(data) => { setLawyerUser(data); setShowLawyerLogin(false); setShowLawyerRegister(false) }}
     />
+  )
+
+  if (lawyerUser) return (
+    <LawyerDashboard onLogout={() => setLawyerUser(null)} />
   )
 
   if (showELibrary) {
