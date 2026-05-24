@@ -25,7 +25,16 @@ function NewsEventsInner({ onBack }: Props) {
   const load = () => {
     setLoading(true); setError(null)
     fetch('/api/news')
-      .then(r => { if (!r.ok) throw new Error(`API returned ${r.status}`); return r.json() })
+      .then(async r => {
+        const ct = r.headers.get('content-type') || ''
+        if (!r.ok) throw new Error(`API returned ${r.status}`)
+        if (!ct.includes('application/json')) {
+          const txt = await r.text()
+          console.error('Expected JSON, got:', txt.substring(0, 200))
+          throw new Error('Server returned non-JSON response')
+        }
+        return r.json()
+      })
       .then(d => { setItems(Array.isArray(d) ? d : []); setLoading(false) })
       .catch(err => { setError(err.message); setLoading(false) })
   }

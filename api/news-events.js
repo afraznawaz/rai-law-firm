@@ -8,9 +8,10 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
+      res.setHeader('Content-Type', 'application/json');
       const { data, error } = await supabase.from('news_events').select('*').eq('published', true).order('created_at', { ascending: false });
       if (error) throw error;
-      return res.status(200).json(data);
+      return res.status(200).json(Array.isArray(data) ? data : []);
     }
     const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) return res.status(401).json({ error: 'Unauthorized' });

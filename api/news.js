@@ -8,6 +8,7 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
+      res.setHeader('Content-Type', 'application/json');
       const { admin, id } = req.query;
       if (id) {
         const { data, error } = await supabase.from('news_events').select('*').eq('id', id).single();
@@ -18,7 +19,7 @@ export default async function handler(req, res) {
       if (!admin) query = query.eq('published', true);
       const { data, error } = await query;
       if (error) throw error;
-      return res.status(200).json(data);
+      return res.status(200).json(Array.isArray(data) ? data : []);
     }
     const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) return res.status(401).json({ error: 'Unauthorized' });
