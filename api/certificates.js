@@ -8,6 +8,12 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
+      const { id } = req.query;
+      if (id) {
+        const { data, error } = await supabase.from('certificates').select('*').eq('id', id).single();
+        if (error) throw error;
+        return res.status(200).json(data);
+      }
       const { data, error } = await supabase.from('certificates').select('*').order('created_at', { ascending: false });
       if (error) throw error;
       return res.status(200).json(data);
@@ -16,16 +22,15 @@ export default async function handler(req, res) {
     if (!token) return res.status(401).json({ error: 'Unauthorized' });
     const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
     if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-
     if (req.method === 'POST') {
-      const { title, description, file_url, file_name, file_type, issued_by, issued_date, published } = req.body;
-      const { data, error } = await supabase.from('certificates').insert({ title, description, file_url, file_name, file_type, issued_by, issued_date, published }).select().single();
+      const { title, description, file_url, issued_by, issued_date, category } = req.body;
+      const { data, error } = await supabase.from('certificates').insert({ title, description, file_url, issued_by, issued_date, category }).select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
     if (req.method === 'PUT') {
-      const { id, title, description, file_url, file_name, file_type, issued_by, issued_date, published } = req.body;
-      const { data, error } = await supabase.from('certificates').update({ title, description, file_url, file_name, file_type, issued_by, issued_date, published }).eq('id', id).select().single();
+      const { id, title, description, file_url, issued_by, issued_date, category } = req.body;
+      const { data, error } = await supabase.from('certificates').update({ title, description, file_url, issued_by, issued_date, category }).eq('id', id).select().single();
       if (error) throw error;
       return res.status(200).json(data);
     }
@@ -37,6 +42,7 @@ export default async function handler(req, res) {
     }
     res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
+    console.error('Certificates API error:', err);
     res.status(500).json({ error: err.message });
   }
 }

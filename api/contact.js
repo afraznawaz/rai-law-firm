@@ -9,28 +9,10 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'POST') {
       const { name, email, phone, subject, message } = req.body;
-      if (!name || !phone || !message) {
-        return res.status(400).json({ error: 'Name, phone and message are required' });
-      }
-      const { data, error } = await supabase
-        .from('contact_messages')
-        .insert({ name, email, phone, subject, message })
-        .select()
-        .single();
-      if (error) {
-        // If table doesn't exist yet, still return success
-        console.error('Contact insert error:', error.message);
-        return res.status(200).json({ ok: true, message: 'Message received' });
-      }
-      return res.status(201).json({ ok: true, data });
-    }
-    if (req.method === 'GET') {
-      const { data, error } = await supabase
-        .from('contact_messages')
-        .select('*')
-        .order('created_at', { ascending: false });
+      if (!name || !phone || !message) return res.status(400).json({ error: 'Name, phone and message are required' });
+      const { data, error } = await supabase.from('contact_messages').insert({ name, email, phone, subject, message }).select().single();
       if (error) throw error;
-      return res.status(200).json(data);
+      return res.status(201).json({ ok: true, id: data.id });
     }
     res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {

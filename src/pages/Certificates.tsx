@@ -2,8 +2,14 @@ import { useState, useEffect } from 'react'
 import supabase from '../lib/supabase'
 
 interface Certificate {
-  id: number; title: string; description: string; file_url: string
-  issued_by: string; issued_date: string; category: string; created_at: string
+  id: number
+  title: string
+  description: string
+  file_url: string
+  issued_by: string
+  issued_date: string
+  category: string
+  created_at: string
 }
 
 export default function Certificates({ onBack }: { onBack: () => void }) {
@@ -11,10 +17,10 @@ export default function Certificates({ onBack }: { onBack: () => void }) {
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<any>(null)
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState({ title:'', description:'', file_url:'', issued_by:'', issued_date:'', category:'Bar Membership' })
+  const [form, setForm] = useState({ title: '', description: '', file_url: '', issued_by: '', issued_date: '', category: 'Bar Membership' })
   const [saving, setSaving] = useState(false)
-  const [deleteId, setDeleteId] = useState<number|null>(null)
-  const CATEGORIES = ['Bar Membership','Court Registration','Award','Training','Other']
+  const [deleteId, setDeleteId] = useState<number | null>(null)
+  const CATEGORIES = ['Bar Membership', 'Court Registration', 'Award', 'Training', 'Other']
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
@@ -32,14 +38,14 @@ export default function Certificates({ onBack }: { onBack: () => void }) {
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault(); setSaving(true)
     const { data: { session } } = await supabase.auth.getSession()
-    await fetch('/api/certificates', { method:'POST', headers:{'Content-Type':'application/json', Authorization:`Bearer ${session?.access_token}`}, body: JSON.stringify(form) })
-    setForm({ title:'', description:'', file_url:'', issued_by:'', issued_date:'', category:'Bar Membership' })
+    await fetch('/api/certificates', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` }, body: JSON.stringify(form) })
+    setForm({ title: '', description: '', file_url: '', issued_by: '', issued_date: '', category: 'Bar Membership' })
     setShowForm(false); setSaving(false); fetchCerts()
   }
 
   const handleDelete = async (id: number) => {
     const { data: { session } } = await supabase.auth.getSession()
-    await fetch('/api/certificates', { method:'DELETE', headers:{'Content-Type':'application/json', Authorization:`Bearer ${session?.access_token}`}, body: JSON.stringify({ id }) })
+    await fetch('/api/certificates', { method: 'DELETE', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token}` }, body: JSON.stringify({ id }) })
     setDeleteId(null); fetchCerts()
   }
 
@@ -62,18 +68,18 @@ export default function Certificates({ onBack }: { onBack: () => void }) {
           <form className="cert-form" onSubmit={handleAdd}>
             <h3>Add New Certificate</h3>
             <div className="cert-form__grid">
-              <div className="cert-form__group"><label>Title *</label><input required value={form.title} onChange={e => setForm({...form, title: e.target.value})} /></div>
-              <div className="cert-form__group"><label>Category</label><select value={form.category} onChange={e => setForm({...form, category: e.target.value})}>{CATEGORIES.map(c => <option key={c}>{c}</option>)}</select></div>
-              <div className="cert-form__group"><label>Issued By</label><input value={form.issued_by} onChange={e => setForm({...form, issued_by: e.target.value})} /></div>
-              <div className="cert-form__group"><label>Issue Date</label><input value={form.issued_date} onChange={e => setForm({...form, issued_date: e.target.value})} /></div>
-              <div className="cert-form__group cert-form__group--full"><label>Google Drive Link *</label><input required value={form.file_url} onChange={e => setForm({...form, file_url: e.target.value})} /></div>
-              <div className="cert-form__group cert-form__group--full"><label>Description</label><textarea rows={2} value={form.description} onChange={e => setForm({...form, description: e.target.value})} /></div>
+              <div className="cert-form__group"><label>Title *</label><input required placeholder="e.g. Punjab Bar Council Membership" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} /></div>
+              <div className="cert-form__group"><label>Category</label><select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })}>{CATEGORIES.map(c => <option key={c}>{c}</option>)}</select></div>
+              <div className="cert-form__group"><label>Issued By</label><input placeholder="e.g. Punjab Bar Council" value={form.issued_by} onChange={e => setForm({ ...form, issued_by: e.target.value })} /></div>
+              <div className="cert-form__group"><label>Issue Date</label><input placeholder="e.g. 2010" value={form.issued_date} onChange={e => setForm({ ...form, issued_date: e.target.value })} /></div>
+              <div className="cert-form__group cert-form__group--full"><label>Google Drive Link *</label><input required placeholder="https://drive.google.com/file/d/..." value={form.file_url} onChange={e => setForm({ ...form, file_url: e.target.value })} /></div>
+              <div className="cert-form__group cert-form__group--full"><label>Description</label><textarea rows={2} placeholder="Brief description..." value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></div>
             </div>
             <button type="submit" className="cert-save-btn" disabled={saving}>{saving ? 'Saving...' : 'Save Certificate'}</button>
           </form>
         )}
         {loading ? <div className="cert-loading">{[1,2,3].map(i => <div key={i} className="cert-skeleton" />)}</div> : certs.length === 0 ? (
-          <div className="cert-empty"><div className="cert-empty__icon">🏅</div><p>Certificates will appear here once uploaded.</p></div>
+          <div className="cert-empty"><div className="cert-empty__icon">🏅</div><p>Certificates will appear here once uploaded.</p>{user && <button className="cert-add-btn" onClick={() => setShowForm(true)}>+ Add First Certificate</button>}</div>
         ) : (
           <div className="cert-grid">
             {certs.map(cert => (
@@ -92,7 +98,7 @@ export default function Certificates({ onBack }: { onBack: () => void }) {
           </div>
         )}
       </div>
-      {deleteId && <div className="adm-modal-overlay" onClick={() => setDeleteId(null)}><div className="adm-modal" onClick={e => e.stopPropagation()}><h3>Delete?</h3><p>Cannot be undone.</p><div className="adm-modal__actions"><button className="adm-btn adm-btn--outline" onClick={() => setDeleteId(null)}>Cancel</button><button className="adm-btn adm-btn--danger" onClick={() => handleDelete(deleteId)}>Delete</button></div></div></div>}
+      {deleteId && <div className="adm-modal-overlay" onClick={() => setDeleteId(null)}><div className="adm-modal" onClick={e => e.stopPropagation()}><h3>Delete Certificate?</h3><p>Cannot be undone.</p><div className="adm-modal__actions"><button className="adm-btn adm-btn--outline" onClick={() => setDeleteId(null)}>Cancel</button><button className="adm-btn adm-btn--danger" onClick={() => handleDelete(deleteId)}>Delete</button></div></div></div>}
     </div>
   )
 }

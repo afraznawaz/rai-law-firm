@@ -20,25 +20,19 @@ export default async function handler(req, res) {
       if (error) throw error;
       return res.status(200).json(data);
     }
-
     const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) return res.status(401).json({ error: 'Unauthorized' });
     const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
     if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-
     if (req.method === 'POST') {
       const { title, description, image_url, file_url, file_type, event_date, published } = req.body;
-      const { data, error } = await supabase.from('news_events')
-        .insert({ title, description, image_url, file_url, file_type, event_date, published })
-        .select().single();
+      const { data, error } = await supabase.from('news_events').insert({ title, description, image_url, file_url, file_type, event_date, published }).select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
     if (req.method === 'PUT') {
       const { id, title, description, image_url, file_url, file_type, event_date, published } = req.body;
-      const { data, error } = await supabase.from('news_events')
-        .update({ title, description, image_url, file_url, file_type, event_date, published })
-        .eq('id', id).select().single();
+      const { data, error } = await supabase.from('news_events').update({ title, description, image_url, file_url, file_type, event_date, published }).eq('id', id).select().single();
       if (error) throw error;
       return res.status(200).json(data);
     }

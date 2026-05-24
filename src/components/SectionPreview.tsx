@@ -22,7 +22,6 @@ export default function SectionPreview({ id, label, title, summary, icon, childr
 
   return (
     <div id={id} className={`sp-wrapper ${expanded ? 'sp-wrapper--open' : ''}`} style={{ '--sp-accent': accentColor } as React.CSSProperties}>
-      {/* PREVIEW ROW — always visible */}
       <div className="sp-preview" onClick={() => setExpanded(e => !e)}>
         <div className="sp-preview__left">
           <span className="sp-preview__icon">{icon}</span>
@@ -39,16 +38,8 @@ export default function SectionPreview({ id, label, title, summary, icon, childr
           </svg>
         </button>
       </div>
-
-      {/* FULL CONTENT — shown on expand */}
-      <div
-        ref={contentRef}
-        className="sp-content"
-        style={{ display: expanded ? 'block' : 'none' }}
-      >
-        <div className="sp-content__inner">
-          {children}
-        </div>
+      <div ref={contentRef} className="sp-content" style={{ display: expanded ? 'block' : 'none' }}>
+        <div className="sp-content__inner">{children}</div>
         <div className="sp-content__close-wrap">
           <button className="sp-content__close" onClick={() => { setExpanded(false); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }) }}>
             ↑ Collapse Section

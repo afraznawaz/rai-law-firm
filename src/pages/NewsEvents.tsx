@@ -1,56 +1,85 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Component, ReactNode } from 'react'
 
-interface NewsItem { id: number; title: string; category: string; summary: string; content: string; date: string; created_at: string }
+class ErrorBoundary extends Component<{ children: ReactNode; name: string }, { hasError: boolean; error: Error | null }> {
+  state = { hasError: false, error: null }
+  static getDerivedStateFromError(error: Error) { return { hasError: true, error } }
+  componentDidCatch(error: Error) { console.error('[NewsEvents]', error.message) }
+  render() {
+    if (this.state.hasError) {
+      const err = this.state.error as Error | null
+      return <div style={{ padding: '80px 24px', textAlign: 'center' }}><div style={{ fontSize: '3rem' }}>⚠️</div><h2>News page crashed</h2><p>{err?.message}</p><button onClick={() => this.setState({ hasError: false, error: null })} style={{ padding: '10px 24px', background: '#0d3d1e', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Try Again</button></div>
+    }
+    return this.props.children
+  }
+}
 
-export default function NewsEvents({ onBack }: { onBack: () => void }) {
+interface NewsItem { id: number; title: string; description: string; image_url: string; file_url: string; file_type: string; event_date: string; published: boolean; created_at: string }
+interface Props { onBack: () => void }
+
+function NewsEventsInner({ onBack }: Props) {
   const [items, setItems] = useState<NewsItem[]>([])
   const [loading, setLoading] = useState(true)
-  const [selected, setSelected] = useState<NewsItem|null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [selected, setSelected] = useState<NewsItem | null>(null)
 
-  useEffect(() => {
-    fetch('/api/news-events').then(r => r.json()).then(d => { setItems(Array.isArray(d) ? d : []); setLoading(false) }).catch(() => setLoading(false))
-  }, [])
+  const load = () => {
+    setLoading(true); setError(null)
+    fetch('/api/news')
+      .then(r => { if (!r.ok) throw new Error(`API returned ${r.status}`); return r.json() })
+      .then(d => { setItems(Array.isArray(d) ? d : []); setLoading(false) })
+      .catch(err => { setError(err.message); setLoading(false) })
+  }
+
+  useEffect(() => { load() }, [])
 
   if (selected) {
     return (
-      <div className="blog-post-page">
-        <button className="blog-post-back" onClick={() => setSelected(null)}>← Back to News & Events</button>
-        <div className="blog-post-wrap">
-          <div className="blog-post-cat">{selected.category}</div>
-          <h1 className="blog-post-title">{selected.title}</h1>
-          <div className="blog-post-meta"><span>📅 {new Date(selected.date || selected.created_at).toLocaleDateString('en-PK', { day:'numeric', month:'long', year:'numeric' })}</span></div>
-          <div className="blog-post-body"><p>{selected.content || selected.summary}</p></div>
-          <div className="blog-post-cta"><h3>Need Legal Advice?</h3><p>Contact Rai & Associates for a free consultation.</p><a href="tel:+923044840937" className="blog-post-cta-btn">📞 Call: +92 304 484 0937</a></div>
+      <div className="ne-detail">
+        <button className="ne-back" onClick={() => setSelected(null)}>← Back to News & Events</button>
+        <div className="ne-detail__wrap">
+          {selected.image_url && <div className="ne-detail__img"><img src={selected.image_url} alt={selected.title} onError={e => { (e.target as HTMLImageElement).parentElement!.style.display = 'none' }} /></div>}
+          <div className="ne-detail__info">
+            <div className="ne-detail__date">📅 {selected.event_date}</div>
+            <h1 className="ne-detail__title">{selected.title}</h1>
+            <p className="ne-detail__desc">{selected.description}</p>
+            {selected.file_url && selected.file_url !== selected.image_url && <a href={selected.file_url} target="_blank" rel="noopener noreferrer" className="ne-detail__file">{selected.file_type === 'pdf' ? '📄 View Document' : '🖼️ View Full Image'}</a>}
+            <div className="ne-detail__cta"><h3>Want to Know More?</h3><a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ne-detail__wa">💬 WhatsApp Us</a></div>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div style={{ paddingTop: '80px', minHeight: '100vh', background: '#f8f5ef' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 24px' }}>
-        <button className="blog-post-back" onClick={onBack}>← Back to Home</button>
-        <h1 style={{ fontFamily: 'Playfair Display,serif', fontSize: '2rem', color: '#0d3d1e', margin: '24px 0 8px' }}>News & Events</h1>
-        <p style={{ color: '#777', marginBottom: '32px' }}>Latest legal news and firm updates</p>
-        {loading ? <div>Loading...</div> : items.length === 0 ? (
-          <div style={{ textAlign:'center', padding:'60px', color:'#777' }}>
-            <div style={{ fontSize:'3rem', marginBottom:'16px' }}>📰</div>
-            <p>News and events will appear here once added.</p>
-          </div>
-        ) : (
-          <div className="ra-blog__grid">
-            {items.map(item => (
-              <div key={item.id} className="ra-blog-card" onClick={() => setSelected(item)}>
-                <div className="ra-blog-card__cat">{item.category}</div>
-                <h3 className="ra-blog-card__title">{item.title}</h3>
-                <p className="ra-blog-card__excerpt">{item.summary}</p>
-                <div className="ra-blog-card__footer"><span>📅 {new Date(item.date || item.created_at).toLocaleDateString('en-PK', { day:'numeric', month:'short', year:'numeric' })}</span></div>
-                <button className="ra-blog-card__read">Read More →</button>
-              </div>
-            ))}
-          </div>
-        )}
+    <div className="ne-page">
+      <div className="ne-header">
+        <button className="ne-back" onClick={onBack}>← Back to Website</button>
+        <div className="ne-header__text">
+          <div className="ne-header__label">Latest Updates</div>
+          <h1 className="ne-header__title">News & Events</h1>
+          <p className="ne-header__sub">Stay updated with the latest activities and achievements of Rai & Associates</p>
+        </div>
       </div>
+      {loading ? <div className="ne-grid">{[1,2,3,4,5,6].map(i => <div key={i} className="ne-skeleton" />)}</div>
+        : error ? <div className="ne-empty"><div style={{ fontSize: '3rem' }}>⚠️</div><p style={{ fontWeight: 700, color: '#c00' }}>Error: {error}</p><button className="ne-retry" onClick={load}>🔄 Retry</button></div>
+        : items.length === 0 ? <div className="ne-empty"><div style={{ fontSize: '3rem' }}>📰</div><p>No news or events yet. Check back soon!</p></div>
+        : <div className="ne-grid">{items.map(item => (
+          <div key={item.id} className="ne-card" onClick={() => setSelected(item)}>
+            <div className="ne-card__img">
+              {item.image_url ? <img src={item.image_url} alt={item.title} loading="lazy" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} /> : <div className="ne-card__img-placeholder">📰</div>}
+              <div className="ne-card__overlay"><span className="ne-card__view">Click to View Details →</span></div>
+            </div>
+            <div className="ne-card__body">
+              <div className="ne-card__date">📅 {item.event_date}</div>
+              <h3 className="ne-card__title">{item.title}</h3>
+              <p className="ne-card__desc">{item.description?.substring(0, 100)}...</p>
+            </div>
+          </div>
+        ))}</div>}
     </div>
   )
+}
+
+export default function NewsEvents({ onBack }: Props) {
+  return <ErrorBoundary name="NewsEvents"><NewsEventsInner onBack={onBack} /></ErrorBoundary>
 }

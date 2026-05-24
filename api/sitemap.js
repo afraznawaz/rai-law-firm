@@ -5,15 +5,9 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
 
   try {
-    const { data: posts } = await supabase
-      .from('blog_posts')
-      .select('slug, updated_at, created_at')
-      .eq('published', true)
-      .order('created_at', { ascending: false });
-
-    const domain = 'https://raiandassociates.com.pk';
+    const { data: posts } = await supabase.from('blog_posts').select('slug, updated_at').eq('published', true).order('updated_at', { ascending: false });
+    const baseUrl = 'https://raiandassociates.com.pk';
     const today = new Date().toISOString().split('T')[0];
-
     const staticPages = [
       { url: '/', priority: '1.0', changefreq: 'weekly' },
       { url: '/#about', priority: '0.8', changefreq: 'monthly' },
@@ -21,33 +15,16 @@ export default async function handler(req, res) {
       { url: '/#expert', priority: '0.8', changefreq: 'monthly' },
       { url: '/#blog', priority: '0.9', changefreq: 'daily' },
       { url: '/#reviews', priority: '0.7', changefreq: 'weekly' },
-      { url: '/#contact', priority: '0.9', changefreq: 'monthly' },
+      { url: '/#contact', priority: '0.8', changefreq: 'monthly' },
     ];
-
-    const blogUrls = (posts || []).map(p => ({
-      url: `/blog/${p.slug}`,
-      priority: '0.8',
-      changefreq: 'monthly',
-      lastmod: (p.updated_at || p.created_at || today).split('T')[0]
-    }));
-
+    const blogUrls = (posts || []).map(p => ({ url: `/blog/${p.slug}`, priority: '0.8', changefreq: 'monthly', lastmod: p.updated_at ? p.updated_at.split('T')[0] : today }));
     const allUrls = [...staticPages, ...blogUrls];
-
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allUrls.map(p => `  <url>
-    <loc>${domain}${p.url}</loc>
-    <lastmod>${p.lastmod || today}</lastmod>
-    <changefreq>${p.changefreq}</changefreq>
-    <priority>${p.priority}</priority>
-  </url>`).join('\n')}
-</urlset>`;
-
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${allUrls.map(p => `  <url>\n    <loc>${baseUrl}${p.url}</loc>\n    <lastmod>${p.lastmod || today}</lastmod>\n    <changefreq>${p.changefreq}</changefreq>\n    <priority>${p.priority}</priority>\n  </url>`).join('\n')}\n</urlset>`;
     res.setHeader('Content-Type', 'application/xml');
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
     return res.status(200).send(xml);
   } catch (err) {
-    console.error('Sitemap error:', err);
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 }

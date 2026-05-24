@@ -15,25 +15,19 @@ export default async function handler(req, res) {
       if (error) throw error;
       return res.status(200).json(data);
     }
-
     const token = req.headers.authorization?.replace('Bearer ', '');
     if (!token) return res.status(401).json({ error: 'Unauthorized' });
     const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
     if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-
     if (req.method === 'POST') {
       const { title, category, court, year, outcome, summary, published } = req.body;
-      const { data, error } = await supabase.from('cases')
-        .insert({ title, category, court, year, outcome, summary, published })
-        .select().single();
+      const { data, error } = await supabase.from('cases').insert({ title, category, court, year, outcome, summary, published }).select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
     if (req.method === 'PUT') {
       const { id, title, category, court, year, outcome, summary, published } = req.body;
-      const { data, error } = await supabase.from('cases')
-        .update({ title, category, court, year, outcome, summary, published })
-        .eq('id', id).select().single();
+      const { data, error } = await supabase.from('cases').update({ title, category, court, year, outcome, summary, published }).eq('id', id).select().single();
       if (error) throw error;
       return res.status(200).json(data);
     }

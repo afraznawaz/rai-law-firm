@@ -8,10 +8,7 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'GET') {
-      const { data, error } = await supabase
-        .from('reviews')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const { data, error } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
       if (error) throw error;
       return res.status(200).json(data);
     }

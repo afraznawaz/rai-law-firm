@@ -1,41 +1,48 @@
 import { useState, useEffect } from 'react'
 
 interface Post {
-  id: number; title: string; slug: string; category: string
-  excerpt: string; content: string; author: string; published: boolean
-  created_at: string; updated_at: string
+  id: number
+  title: string
+  slug: string
+  category: string
+  excerpt: string
+  content: string
+  author: string
+  published: boolean
+  created_at: string
 }
+
+const SOCIAL_LINKS = [
+  { icon: '📘', label: 'Facebook (R&A)', href: 'https://www.facebook.com/61577203114572', color: '#1877f2' },
+  { icon: '📘', label: 'Facebook (Rai Afraz)', href: 'https://www.facebook.com/raiafraz10', color: '#1877f2' },
+  { icon: '🎵', label: 'TikTok', href: 'https://www.tiktok.com/@rai_associates', color: '#010101' },
+  { icon: '📸', label: 'Instagram', href: 'https://www.instagram.com/rai_associates10', color: '#e1306c' },
+  { icon: '▶️', label: 'YouTube', href: 'https://www.youtube.com/@raiandassociates', color: '#ff0000' },
+  { icon: '💬', label: 'WhatsApp', href: 'https://wa.me/923164371096', color: '#25d366' },
+]
 
 function renderContent(text: string) {
   if (!text) return ''
-  return text.split('\n\n').map((para) => {
-    if (!para.trim()) return ''
-    const html = para.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br/>')
-    return `<p>${html}</p>`
-  }).join('')
+  return text
+    .split('\n\n')
+    .map((para, i) => {
+      const html = para
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br/>')
+      return `<p key="${i}">${html}</p>`
+    })
+    .join('')
 }
 
 export default function BlogPost({ slug, onBack }: { slug: string; onBack: () => void }) {
   const [post, setPost] = useState<Post | null>(null)
-  const [related, setRelated] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setLoading(true)
-    fetch(`/api/blog?slug=${encodeURIComponent(slug)}`)
+    fetch(`/api/blog?slug=${slug}`)
       .then(r => r.json())
-      .then(d => {
-        setPost(d)
-        setLoading(false)
-        if (d && d.slug) {
-          document.title = `${d.title} | RAI & Associates Law Firm`
-          fetch('/api/blog').then(r => r.json()).then(all => {
-            if (Array.isArray(all)) setRelated(all.filter(p => p.category === d.category && p.slug !== d.slug).slice(0, 3))
-          })
-        }
-      })
+      .then(d => { setPost(d); setLoading(false) })
       .catch(() => setLoading(false))
-    return () => { document.title = 'RAI & Associates Law Firm | Est. 1993 | Lahore' }
   }, [slug])
 
   if (loading) return <div className="blog-post-loading">Loading...</div>
@@ -49,26 +56,25 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
         <h1 className="blog-post-title">{post.title}</h1>
         <div className="blog-post-meta">
           <span>✍️ {post.author}</span>
-          <span>📅 {new Date(post.created_at).toLocaleDateString('en-PK', { day:'numeric', month:'long', year:'numeric' })}</span>
+          <span>📅 {new Date(post.created_at).toLocaleDateString('en-PK', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
         </div>
-        <p className="blog-post-excerpt">{post.excerpt}</p>
         <div className="blog-post-body" dangerouslySetInnerHTML={{ __html: renderContent(post.content) }} />
-
-        {related.length > 0 && (
-          <div className="blog-post-related">
-            <h3>Related Articles</h3>
-            <div className="blog-post-related__grid">
-              {related.map(r => (
-                <div key={r.id} className="blog-post-related__card" onClick={() => { window.scrollTo(0,0); onBack() }}>
-                  <div className="blog-post-related__cat">{r.category}</div>
-                  <div className="blog-post-related__title">{r.title}</div>
-                  <div className="blog-post-related__read">Read Article →</div>
-                </div>
-              ))}
-            </div>
+        <div className="blog-post-follow">
+          <div className="blog-post-follow__header">
+            <span className="blog-post-follow__icon">📲</span>
+            <h3 className="blog-post-follow__title">Follow Us</h3>
           </div>
-        )}
-
+          <p className="blog-post-follow__sub">Stay updated with latest legal insights & news from Rai & Associates</p>
+          <div className="blog-post-follow__links">
+            {SOCIAL_LINKS.map((s, i) => (
+              <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
+                className="blog-post-follow__btn" style={{ '--sc': s.color } as React.CSSProperties}>
+                <span className="blog-post-follow__btn-icon">{s.icon}</span>
+                <span className="blog-post-follow__btn-label">{s.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
         <div className="blog-post-cta">
           <h3>Need Legal Advice?</h3>
           <p>Contact Rai & Associates for a free consultation.</p>

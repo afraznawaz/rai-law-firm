@@ -25,38 +25,26 @@ export default async function handler(req, res) {
       if (error) throw error;
       return res.status(200).json(data);
     }
-
     if (req.method === 'POST') {
       const token = req.headers.authorization?.replace('Bearer ', '');
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { title, slug, category, excerpt, content, author, published, video_links, documents } = req.body;
-      const { data, error } = await supabase.from('blog_posts')
-        .insert({ title, slug, category, excerpt, content, author, published,
-          ...(video_links !== undefined ? { video_links: typeof video_links === 'string' ? video_links : JSON.stringify(video_links) } : {}),
-          ...(documents !== undefined ? { documents: typeof documents === 'string' ? documents : JSON.stringify(documents) } : {}) })
-        .select().single();
+      const { title, slug, category, excerpt, content, author, published } = req.body;
+      const { data, error } = await supabase.from('blog_posts').insert({ title, slug, category, excerpt, content, author, published }).select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
-
     if (req.method === 'PUT') {
       const token = req.headers.authorization?.replace('Bearer ', '');
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { id, title, slug, category, excerpt, content, author, published, video_links, documents } = req.body;
-      const { data, error } = await supabase.from('blog_posts')
-        .update({ title, slug, category, excerpt, content, author, published,
-          updated_at: new Date().toISOString(),
-          ...(video_links !== undefined ? { video_links: typeof video_links === 'string' ? video_links : JSON.stringify(video_links) } : {}),
-          ...(documents !== undefined ? { documents: typeof documents === 'string' ? documents : JSON.stringify(documents) } : {}) })
-        .eq('id', id).select().single();
+      const { id, title, slug, category, excerpt, content, author, published } = req.body;
+      const { data, error } = await supabase.from('blog_posts').update({ title, slug, category, excerpt, content, author, published, updated_at: new Date().toISOString() }).eq('id', id).select().single();
       if (error) throw error;
       return res.status(200).json(data);
     }
-
     if (req.method === 'DELETE') {
       const token = req.headers.authorization?.replace('Bearer ', '');
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
@@ -67,7 +55,6 @@ export default async function handler(req, res) {
       if (error) throw error;
       return res.status(200).json({ ok: true });
     }
-
     res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
     console.error('Blog API error:', err);
