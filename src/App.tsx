@@ -151,6 +151,7 @@ const STATS = [
 interface Post {
   id: number; title: string; slug: string; category: string
   excerpt: string; author: string; published: boolean; created_at: string
+  image_url?: string; views?: number
 }
 
 export default function App() {
@@ -814,14 +815,25 @@ export default function App() {
             <div className="ra-blog__grid">
               {filteredPosts.map(post => (
                 <div key={post.id} className="ra-blog-card" onClick={() => openBlogPost(post.slug)}>
-                  <div className="ra-blog-card__cat">{post.category}</div>
-                  <h3 className="ra-blog-card__title">{post.title}</h3>
-                  <p className="ra-blog-card__excerpt">{post.excerpt}</p>
-                  <div className="ra-blog-card__footer">
-                    <span className="ra-blog-card__author">✍️ {post.author}</span>
-                    <span className="ra-blog-card__date">{new Date(post.created_at).toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  {post.image_url && (
+                    <div className="ra-blog-card__img-wrap">
+                      <img src={post.image_url} alt={post.title} className="ra-blog-card__img" />
+                      <span className="ra-blog-card__cat-badge">{post.category}</span>
+                    </div>
+                  )}
+                  {!post.image_url && <div className="ra-blog-card__cat">{post.category}</div>}
+                  <div className="ra-blog-card__body">
+                    <h3 className="ra-blog-card__title">{post.title}</h3>
+                    <p className="ra-blog-card__excerpt">{post.excerpt}</p>
+                    <div className="ra-blog-card__footer">
+                      <span className="ra-blog-card__author">✍️ {post.author}</span>
+                      <span className="ra-blog-card__date">{new Date(post.created_at).toLocaleDateString('en-PK', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                    </div>
+                    <div className="ra-blog-card__bottom">
+                      <span className="ra-blog-card__views">👁️ {(post.views || 0).toLocaleString()} views</span>
+                      <button className="ra-blog-card__read">Read Article →</button>
+                    </div>
                   </div>
-                  <button className="ra-blog-card__read">Read Article →</button>
                 </div>
               ))}
             </div>
