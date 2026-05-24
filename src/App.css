@@ -159,15 +159,21 @@ ul { list-style: none; }
 .ra-nav__burger {
   display: none; flex-direction: column; gap: 5px; padding: 8px;
   border-radius: 8px; transition: background 0.2s;
-  background: rgba(201,168,76,0.1);
-  border: 1px solid rgba(201,168,76,0.25);
+  background: rgba(201,168,76,0.15);
+  border: 1.5px solid rgba(201,168,76,0.4);
+  cursor: pointer; min-width: 44px; min-height: 44px;
+  align-items: center; justify-content: center;
 }
-.ra-nav__burger:hover { background: rgba(201,168,76,0.2); }
+.ra-nav__burger:hover { background: rgba(201,168,76,0.3); }
 .ra-nav__burger span {
-  display: block; width: 26px; height: 2.5px;
-  background: var(--gold); border-radius: 2px;
+  display: block !important; width: 24px; height: 2.5px;
+  background: #c9a84c !important; border-radius: 2px;
   transition: all 0.3s ease; transform-origin: center;
+  opacity: 1 !important; visibility: visible !important;
 }
+.ra-nav__burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.ra-nav__burger.open span:nth-child(2) { opacity: 0 !important; }
+.ra-nav__burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 .ra-nav__mobile {
   display: flex; flex-direction: column; padding: 12px 24px 20px;
@@ -5393,8 +5399,25 @@ ul { list-style: none; }
   .ra-nav__stats  { display: none !important; }
   .ra-nav__right  { display: flex !important; align-items: center; gap: 8px; }
   .ra-nav__right .ra-nav__cta:not(.ra-nav__burger) { display: none !important; }
-  .ra-nav__burger { display: flex !important; z-index: 1100; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
-  .ra-nav__burger.open { display: flex !important; }
+  .ra-nav__lawyer-btn { display: none !important; }
+  .ra-nav__burger {
+    display: flex !important;
+    z-index: 1100;
+    min-width: 44px; min-height: 44px;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 5px;
+    background: rgba(201,168,76,0.15) !important;
+    border: 1.5px solid rgba(201,168,76,0.4) !important;
+    border-radius: 8px; padding: 8px;
+  }
+  .ra-nav__burger span {
+    display: block !important;
+    width: 24px; height: 2.5px;
+    background: #c9a84c !important;
+    border-radius: 2px;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
   .ra-nav__logo-img { height: 64px; width: 64px; }
   .ra-nav__logo-name { font-size: 1.1rem; }
   .ra-nav__logo-sub  { font-size: 0.62rem; }
