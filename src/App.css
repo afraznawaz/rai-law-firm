@@ -2597,6 +2597,70 @@ ul { list-style: none; }
 .elib-empty p { color: var(--text-light); font-size: 1rem; }
 
 /* E-Library Detail Page */
+.elib-detail { padding: 90px 24px 60px; max-width: 900px; margin: 0 auto; }
+.elib-detail__back { color: var(--green-mid); font-weight: 600; font-size: 0.9rem; margin-bottom: 28px; display: inline-block; transition: color 0.2s; }
+.elib-detail__back:hover { color: var(--gold-dark); }
+.elib-detail__wrap { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; }
+.elib-detail__img-wrap { position: relative; height: 300px; overflow: hidden; }
+.elib-detail__img { width: 100%; height: 100%; object-fit: cover; }
+.elib-detail__img-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 28px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); }
+.elib-detail__cat { display: inline-block; background: var(--gold); color: var(--green-dark); padding: 4px 14px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; }
+.elib-detail__body { padding: 36px 40px; }
+.elib-detail__title { font-family: var(--font-serif); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 900; color: var(--green-dark); margin-bottom: 16px; line-height: 1.3; }
+.elib-detail__meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.82rem; color: var(--text-light); margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+.elib-detail__content { font-size: 0.97rem; color: var(--text-mid); line-height: 1.85; }
+.elib-detail__content p { margin-bottom: 16px; }
+.elib-detail__content strong { color: var(--text-dark); font-weight: 700; }
+
+/* Detail CTA */
+.elib-detail__cta { margin: 36px 0; background: var(--green-dark); border-radius: var(--radius-lg); padding: 28px 32px; text-align: center; }
+.elib-detail__cta h3 { font-family: var(--font-serif); color: var(--gold); font-size: 1.3rem; margin-bottom: 8px; }
+.elib-detail__cta p { color: rgba(255,255,255,0.7); margin-bottom: 20px; font-size: 0.9rem; }
+.elib-detail__cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.elib-cta-btn { padding: 11px 24px; border-radius: 6px; font-weight: 700; font-size: 0.88rem; text-decoration: none; transition: all 0.2s; }
+.elib-cta-btn--wa { background: #25d366; color: white; }
+.elib-cta-btn--wa:hover { background: #1ebe5d; transform: translateY(-2px); }
+.elib-cta-btn--call { background: rgba(201,168,76,0.2); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.4); }
+.elib-cta-btn--call:hover { background: rgba(201,168,76,0.35); }
+
+/* Social Follow */
+.elib-detail__social { margin: 28px 0; padding: 24px; background: var(--off-white); border-radius: var(--radius); border: 1px solid #e8e0d0; }
+.elib-detail__social h4 { font-family: var(--font-serif); color: var(--green-dark); font-size: 1rem; margin-bottom: 14px; }
+.elib-detail__social-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.elib-social-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: white; background: var(--sc, #555); transition: all 0.2s; text-decoration: none; }
+.elib-social-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+/* Comments */
+.elib-detail__comments { margin-top: 36px; padding-top: 28px; border-top: 2px solid #eee; }
+.elib-comments__title { font-family: var(--font-serif); font-size: 1.2rem; color: var(--green-dark); margin-bottom: 20px; }
+.elib-comments__list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+.elib-comment { display: flex; gap: 14px; }
+.elib-comment__avatar { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--green-mid), var(--green-dark)); color: white; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1rem; font-weight: 700; }
+.elib-comment__body { flex: 1; background: var(--off-white); border-radius: 10px; padding: 14px 16px; }
+.elib-comment__name { font-weight: 700; color: var(--green-dark); font-size: 0.88rem; }
+.elib-comment__date { font-size: 0.75rem; color: var(--text-light); margin-bottom: 8px; }
+.elib-comment__text { font-size: 0.9rem; color: var(--text-mid); line-height: 1.6; }
+.elib-comments__empty { color: var(--text-light); font-size: 0.9rem; font-style: italic; margin-bottom: 20px; }
+
+/* Comment Form */
+.elib-comments__form-wrap { background: var(--off-white); border-radius: var(--radius-lg); padding: 24px; border: 1px solid #e8e0d0; }
+.elib-comments__form-title { font-family: var(--font-serif); font-size: 1rem; font-weight: 700; color: var(--green-dark); margin-bottom: 16px; }
+.elib-form__group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.elib-form__group label { font-size: 0.82rem; font-weight: 700; color: var(--text-dark); }
+.elib-form__group input, .elib-form__group textarea { padding: 10px 14px; border: 1.5px solid #ddd; border-radius: 6px; font-family: var(--font-sans); font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+.elib-form__group input:focus, .elib-form__group textarea:focus { border-color: var(--green-mid); }
+.elib-form__group textarea { resize: vertical; }
+.elib-comments__submit { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--green-dark); font-weight: 700; font-size: 0.88rem; padding: 11px 24px; border-radius: 6px; border: none; cursor: pointer; transition: all 0.2s; }
+.elib-comments__submit:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(201,168,76,0.3); }
+.elib-comments__submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.elib-comments__success { background: #f0faf4; border: 1px solid #c6e8d0; color: var(--green-dark); padding: 12px 16px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; }
+
+@media (max-width: 768px) {
+  .elib-detail__body { padding: 24px 20px; }
+  .elib-detail__img-wrap { height: 200px; }
+}
+
+/* E-Library Detail Page */
 .elib-detail { padding-top: 72px; max-width: 900px; margin: 0 auto; padding-left: 24px; padding-right: 24px; padding-bottom: 60px; }
 .elib-back {
   display: inline-flex; align-items: center; gap: 6px;

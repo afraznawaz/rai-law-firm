@@ -18,6 +18,7 @@ import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, Lin
 
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Legal Insights', 'Blog', 'E-Library', 'Certificates', 'News & Events', 'Reviews', 'Contact']
+const NAV_LINKS_DISPLAY = NAV_LINKS
 
 const CASE_LAWS = [
   {
@@ -479,7 +480,7 @@ export default function App() {
           <div className="ra-nav__right">
             <button className="ra-nav__lawyer-btn" onClick={() => setShowLawyerLogin(true)}>Login as Lawyer</button>
             <button className="ra-nav__lawyer-btn ra-nav__lawyer-btn--reg" onClick={() => setShowLawyerRegister(true)}>Register</button>
-            <button className="ra-nav__cta" onClick={() => scrollTo('contact')}>Free Consultation</button>
+
             <button className={`ra-nav__burger ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
               <span /><span /><span />
             </button>
@@ -502,7 +503,7 @@ export default function App() {
               ))}
               <button className="ra-nav__mobile-link" onClick={() => { setShowLawyerLogin(true); setMenuOpen(false) }}>🔐 Login as Lawyer</button>
               <button className="ra-nav__mobile-link" onClick={() => { setShowLawyerRegister(true); setMenuOpen(false) }}>📝 Register as Lawyer</button>
-              <button className="ra-nav__cta ra-nav__cta--mobile" onClick={() => scrollTo('contact')}>Free Consultation</button>
+
               <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-nav__mobile-wa">
                 💬 WhatsApp: 0316-4371096
               </a>
@@ -550,37 +551,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3D LOGO CARD — After Free Consultation */}
-      <section className="ra-3d-hero-card">
-        <div className="ra-3d-hero-card__scene">
-          <div className="ra-3d-hero-card__ring ra-3d-hero-card__ring--1" />
-          <div className="ra-3d-hero-card__ring ra-3d-hero-card__ring--2" />
-          <div className="ra-3d-hero-card__ring ra-3d-hero-card__ring--3" />
-          <div className="ra-3d-hero-card__card">
-            <div className="ra-3d-hero-card__shine" />
-            <div className="ra-3d-hero-card__glow" />
-            <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-hero-card__logo" />
-            <div className="ra-3d-hero-card__name">RAI & ASSOCIATES</div>
-            <div className="ra-3d-hero-card__divider" />
-            <div className="ra-3d-hero-card__sub">Law Firm · Est. 1993 · Lahore</div>
-            <div className="ra-3d-hero-card__tagline">⚖️ Committed to Justice</div>
-          </div>
-          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--1"><span>30+</span><small>Years</small></div>
-          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--2"><span>100s+</span><small>Cases</small></div>
-          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--3"><span>98%</span><small>Success</small></div>
-          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--4"><span>⚖️</span><small>Justice</small></div>
-          {[...Array(10)].map((_, i) => <div key={i} className={`ra-3d-hero-card__particle ra-3d-hero-card__p${i+1}`} />)}
-        </div>
-        <div className="ra-3d-hero-card__text">
-          <h2 className="ra-3d-hero-card__title">Pakistan's Trusted Legal Experts — Since 1993</h2>
-          <p className="ra-3d-hero-card__desc">Three decades of legal excellence — Tax Law, FIA Cases, Corporate Law, Trademark & Cybercrime Defense. Serving clients across Pakistan from Lahore.</p>
-          <div className="ra-3d-hero-card__chips">
-            <span>Tax Lawyer Lahore</span><span>FBR Disputes</span><span>FIA Cybercrime</span>
-            <span>Corporate Law</span><span>Trademark Pakistan</span>
-          </div>
-          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
-        </div>
-      </section>
+
 
       {/* R&A LAW FIRM BANNER */}
       <section className="ra-firm-banner">
@@ -598,35 +569,7 @@ export default function App() {
         <div className="ra-firm-banner__sub">⚖️ Committed to Justice &nbsp;·&nbsp; Est. 1993 &nbsp;·&nbsp; Lahore, Pakistan</div>
       </section>
 
-      {/* 3D SHOWCASE */}
-      <section className="ra-3d-section">
-        <div className="ra-3d-scene">
-          <div className="ra-3d-card">
-            <div className="ra-3d-card__inner">
-              <div className="ra-3d-card__glow" />
-              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-card__logo" />
-              <div className="ra-3d-card__firm">RAI & Associates</div>
-              <div className="ra-3d-card__sub">LAW FIRM — EST. 1993</div>
-              <div className="ra-3d-card__line" />
-              <div className="ra-3d-card__tagline">Committed to Justice</div>
-            </div>
-          </div>
-          <div className="ra-3d-particles">
-            {[...Array(12)].map((_, i) => <div key={i} className={`ra-3d-particle ra-3d-particle--${i+1}`} />)}
-          </div>
-          <div className="ra-3d-float ra-3d-float--1"><span className="ra-3d-float__num">30+</span><span className="ra-3d-float__lbl">Years</span></div>
-          <div className="ra-3d-float ra-3d-float--2"><span className="ra-3d-float__num">5K+</span><span className="ra-3d-float__lbl">Cases</span></div>
-          <div className="ra-3d-float ra-3d-float--3"><span className="ra-3d-float__num">⚖️</span><span className="ra-3d-float__lbl">Justice</span></div>
-          <div className="ra-3d-float ra-3d-float--4"><span className="ra-3d-float__num">98%</span><span className="ra-3d-float__lbl">Success</span></div>
-          <div className="ra-3d-ring ra-3d-ring--1" />
-          <div className="ra-3d-ring ra-3d-ring--2" />
-        </div>
-        <div className="ra-3d-text">
-          <h2 className="ra-3d-text__title">Trusted Legal <span>Excellence</span><br />Since 1993</h2>
-          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication. From tax tribunals to the Supreme Court — we fight for your rights.</p>
-          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
-        </div>
-      </section>
+
 
       {/* STATS */}
       <section className="ra-stats">
