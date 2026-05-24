@@ -13,11 +13,12 @@ import CertificatesPage from './pages/CertificatesPage'
 import ELibrary from './pages/ELibrary'
 import BlogArticles from './pages/BlogArticles'
 import LawyerAuth from './pages/LawyerAuth'
+import LawyerList from './pages/LawyerList'
 import SectionPreview from './components/SectionPreview'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
 
 
-const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Legal Insights', 'Blog', 'E-Library', 'Certificates', 'News & Events', 'Reviews', 'Contact']
+const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Legal Insights', 'Blog', 'E-Library', 'Lawyer List', 'Certificates', 'News & Events', 'Reviews', 'Contact']
 const NAV_LINKS_DISPLAY = NAV_LINKS
 
 const CASE_LAWS = [
@@ -166,6 +167,7 @@ export default function App() {
   const [showBlogArticles, setShowBlogArticles] = useState(false)
   const [showLawyerLogin, setShowLawyerLogin] = useState(false)
   const [showLawyerRegister, setShowLawyerRegister] = useState(false)
+  const [showLawyerList, setShowLawyerList] = useState(false)
   const [lawyerUser, setLawyerUser] = useState<any>(null)
   const [activeSection, setActiveSection] = useState('home')
   const [showAboutFull, setShowAboutFull] = useState(false)
@@ -275,6 +277,11 @@ export default function App() {
     }
     if (lower === 'register as a lawyer') {
       setShowLawyerRegister(true); setMenuOpen(false)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    if (lower === 'lawyer list') {
+      setShowLawyerList(true); setMenuOpen(false)
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
@@ -392,6 +399,27 @@ export default function App() {
       </nav>
       <BlogArticles onBack={() => setShowBlogArticles(false)} />
       {WA_BTN}
+    </div>
+  )
+
+  if (showLawyerList) return (
+    <div>
+      <nav className="ra-nav ra-nav--scrolled">
+        <div className="ra-nav__inner">
+          <div className="ra-nav__left">
+            <div className="ra-nav__logo" onClick={() => setShowLawyerList(false)} style={{ cursor: 'pointer' }}>
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
+              <div className="ra-nav__logo-text">
+                <span className="ra-nav__logo-name">RAI & ASSOCIATES</span>
+                <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div style={{ paddingTop: '72px' }}>
+        <LawyerList onBack={() => setShowLawyerList(false)} onRegister={() => { setShowLawyerList(false); setShowLawyerRegister(true) }} />
+      </div>
     </div>
   )
 
