@@ -612,6 +612,48 @@ export default function App() {
 
 
 
+      {/* 3D SHOWCASE */}
+      <section className="ra-3d-section">
+        <div className="ra-3d-scene">
+          <div className="ra-3d-card">
+            <div className="ra-3d-card__inner">
+              <div className="ra-3d-card__front">
+                <div className="ra-3d-card__glow" />
+                <div className="ra-3d-card__logo-circle">
+                  <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-card__logo" />
+                </div>
+                <div className="ra-3d-card__firm">RAI & Associates</div>
+                <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
+                <div className="ra-3d-card__line" />
+                <div className="ra-3d-card__tagline">Committed to Justice</div>
+              </div>
+            </div>
+          </div>
+          <div className="ra-3d-particles">
+            {[...Array(12)].map((_, i) => <div key={i} className={`ra-3d-particle ra-3d-particle--${i+1}`} />)}
+          </div>
+          <div className="ra-3d-float ra-3d-float--1"><span className="ra-3d-float__num">30+</span><span className="ra-3d-float__lbl">Years</span></div>
+          <div className="ra-3d-float ra-3d-float--2"><span className="ra-3d-float__num">5K+</span><span className="ra-3d-float__lbl">Cases</span></div>
+          <div className="ra-3d-float ra-3d-float--3"><span className="ra-3d-float__num">⚖️</span><span className="ra-3d-float__lbl">Justice</span></div>
+          <div className="ra-3d-float ra-3d-float--4"><span className="ra-3d-float__num">98%</span><span className="ra-3d-float__lbl">Success</span></div>
+          <div className="ra-3d-ring ra-3d-ring--1" />
+          <div className="ra-3d-ring ra-3d-ring--2" />
+        </div>
+        <div className="ra-3d-text">
+          <h2 className="ra-3d-text__title">Trusted Legal Excellence Since 1993</h2>
+          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication. From tax tribunals to the Supreme Court — we fight for your rights.</p>
+          <div className="ra-3d-text__keywords">
+            <span>⚖️ Tax Law</span>
+            <span>🏢 Corporate</span>
+            <span>💻 Cybercrime</span>
+            <span>™️ Trademark</span>
+            <span>🏛️ Constitutional</span>
+            <span>👨‍👩‍👧 Family Law</span>
+          </div>
+          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
+        </div>
+      </section>
+
       {/* ABOUT */}
       <section id="about" className="ra-section ra-about">
         <div className="ra-container">
