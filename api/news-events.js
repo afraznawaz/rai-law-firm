@@ -37,6 +37,8 @@ export default async function handler(req, res) {
     }
     res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('News Events API error:', err);
+    res.setHeader('Content-Type', 'application/json');
+    res.status(500).json({ error: err.message || 'Internal server error' });
   }
 }

@@ -61,6 +61,8 @@
 .elib-download-icon { width: 18px; height: 18px; }
 .elib-read-btn { padding: 13px 24px; background: #0d3d1e; color: #c9a84c; border: none; border-radius: 6px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; font-family: 'Lato', sans-serif; }
 .elib-read-btn:hover { background: #155a2e; transform: translateY(-1px); }
+.elib-read-btn:disabled, .elib-download-btn:disabled, .elib-book-card__dl:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+.elib-dl-error { margin-top: 10px; padding: 8px 14px; background: #fff0f0; border: 1px solid #ffcccc; color: #cc0000; border-radius: 6px; font-size: 0.85rem; }
 .elib-book-detail__note { display: flex; gap: 10px; align-items: flex-start; background: #fffbf0; border: 1px solid #e8c96a; border-radius: 8px; padding: 14px 16px; font-size: 0.83rem; color: #666; line-height: 1.5; }
 .elib-empty { text-align: center; padding: 80px 24px; color: #888; }
 .elib-empty div { font-size: 3rem; margin-bottom: 16px; }

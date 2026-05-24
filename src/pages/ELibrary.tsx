@@ -407,21 +407,29 @@ export default function ELibrary({ onBack }: { onBack: () => void }) {
     )
   })).filter(cat => !search || cat.books.length > 0)
 
+  const [downloading, setDownloading] = useState<string | null>(null)
+  const [dlError, setDlError] = useState<string | null>(null)
+
   const handleDownload = async (url: string, title: string) => {
+    setDownloading(title)
+    setDlError(null)
     try {
       const response = await fetch(`/api/proxy-pdf?url=${encodeURIComponent(url)}`)
-      if (!response.ok) throw new Error('Download failed')
+      if (!response.ok) throw new Error('Could not fetch PDF')
       const blob = await response.blob()
+      if (blob.size < 1000) throw new Error('Invalid PDF received')
       const link = document.createElement('a')
       link.href = URL.createObjectURL(blob)
-      link.download = title.replace(/[^a-z0-9]/gi, '_').substring(0, 60) + '.pdf'
+      link.download = title.replace(/[^a-z0-9\s]/gi, '').trim().substring(0, 60) + '.pdf'
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-      URL.revokeObjectURL(link.href)
-    } catch {
-      // fallback: open in new tab
-      window.open(url, '_blank')
+      setTimeout(() => URL.revokeObjectURL(link.href), 5000)
+    } catch (err: any) {
+      setDlError('Download failed. Please try again.')
+      setTimeout(() => setDlError(null), 4000)
+    } finally {
+      setDownloading(null)
     }
   }
 
@@ -441,15 +449,17 @@ export default function ELibrary({ onBack }: { onBack: () => void }) {
             <h3>📋 Book Summary</h3>
             <p className="elib-book-detail__summary">{openBook.summary}</p>
             <div className="elib-book-detail__actions">
-              <button className="elib-download-btn" onClick={() => handleDownload(openBook.downloadUrl, openBook.title)}>
+              <button className="elib-download-btn" disabled={downloading === openBook.title}
+                onClick={() => handleDownload(openBook.downloadUrl, openBook.title)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="elib-download-icon">
                   <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                 </svg>
-                Download PDF
+                {downloading === openBook.title ? 'Downloading...' : 'Download PDF'}
               </button>
-              <button className="elib-read-btn" onClick={() => window.open(openBook.downloadUrl.replace('lawyersofpakistan.com', 'docs.google.com/viewer?url=' + encodeURIComponent(openBook.downloadUrl)), '_blank')}>
-                👁️ Read Online
+              <button className="elib-read-btn" onClick={() => handleDownload(openBook.downloadUrl, openBook.title)} disabled={downloading === openBook.title}>
+                {downloading === openBook.title ? '⏳ Downloading...' : '👁️ Read / Download PDF'}
               </button>
+              {dlError && <div className="elib-dl-error">{dlError}</div>}
             </div>
             <div className="elib-book-detail__note">
               <span>⚠️</span>
@@ -525,8 +535,9 @@ export default function ELibrary({ onBack }: { onBack: () => void }) {
                           📖 Read Summary
                         </button>
                         <button className="elib-book-card__dl"
+                          disabled={downloading === book.title}
                           onClick={e => { e.stopPropagation(); handleDownload(book.downloadUrl, book.title) }}>
-                          ⬇️ Download
+                          {downloading === book.title ? '⏳ Downloading...' : '⬇️ Download PDF'}
                         </button>
                       </div>
                     </div>
