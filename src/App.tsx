@@ -11,11 +11,13 @@ import Disclaimer from './pages/Disclaimer'
 import NewsEvents from './pages/NewsEvents'
 import CertificatesPage from './pages/CertificatesPage'
 import ELibrary from './pages/ELibrary'
+import BlogArticles from './pages/BlogArticles'
+import LawyerAuth from './pages/LawyerAuth'
 import SectionPreview from './components/SectionPreview'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
 
 
-const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Contact']
+const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Legal Insights', 'Blog', 'E-Library', 'Certificates', 'News & Events', 'Reviews', 'Contact']
 
 const CASE_LAWS = [
   {
@@ -159,6 +161,10 @@ export default function App() {
 
   const [showNews, setShowNews] = useState(false)
   const [showCerts, setShowCerts] = useState(false)
+  const [showBlogArticles, setShowBlogArticles] = useState(false)
+  const [showLawyerLogin, setShowLawyerLogin] = useState(false)
+  const [showLawyerRegister, setShowLawyerRegister] = useState(false)
+  const [lawyerUser, setLawyerUser] = useState<any>(null)
   const [activeSection, setActiveSection] = useState('home')
   const [showAboutFull, setShowAboutFull] = useState(false)
   const [lightbox, setLightbox] = useState<string | null>(null)
@@ -245,9 +251,35 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
+    if (lower === 'blog') {
+      setShowBlogArticles(true)
+      setShowNews(false); setShowCerts(false); setShowELibrary(false)
+      setMenuOpen(false)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    if (lower === 'legal insights') {
+      setShowBlogArticles(false)
+      setShowNews(false); setShowCerts(false); setShowELibrary(false)
+      setMenuOpen(false)
+      const el = document.getElementById('blog')
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+    if (lower === 'login as a lawyer' || lower === 'lawyer login') {
+      setShowLawyerLogin(true); setMenuOpen(false)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    if (lower === 'register as a lawyer') {
+      setShowLawyerRegister(true); setMenuOpen(false)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
     setShowNews(false)
     setShowCerts(false)
     setShowELibrary(false)
+    setShowBlogArticles(false)
     setMenuOpen(false)
     const sectionId = id.toLowerCase().replace(/\s+/g, '-')
     const el = document.getElementById(sectionId)
@@ -342,6 +374,33 @@ export default function App() {
     </div>
   )
 
+  if (showBlogArticles) return (
+    <div style={{minHeight:'100vh', background:'var(--off-white)'}}>
+      <nav className="ra-nav ra-nav--scrolled">
+        <div className="ra-nav__inner">
+          <div className="ra-nav__logo" onClick={() => setShowBlogArticles(false)} style={{cursor:'pointer'}}>
+            <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-nav__logo-img" />
+            <div className="ra-nav__logo-text">
+              <span className="ra-nav__logo-name">RAI & Associates</span>
+              <span className="ra-nav__logo-sub">Law Firm — Est. 1993</span>
+            </div>
+          </div>
+          <button className="ra-nav__link" onClick={() => setShowBlogArticles(false)} style={{color:'var(--gold)'}}>← Back to Home</button>
+        </div>
+      </nav>
+      <BlogArticles onBack={() => setShowBlogArticles(false)} />
+      {WA_BTN}
+    </div>
+  )
+
+  if (showLawyerLogin || showLawyerRegister) return (
+    <LawyerAuth
+      mode={showLawyerLogin ? 'login' : 'register'}
+      onBack={() => { setShowLawyerLogin(false); setShowLawyerRegister(false) }}
+      onSuccess={(data) => { setLawyerUser(data); setShowLawyerLogin(false); setShowLawyerRegister(false) }}
+    />
+  )
+
   if (showELibrary) {
     return (
       <div>
@@ -418,6 +477,8 @@ export default function App() {
           </div>
           {/* RIGHT — CTA */}
           <div className="ra-nav__right">
+            <button className="ra-nav__lawyer-btn" onClick={() => setShowLawyerLogin(true)}>Login as Lawyer</button>
+            <button className="ra-nav__lawyer-btn ra-nav__lawyer-btn--reg" onClick={() => setShowLawyerRegister(true)}>Register</button>
             <button className="ra-nav__cta" onClick={() => scrollTo('contact')}>Free Consultation</button>
             <button className={`ra-nav__burger ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
               <span /><span /><span />
@@ -439,6 +500,8 @@ export default function App() {
                   scrollTo(link.toLowerCase())
                 }}>{link}</button>
               ))}
+              <button className="ra-nav__mobile-link" onClick={() => { setShowLawyerLogin(true); setMenuOpen(false) }}>🔐 Login as Lawyer</button>
+              <button className="ra-nav__mobile-link" onClick={() => { setShowLawyerRegister(true); setMenuOpen(false) }}>📝 Register as Lawyer</button>
               <button className="ra-nav__cta ra-nav__cta--mobile" onClick={() => scrollTo('contact')}>Free Consultation</button>
               <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-nav__mobile-wa">
                 💬 WhatsApp: 0316-4371096
@@ -536,7 +599,34 @@ export default function App() {
       </section>
 
       {/* 3D SHOWCASE */}
-
+      <section className="ra-3d-section">
+        <div className="ra-3d-scene">
+          <div className="ra-3d-card">
+            <div className="ra-3d-card__inner">
+              <div className="ra-3d-card__glow" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-card__logo" />
+              <div className="ra-3d-card__firm">RAI & Associates</div>
+              <div className="ra-3d-card__sub">LAW FIRM — EST. 1993</div>
+              <div className="ra-3d-card__line" />
+              <div className="ra-3d-card__tagline">Committed to Justice</div>
+            </div>
+          </div>
+          <div className="ra-3d-particles">
+            {[...Array(12)].map((_, i) => <div key={i} className={`ra-3d-particle ra-3d-particle--${i+1}`} />)}
+          </div>
+          <div className="ra-3d-float ra-3d-float--1"><span className="ra-3d-float__num">30+</span><span className="ra-3d-float__lbl">Years</span></div>
+          <div className="ra-3d-float ra-3d-float--2"><span className="ra-3d-float__num">5K+</span><span className="ra-3d-float__lbl">Cases</span></div>
+          <div className="ra-3d-float ra-3d-float--3"><span className="ra-3d-float__num">⚖️</span><span className="ra-3d-float__lbl">Justice</span></div>
+          <div className="ra-3d-float ra-3d-float--4"><span className="ra-3d-float__num">98%</span><span className="ra-3d-float__lbl">Success</span></div>
+          <div className="ra-3d-ring ra-3d-ring--1" />
+          <div className="ra-3d-ring ra-3d-ring--2" />
+        </div>
+        <div className="ra-3d-text">
+          <h2 className="ra-3d-text__title">Trusted Legal <span>Excellence</span><br />Since 1993</h2>
+          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication. From tax tribunals to the Supreme Court — we fight for your rights.</p>
+          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
+        </div>
+      </section>
 
       {/* STATS */}
       <section className="ra-stats">
