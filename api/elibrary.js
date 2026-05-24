@@ -2,68 +2,29 @@ import supabase from './_supabase.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(204).end();
 
   try {
     if (req.method === 'GET') {
-      const { id, category } = req.query;
+      const { slug, id } = req.query;
 
-      // Single item with comments
-      if (id) {
-        const { data: item, error: itemErr } = await supabase
-          .from('elibrary_items')
-          .select('*')
-          .eq('id', id)
-          .single();
-        if (itemErr) throw itemErr;
-
-        // Increment view count
-        await supabase
-          .from('elibrary_items')
-          .update({ views: (item.views || 0) + 1 })
-          .eq('id', id);
-
-        // Fetch comments
-        const { data: comments } = await supabase
-          .from('elibrary_comments')
-          .select('*')
-          .eq('item_id', id)
-          .order('created_at', { ascending: false });
-
-        return res.status(200).json({ ...item, comments: comments || [] });
+      if (slug) {
+        // Increment views
+        await supabase.rpc('increment_elib_views', { post_slug: slug }).catch(() => {});
+        const { data, error } = await supabase.from('elibrary_posts').select('*').eq('slug', slug).single();
+        if (error) throw error;
+        return res.status(200).json(data);
       }
 
-      // List all published items
-      let query = supabase
-        .from('elibrary_items')
-        .select('id, title, category, description, image_url, views, created_at')
+      const { data, error } = await supabase
+        .from('elibrary_posts')
+        .select('id,title,slug,category,excerpt,image_url,views,author,created_at')
         .eq('published', true)
         .order('created_at', { ascending: false });
-
-      if (category && category !== 'All') {
-        query = query.eq('category', category);
-      }
-
-      const { data, error } = await query;
       if (error) throw error;
-      return res.status(200).json(data || []);
-    }
-
-    // POST — add comment
-    if (req.method === 'POST') {
-      const { item_id, user_name, comment } = req.body;
-      if (!item_id || !user_name || !comment) {
-        return res.status(400).json({ error: 'Missing fields: item_id, user_name, comment required' });
-      }
-      const { data, error } = await supabase
-        .from('elibrary_comments')
-        .insert({ item_id, user_name, comment })
-        .select()
-        .single();
-      if (error) throw error;
-      return res.status(201).json(data);
+      return res.status(200).json(data);
     }
 
     res.status(405).json({ error: 'Method not allowed' });
