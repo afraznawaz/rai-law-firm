@@ -14,6 +14,7 @@ import NoorChatbot from './components/NoorChatbot'
 import './components/NoorChatbot.css'
 
 const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Contact']
+// Certificates and News & Events removed from nav as requested
 
 const CASE_LAWS = [
   {
@@ -485,37 +486,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3D LOGO CARD — After Free Consultation */}
-      <section className="ra-3d-hero-card">
-        <div className="ra-3d-hero-card__scene">
-          <div className="ra-3d-hero-card__ring ra-3d-hero-card__ring--1" />
-          <div className="ra-3d-hero-card__ring ra-3d-hero-card__ring--2" />
-          <div className="ra-3d-hero-card__ring ra-3d-hero-card__ring--3" />
-          <div className="ra-3d-hero-card__card">
-            <div className="ra-3d-hero-card__shine" />
-            <div className="ra-3d-hero-card__glow" />
-            <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-hero-card__logo" />
-            <div className="ra-3d-hero-card__name">RAI & ASSOCIATES</div>
-            <div className="ra-3d-hero-card__divider" />
-            <div className="ra-3d-hero-card__sub">Law Firm · Est. 1993 · Lahore</div>
-            <div className="ra-3d-hero-card__tagline">⚖️ Committed to Justice</div>
-          </div>
-          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--1"><span>30+</span><small>Years</small></div>
-          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--2"><span>100s+</span><small>Cases</small></div>
-          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--3"><span>98%</span><small>Success</small></div>
-          <div className="ra-3d-hero-card__stat ra-3d-hero-card__stat--4"><span>⚖️</span><small>Justice</small></div>
-          {[...Array(10)].map((_, i) => <div key={i} className={`ra-3d-hero-card__particle ra-3d-hero-card__p${i+1}`} />)}
-        </div>
-        <div className="ra-3d-hero-card__text">
-          <h2 className="ra-3d-hero-card__title">Pakistan's Trusted Legal Experts — Since 1993</h2>
-          <p className="ra-3d-hero-card__desc">Three decades of legal excellence — Tax Law, FIA Cases, Corporate Law, Trademark & Cybercrime Defense. Serving clients across Pakistan from Lahore.</p>
-          <div className="ra-3d-hero-card__chips">
-            <span>Tax Lawyer Lahore</span><span>FBR Disputes</span><span>FIA Cybercrime</span>
-            <span>Corporate Law</span><span>Trademark Pakistan</span>
-          </div>
-          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
-        </div>
-      </section>
+      {/* 3D section removed as requested */}
 
       {/* R&A LAW FIRM BANNER */}
       <section className="ra-firm-banner">
