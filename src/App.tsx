@@ -13,7 +13,7 @@ import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, Lin
 import NoorChatbot from './components/NoorChatbot'
 import './components/NoorChatbot.css'
 
-const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'News & Events', 'Certificates', 'Contact']
+const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blog', 'Reviews', 'Contact']
 
 const CASE_LAWS = [
   {
