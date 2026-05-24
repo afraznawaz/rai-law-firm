@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /api/
 
+# Disallow admin
+Disallow: /admin
+
+# Sitemap
 Sitemap: https://raiandassociates.com.pk/api/sitemap
