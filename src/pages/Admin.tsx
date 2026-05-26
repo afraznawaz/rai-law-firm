@@ -372,7 +372,7 @@ export default function Admin() {
         {view === 'list' && (
           <div>
             <div className="adm-header">
-              <div><h1 className="adm-header__title">Legal Insights</h1><p className="adm-header__sub">{posts.length} posts total</p></div>
+              <div><h1 className="adm-header__title">Blogs</h1><p className="adm-header__sub">{posts.length} posts total</p></div>
               <button className="adm-btn adm-btn--gold" onClick={() => { setEditPost({...EMPTY_POST}); setView('new') }}>+ New Post</button>
             </div>
             {loading ? <div className="adm-loading">Loading...</div> : (

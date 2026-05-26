@@ -20,7 +20,7 @@ import SectionPreview from './components/SectionPreview'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
 
 
-const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Reviews', 'Contact']
+const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blogs', 'Reviews', 'Contact']
 const NAV_LINKS_DISPLAY = NAV_LINKS
 
 const CASE_LAWS = [
@@ -218,7 +218,7 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 60)
-      const sections = ['home', 'about', 'services', 'expert', 'blog', 'reviews', 'contact']
+      const sections = ['home', 'about', 'services', 'expert', 'blogs', 'reviews', 'contact']
       for (const id of sections) {
         const el = document.getElementById(id)
         if (el) {
@@ -264,7 +264,7 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
-    if (lower === 'legal insights') {
+    if (lower === 'blogs') {
       setShowBlogArticles(false)
       setShowNews(false); setShowCerts(false); setShowELibrary(false)
       setMenuOpen(false)
@@ -869,11 +869,11 @@ export default function App() {
       </SectionPreview>
 
       {/* BLOG */}
-      <SectionPreview id="blog" label="Knowledge Hub" title="Blogs" summary="Expert legal articles on Tax Law, FIA Cases, Corporate Law, Family Law, Cybercrime, Revenue Law and more — written by Rai Afraz." icon="📝">
+      <SectionPreview id="blog" label="Blogs" title="Blogs" summary="Expert legal articles on Tax Law, FIA Cases, Corporate Law, Family Law, Cybercrime, Revenue Law and more — written by Rai Afraz." icon="📝">
       <section className="ra-section ra-blog">
         <div className="ra-container">
           <div className="ra-section__header">
-            <div className="ra-section__label">Knowledge Hub</div>
+            <div className="ra-section__label">Blogs</div>
             <h2 className="ra-section__title">Blogs</h2>
             <div className="ra-divider ra-divider--center" />
             <p className="ra-section__subtitle">Expert legal articles and updates from <strong>RAI & ASSOCIATES</strong></p>
