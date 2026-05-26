@@ -1,102 +1,62 @@
-import { useState, useEffect, Component, ReactNode } from 'react'
+import { useState } from 'react'
 
-class ErrorBoundary extends Component<{ children: ReactNode; name: string }, { hasError: boolean; error: Error | null }> {
-  state = { hasError: false, error: null }
-  static getDerivedStateFromError(error: Error) { return { hasError: true, error } }
-  componentDidCatch(error: Error) { console.error('[NewsEvents]', error.message) }
-  render() {
-    if (this.state.hasError) {
-      const err = this.state.error as Error | null
-      return <div style={{ padding: '80px 24px', textAlign: 'center' }}><div style={{ fontSize: '3rem' }}>⚠️</div><h2>News page crashed</h2><p>{err?.message}</p><button onClick={() => this.setState({ hasError: false, error: null })} style={{ padding: '10px 24px', background: '#0d3d1e', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Try Again</button></div>
-    }
-    return this.props.children
-  }
-}
+const NEWS_IMAGES = Array.from({ length: 22 }, (_, i) => `/news-events/news_${i + 1}.jpg`)
 
-interface NewsItem { id: number; title: string; description: string; image_url: string; file_url: string; file_type: string; event_date: string; published: boolean; created_at: string }
-interface Props { onBack: () => void }
-
-function NewsEventsInner({ onBack }: Props) {
-  const [items, setItems] = useState<NewsItem[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [selected, setSelected] = useState<NewsItem | null>(null)
-
-  const load = () => {
-    setLoading(true); setError(null)
-    fetch('/api/news')
-      .then(async r => {
-        const ct = r.headers.get('content-type') || ''
-        if (!r.ok) throw new Error(`API returned ${r.status}`)
-        if (!ct.includes('application/json')) {
-          const txt = await r.text()
-          console.error('Expected JSON, got:', txt.substring(0, 200))
-          throw new Error('Server returned non-JSON response')
-        }
-        return r.json()
-      })
-      .then(d => { setItems(Array.isArray(d) ? d : []); setLoading(false) })
-      .catch(err => { setError(err.message); setLoading(false) })
-  }
-
-  useEffect(() => { load() }, [])
-
-  if (selected) {
-    return (
-      <div className="ne-detail">
-        <button className="ne-back" onClick={() => setSelected(null)}>← Back to News & Events</button>
-        <div className="ne-detail__wrap">
-          <div className="ne-detail__img">
-            {selected.image_url 
-              ? <img src={selected.image_url} alt={selected.title} onError={e => { const t = e.target as HTMLImageElement; t.style.display='none'; t.nextElementSibling?.setAttribute('style','display:flex') }} />
-              : null}
-            <div className="ne-detail__img-placeholder" style={{display: selected.image_url ? 'none' : 'flex'}}>📰<span>{selected.title}</span></div>
-          </div>
-          <div className="ne-detail__info">
-            <div className="ne-detail__date">📅 {selected.event_date}</div>
-            <h1 className="ne-detail__title">{selected.title}</h1>
-            <p className="ne-detail__desc">{selected.description}</p>
-            {selected.file_url && selected.file_url !== selected.image_url && <a href={selected.file_url} target="_blank" rel="noopener noreferrer" className="ne-detail__file">{selected.file_type === 'pdf' ? '📄 View Document' : '🖼️ View Full Image'}</a>}
-            <div className="ne-detail__cta"><h3>Want to Know More?</h3><a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ne-detail__wa">💬 WhatsApp Us</a></div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+export default function NewsEvents({ onBack }: { onBack: () => void }) {
+  const [lightbox, setLightbox] = useState<number | null>(null)
 
   return (
-    <div className="ne-page">
-      <div className="ne-header">
-        <button className="ne-back" onClick={onBack}>← Back to Website</button>
-        <div className="ne-header__text">
-          <div className="ne-header__label">Latest Updates</div>
-          <h1 className="ne-header__title">News & Events</h1>
-          <p className="ne-header__sub">Stay updated with the latest activities and achievements of Rai & Associates</p>
+    <div className="cert-page">
+      <div className="cert-header">
+        <div className="ra-container">
+          <button className="cert-back" onClick={onBack}>← Back to Home</button>
+          <div className="cert-header__content">
+            <div className="ra-section__label">Latest Updates</div>
+            <h1 className="cert-header__title">News & Events</h1>
+            <div className="ra-divider ra-divider--center" />
+            <p className="cert-header__sub">Events, seminars, legal proceedings and activities of Rai & Associates Law Firm</p>
+          </div>
         </div>
       </div>
-      {loading ? <div className="ne-grid">{[1,2,3,4,5,6].map(i => <div key={i} className="ne-skeleton" />)}</div>
-        : error ? <div className="ne-empty"><div style={{ fontSize: '3rem' }}>⚠️</div><p style={{ fontWeight: 700, color: '#c00' }}>Error: {error}</p><button className="ne-retry" onClick={load}>🔄 Retry</button></div>
-        : items.length === 0 ? <div className="ne-empty"><div style={{ fontSize: '3rem' }}>📰</div><p>No news or events yet. Check back soon!</p></div>
-        : <div className="ne-grid">{items.map(item => (
-          <div key={item.id} className="ne-card" onClick={() => setSelected(item)}>
-            <div className="ne-card__img">
-              {item.image_url 
-              ? <img src={item.image_url} alt={item.title} loading="lazy" onError={e => { const t = e.target as HTMLImageElement; t.style.display='none'; t.parentElement!.querySelector('.ne-card__img-placeholder')?.setAttribute('style','display:flex') }} />
-              : null}
-            <div className="ne-card__img-placeholder" style={{display: item.image_url ? 'none' : 'flex'}}>📰</div>
-              <div className="ne-card__overlay"><span className="ne-card__view">Click to View Details →</span></div>
-            </div>
-            <div className="ne-card__body">
-              <div className="ne-card__date">📅 {item.event_date}</div>
-              <h3 className="ne-card__title">{item.title}</h3>
-              <p className="ne-card__desc">{item.description?.substring(0, 100)}...</p>
-            </div>
+
+      <div className="cert-body">
+        <div className="ra-container">
+          <div className="news-grid">
+            {NEWS_IMAGES.map((src, i) => (
+              <div key={i} className="news-card" onClick={() => setLightbox(i)}>
+                <div className="news-card__img-wrap">
+                  <img src={src} alt={`Event ${i + 1}`} className="news-card__img"
+                    onError={e => { (e.target as HTMLImageElement).closest('.news-card')?.remove() }} />
+                  <div className="cert-card__overlay">
+                    <span className="cert-card__view">🔍 Click to View</span>
+                  </div>
+                </div>
+                <div className="news-card__footer">
+                  <span>📸 Event Photo {i + 1}</span>
+                  <button className="cert-card__btn">View →</button>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}</div>}
+        </div>
+      </div>
+
+      {lightbox !== null && (
+        <div className="cert-lightbox" onClick={() => setLightbox(null)}>
+          <div className="cert-lightbox__inner" onClick={e => e.stopPropagation()}>
+            <button className="cert-lightbox__close" onClick={() => setLightbox(null)}>✕</button>
+            <button className="cert-lightbox__nav cert-lightbox__nav--prev"
+              onClick={() => setLightbox((lightbox - 1 + NEWS_IMAGES.length) % NEWS_IMAGES.length)}>‹</button>
+            <img src={NEWS_IMAGES[lightbox]} alt={`Event ${lightbox + 1}`} className="cert-lightbox__img" />
+            <div className="cert-lightbox__info">
+              <h3>Event Photo {lightbox + 1}</h3>
+              <p>RAI & Associates Law Firm — Events & Activities</p>
+            </div>
+            <button className="cert-lightbox__nav cert-lightbox__nav--next"
+              onClick={() => setLightbox((lightbox + 1) % NEWS_IMAGES.length)}>›</button>
+          </div>
+        </div>
+      )}
     </div>
   )
-}
-
-export default function NewsEvents({ onBack }: Props) {
-  return <ErrorBoundary name="NewsEvents"><NewsEventsInner onBack={onBack} /></ErrorBoundary>
 }
