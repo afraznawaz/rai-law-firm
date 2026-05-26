@@ -6,10 +6,12 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(204).end();
 
+  const TABLE = 'certificates_new';
+
   try {
     if (req.method === 'GET') {
       const { data, error } = await supabase
-        .from('certificates')
+        .from(TABLE)
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
@@ -23,20 +25,20 @@ export default async function handler(req, res) {
     if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
 
     if (req.method === 'POST') {
-      const { title, description, issued_by, issued_date, file_url, file_name, file_type } = req.body;
+      const { title, description, issued_by, issued_date, file_url, file_name, file_type, category } = req.body;
       const { data, error } = await supabase
-        .from('certificates')
-        .insert({ title, description, issued_by, issued_date, file_url, file_name, file_type })
+        .from(TABLE)
+        .insert({ title, description, issued_by, issued_date, file_url, file_name, file_type, category })
         .select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
 
     if (req.method === 'PUT') {
-      const { id, title, description, issued_by, issued_date, file_url, file_name, file_type } = req.body;
+      const { id, title, description, issued_by, issued_date, file_url, file_name, file_type, category } = req.body;
       const { data, error } = await supabase
-        .from('certificates')
-        .update({ title, description, issued_by, issued_date, file_url, file_name, file_type })
+        .from(TABLE)
+        .update({ title, description, issued_by, issued_date, file_url, file_name, file_type, category })
         .eq('id', id).select().single();
       if (error) throw error;
       return res.status(200).json(data);
@@ -44,7 +46,7 @@ export default async function handler(req, res) {
 
     if (req.method === 'DELETE') {
       const { id } = req.body;
-      const { error } = await supabase.from('certificates').delete().eq('id', id);
+      const { error } = await supabase.from(TABLE).delete().eq('id', id);
       if (error) throw error;
       return res.status(200).json({ ok: true });
     }
