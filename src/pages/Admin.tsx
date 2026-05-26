@@ -103,9 +103,20 @@ export default function Admin() {
     try { const token = await getToken(); const res = await fetch('/api/news-events',{headers:{Authorization:`Bearer ${token}`}}); const d = await res.json(); setNews(Array.isArray(d)?d:[]) } catch(e) {}
   }
   const handleCertFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; if (!file) return; setCertUploading(true)
-    try { const token = await getToken(); const fd = new FormData(); fd.append('file', file); const res = await fetch('/api/upload',{method:'POST',headers:{Authorization:`Bearer ${token}`},body:fd}); if (!res.ok) throw new Error('Upload failed'); const doc = await res.json(); setCertForm((p:any)=>({...p,file_url:doc.url,file_name:doc.name,file_type:doc.type})); setCertMsg('✅ '+file.name+' uploaded!') } catch(err:any){setCertMsg('❌ '+err.message)}
-    setCertUploading(false); e.target.value=''
+    const file = e.target.files?.[0]; if (!file) return;
+    setCertUploading(true); setCertMsg('')
+    // First try base64 local preview immediately
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const dataUrl = ev.target?.result as string
+      const ext = file.name.split('.').pop()?.toLowerCase() || 'bin'
+      setCertForm((p:any) => ({ ...p, file_url: dataUrl, file_name: file.name, file_type: ext }))
+      setCertMsg('✅ ' + file.name + ' ready! Click Save to store.')
+      setCertUploading(false)
+    }
+    reader.onerror = () => { setCertMsg('❌ Could not read file'); setCertUploading(false) }
+    reader.readAsDataURL(file)
+    e.target.value = ''
   }
   const handleNewsFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return; setNewsUploading(true)
@@ -790,19 +801,36 @@ export default function Admin() {
             {certView === 'list' && (
               <div className="adm-posts">
                 {certs.length === 0 && <div className="adm-loading">No certificates yet. Add your first one!</div>}
-                {certs.map(c => (
-                  <div key={c.id} className="adm-post-card">
-                    <div className="adm-post-card__left">
-                      <span className="adm-post-card__status published">🟢 Live on Website</span>
-                      <h3 className="adm-post-card__title">🏆 {c.title}</h3>
+                {certs.map(c => {
+                  const isImg = c.file_type && ['jpg','jpeg','png','gif','webp'].includes(c.file_type.toLowerCase())
+                  const isPdf = c.file_type === 'pdf'
+                  const hasValidUrl = c.file_url && !c.file_url.startsWith('/uploads/certs/')
+                  return (
+                  <div key={c.id} className="adm-post-card" style={{alignItems:'center'}}>
+                    {/* Thumbnail */}
+                    <div style={{flexShrink:0,width:'72px',height:'72px',borderRadius:'8px',overflow:'hidden',background:'#f0f0e8',display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid #e0d8c8'}}>
+                      {hasValidUrl && isImg ? (
+                        <img src={c.file_url} alt={c.title} style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                      ) : hasValidUrl && isPdf ? (
+                        <span style={{fontSize:'2rem'}}>📄</span>
+                      ) : (
+                        <span style={{fontSize:'2rem'}}>🏆</span>
+                      )}
+                    </div>
+                    <div className="adm-post-card__left" style={{flex:1}}>
+                      <span className="adm-post-card__status published">🟢 Saved</span>
+                      <h3 className="adm-post-card__title">{c.title}</h3>
                       <div className="adm-post-card__meta">
-                        {c.issued_by && <span>Issued by: {c.issued_by}</span>}
+                        {c.issued_by && <span>🏛️ {c.issued_by}</span>}
                         {c.issued_date && <span>📅 {c.issued_date}</span>}
+                        {c.category && <span className="adm-post-card__cat">{c.category}</span>}
                       </div>
-                      {c.description && <p className="adm-post-card__excerpt">{c.description?.substring(0,100)}...</p>}
-                      {c.file_url && (
-                        <a href={c.file_url} target="_blank" rel="noopener noreferrer" className="adm-doc-item__name" style={{marginTop:'6px',display:'inline-block'}}>
-                          {c.file_type==='pdf'?'📄':c.file_type==='docx'||c.file_type==='doc'?'📝':'🖼️'} {c.file_name}
+                      {!hasValidUrl && c.file_url && (
+                        <span style={{fontSize:'0.75rem',color:'#e07000',marginTop:'4px',display:'block'}}>⚠️ Old file path — please re-upload image</span>
+                      )}
+                      {hasValidUrl && c.file_url && (
+                        <a href={c.file_url} target="_blank" rel="noopener noreferrer" style={{fontSize:'0.78rem',color:'#155a2e',marginTop:'4px',display:'inline-block'}}>
+                          🔗 View File
                         </a>
                       )}
                     </div>
@@ -811,7 +839,8 @@ export default function Admin() {
                       <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => handleCertDelete(c.id)}>🗑️ Delete</button>
                     </div>
                   </div>
-                ))}
+                  )
+                })}
               </div>
             )}
             {(certView === 'new' || certView === 'edit') && (
@@ -833,12 +862,22 @@ export default function Admin() {
                       </label>
                       {certMsg && <div className="adm-upload-msg">{certMsg}</div>}
                       {certForm.file_url && (
-                        <div className="adm-docs-list">
-                          <div className="adm-doc-item">
-                            <span className="adm-doc-item__icon">{certForm.file_type==='pdf'?'📄':certForm.file_type==='docx'||certForm.file_type==='doc'?'📝':'🖼️'}</span>
-                            <a href={certForm.file_url} target="_blank" rel="noopener noreferrer" className="adm-doc-item__name">{certForm.file_name}</a>
-                            <button type="button" className="adm-doc-item__remove" onClick={() => setCertForm({...certForm, file_url:'', file_name:'', file_type:''})}>✕</button>
-                          </div>
+                        <div style={{marginTop:'12px'}}>
+                          {['jpg','jpeg','png','gif','webp'].includes((certForm.file_type||'').toLowerCase()) ? (
+                            <div style={{position:'relative',display:'inline-block'}}>
+                              <img src={certForm.file_url} alt="Preview" style={{maxWidth:'100%',maxHeight:'200px',borderRadius:'8px',border:'1px solid #ddd',display:'block'}} />
+                              <button type="button" onClick={() => setCertForm({...certForm, file_url:'', file_name:'', file_type:''})}
+                                style={{position:'absolute',top:'6px',right:'6px',background:'rgba(0,0,0,0.6)',color:'white',border:'none',borderRadius:'50%',width:'24px',height:'24px',cursor:'pointer',fontSize:'12px'}}>✕</button>
+                            </div>
+                          ) : (
+                            <div className="adm-docs-list">
+                              <div className="adm-doc-item">
+                                <span className="adm-doc-item__icon">{certForm.file_type==='pdf'?'📄':'📝'}</span>
+                                <span className="adm-doc-item__name">{certForm.file_name}</span>
+                                <button type="button" className="adm-doc-item__remove" onClick={() => setCertForm({...certForm, file_url:'', file_name:'', file_type:''})}>✕</button>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
