@@ -144,7 +144,7 @@ export default function BlogArticles({ onBack }: { onBack: () => void }) {
     <div className="ba-page">
       <div className="ba-hero">
         <div className="ba-hero__content">
-          <div className="ba-hero__badge">Legal Knowledge Hub</div>
+          <div className="ba-hero__badge">Blogs</div>
           <h1 className="ba-hero__title">Blog & Legal Articles</h1>
           <p className="ba-hero__sub">In-depth legal articles, case studies, and expert insights from Rai & Associates</p>
         </div>

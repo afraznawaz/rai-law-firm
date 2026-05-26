@@ -81,7 +81,7 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
 
   return (
     <div className="blog-post-page">
-      <button className="blog-post-back" onClick={onBack}>← Back to Legal Insights</button>
+      <button className="blog-post-back" onClick={onBack}>← Back to Blogs</button>
 
       <article className="blog-post-wrap">
         {/* Hero Image */}
