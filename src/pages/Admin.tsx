@@ -104,18 +104,20 @@ export default function Admin() {
   }
   const handleCertFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return;
-    setCertUploading(true); setCertMsg('')
-    // First try base64 local preview immediately
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      const dataUrl = ev.target?.result as string
-      const ext = file.name.split('.').pop()?.toLowerCase() || 'bin'
-      setCertForm((p:any) => ({ ...p, file_url: dataUrl, file_name: file.name, file_type: ext }))
-      setCertMsg('✅ ' + file.name + ' ready! Click Save to store.')
-      setCertUploading(false)
+    setCertUploading(true); setCertMsg('⏳ Uploading...')
+    try {
+      const token = await getToken()
+      const fd = new FormData()
+      fd.append('file', file)
+      const res = await fetch('/api/upload', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
+      if (!res.ok) throw new Error('Upload failed — ' + res.statusText)
+      const doc = await res.json()
+      setCertForm((p:any) => ({ ...p, file_url: doc.url, file_name: doc.name || file.name, file_type: doc.type || file.name.split('.').pop()?.toLowerCase() || 'bin' }))
+      setCertMsg('✅ ' + file.name + ' uploaded successfully!')
+    } catch(err:any) {
+      setCertMsg('❌ ' + err.message)
     }
-    reader.onerror = () => { setCertMsg('❌ Could not read file'); setCertUploading(false) }
-    reader.readAsDataURL(file)
+    setCertUploading(false)
     e.target.value = ''
   }
   const handleNewsFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -804,38 +806,39 @@ export default function Admin() {
                 {certs.map(c => {
                   const isImg = c.file_type && ['jpg','jpeg','png','gif','webp'].includes(c.file_type.toLowerCase())
                   const isPdf = c.file_type === 'pdf'
-                  const hasValidUrl = c.file_url && !c.file_url.startsWith('/uploads/certs/')
+                  const isOldPath = c.file_url && c.file_url.startsWith('/uploads/certs/')
+                  const isValidUrl = c.file_url && (c.file_url.startsWith('http') || c.file_url.startsWith('data:'))
                   return (
                   <div key={c.id} className="adm-post-card" style={{alignItems:'center'}}>
                     {/* Thumbnail */}
-                    <div style={{flexShrink:0,width:'72px',height:'72px',borderRadius:'8px',overflow:'hidden',background:'#f0f0e8',display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid #e0d8c8'}}>
-                      {hasValidUrl && isImg ? (
-                        <img src={c.file_url} alt={c.title} style={{width:'100%',height:'100%',objectFit:'cover'}} />
-                      ) : hasValidUrl && isPdf ? (
-                        <span style={{fontSize:'2rem'}}>📄</span>
-                      ) : (
-                        <span style={{fontSize:'2rem'}}>🏆</span>
-                      )}
+                    <div style={{flexShrink:0,width:'72px',height:'72px',borderRadius:'8px',overflow:'hidden',background:'#f0f0e8',display:'flex',alignItems:'center',justifyContent:'center',border:'1px solid #e0d8c8',fontSize:'2rem'}}>
+                      {isValidUrl && isImg ? (
+                        <img src={c.file_url} alt={c.title} style={{width:'100%',height:'100%',objectFit:'cover'}} onError={e => { (e.target as HTMLImageElement).style.display='none' }} />
+                      ) : isPdf ? '📄' : isOldPath ? '⚠️' : '🏆'}
                     </div>
                     <div className="adm-post-card__left" style={{flex:1}}>
-                      <span className="adm-post-card__status published">🟢 Saved</span>
+                      <span className={`adm-post-card__status ${isOldPath ? 'draft' : 'published'}`}>
+                        {isOldPath ? '⚠️ Needs Re-upload' : isValidUrl ? '🟢 File Ready' : '🟡 No File'}
+                      </span>
                       <h3 className="adm-post-card__title">{c.title}</h3>
                       <div className="adm-post-card__meta">
                         {c.issued_by && <span>🏛️ {c.issued_by}</span>}
                         {c.issued_date && <span>📅 {c.issued_date}</span>}
                         {c.category && <span className="adm-post-card__cat">{c.category}</span>}
                       </div>
-                      {!hasValidUrl && c.file_url && (
-                        <span style={{fontSize:'0.75rem',color:'#e07000',marginTop:'4px',display:'block'}}>⚠️ Old file path — please re-upload image</span>
+                      {isOldPath && (
+                        <span style={{fontSize:'0.75rem',color:'#e07000',marginTop:'4px',display:'block'}}>
+                          ⚠️ Old file — click Edit and re-upload the certificate image/PDF
+                        </span>
                       )}
-                      {hasValidUrl && c.file_url && (
+                      {isValidUrl && !isOldPath && (
                         <a href={c.file_url} target="_blank" rel="noopener noreferrer" style={{fontSize:'0.78rem',color:'#155a2e',marginTop:'4px',display:'inline-block'}}>
                           🔗 View File
                         </a>
                       )}
                     </div>
                     <div className="adm-post-card__actions">
-                      <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setCertForm({...c}); setCertMsg(''); setCertView('edit') }}>✏️ Edit</button>
+                      <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={() => { setCertForm({...c, file_url: isOldPath ? '' : c.file_url}); setCertMsg(isOldPath ? '⚠️ Please re-upload the certificate file below.' : ''); setCertView('edit') }}>✏️ Edit</button>
                       <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={() => handleCertDelete(c.id)}>🗑️ Delete</button>
                     </div>
                   </div>

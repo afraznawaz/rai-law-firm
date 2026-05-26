@@ -4365,6 +4365,33 @@ ul { list-style: none; }
 }
 .ra-cert-card__download:hover { background: var(--green-mid); }
 
+/* ===== WHATSAPP FLOATING BUTTON ===== */
+.ra-wa-float {
+  position: fixed;
+  left: 20px;
+  bottom: 28px;
+  z-index: 9999;
+  width: 56px;
+  height: 56px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.5);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: wa-pulse 2.5s infinite;
+}
+.ra-wa-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(37,211,102,0.65);
+}
+@keyframes wa-pulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(37,211,102,0.5); }
+  50% { box-shadow: 0 4px 28px rgba(37,211,102,0.8); }
+}
+
 /* ===== ADMIN CMS ===== */
 .adm-login {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;

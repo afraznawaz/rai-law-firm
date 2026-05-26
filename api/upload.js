@@ -37,16 +37,21 @@ export default async function handler(req, res) {
     const ext = fileName.split('.').pop()?.toLowerCase() || 'bin';
     const uniqueName = `${Date.now()}-${fileName.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
 
-    // Upload to Supabase Storage bucket 'certificates'
+    // Ensure bucket exists (create if not)
+    const BUCKET = 'certificates';
+    await supabase.storage.createBucket(BUCKET, { public: true }).catch(() => {});
+
+    // Upload to Supabase Storage
     const { data: uploadData, error: uploadErr } = await supabase.storage
-      .from('certificates')
+      .from(BUCKET)
       .upload(uniqueName, filePart.data, {
         contentType: mimeType,
         upsert: false
       });
 
     if (uploadErr) {
-      // Fallback: store as base64 data URL if storage fails
+      console.error('Storage upload error:', uploadErr.message);
+      // Fallback: store as base64 data URL
       const base64 = filePart.data.toString('base64');
       const dataUrl = `data:${mimeType};base64,${base64}`;
       return res.status(200).json({
@@ -59,7 +64,7 @@ export default async function handler(req, res) {
 
     // Get public URL
     const { data: { publicUrl } } = supabase.storage
-      .from('certificates')
+      .from(BUCKET)
       .getPublicUrl(uniqueName);
 
     return res.status(200).json({
@@ -84,7 +89,7 @@ function parseMultipart(buffer, boundary) {
     const boundaryIdx = buffer.indexOf(boundaryBuf, start);
     if (boundaryIdx === -1) break;
 
-    const headerStart = boundaryIdx + boundaryBuf.length + 2; // skip \r\n
+    const headerStart = boundaryIdx + boundaryBuf.length + 2;
     const headerEnd = buffer.indexOf(Buffer.from('\r\n\r\n'), headerStart);
     if (headerEnd === -1) break;
 
@@ -92,11 +97,10 @@ function parseMultipart(buffer, boundary) {
     const dataStart = headerEnd + 4;
 
     const nextBoundary = buffer.indexOf(boundaryBuf, dataStart);
-    const dataEnd = nextBoundary === -1 ? buffer.length : nextBoundary - 2; // skip \r\n before boundary
+    const dataEnd = nextBoundary === -1 ? buffer.length : nextBoundary - 2;
 
     const data = buffer.slice(dataStart, dataEnd);
 
-    // Parse headers
     const filenameMatch = headerStr.match(/filename="([^"]+)"/);
     const contentTypeMatch = headerStr.match(/Content-Type:\s*(.+)/i);
 
