@@ -109,7 +109,7 @@ export default function Admin() {
   }
   const handleNewsFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return; setNewsUploading(true)
-    try { const token = await getToken(); const fd = new FormData(); fd.append('file', file); const res = await fetch('/api/upload',{method:'POST',headers:{Authorization:`Bearer ${token}`},body:fd}); if (!res.ok) throw new Error('Upload failed'); const doc = await res.json(); setNewsForm((p:any)=>({...p,file_url:doc.url,file_name:doc.name,file_type:doc.type})); setNewsMsg('✅ '+file.name+' uploaded!') } catch(err:any){setNewsMsg('❌ '+err.message)}
+    try { const token = await getToken(); const fd = new FormData(); fd.append('file', file); const res = await fetch('/api/upload',{method:'POST',headers:{Authorization:`Bearer ${token}`},body:fd}); if (!res.ok) throw new Error('Upload failed'); const doc = await res.json(); setNewsForm((p:any)=>({...p,file_url:doc.url,image_url:doc.url,file_name:doc.name,file_type:doc.type})); setNewsMsg('✅ '+file.name+' uploaded!') } catch(err:any){setNewsMsg('❌ '+err.message)}
     setNewsUploading(false); e.target.value=''
   }
   const handleCertSave = async (e: React.FormEvent) => {
