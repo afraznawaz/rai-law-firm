@@ -63,7 +63,12 @@ function CertificatesPageInner({ onBack }: Props) {
             <div className="cert-detail__img"><img src={selected.file_url} alt={selected.title} onError={e => { (e.target as HTMLImageElement).parentElement!.style.display = 'none' }} /></div>
           ) : selected.file_url && isPdf(selected.file_url) ? (
             <div className="cert-detail__pdf"><iframe src={selected.file_url} title={selected.title} /></div>
-          ) : <div className="cert-detail__placeholder">🏅</div>}
+          ) : (
+            <div className="cert-detail__placeholder">
+              <div style={{fontSize:'4rem', marginBottom:'12px'}}>🏅</div>
+              <div style={{fontFamily:'var(--font-serif)',fontSize:'1.1rem',color:'var(--gold)',textAlign:'center',padding:'0 16px'}}>{selected.title}</div>
+            </div>
+          )}
           <div className="cert-detail__info">
             {selected.category && <div className="cert-detail__cat">{selected.category}</div>}
             <h1 className="cert-detail__title">{selected.title}</h1>
@@ -98,7 +103,14 @@ function CertificatesPageInner({ onBack }: Props) {
           {items.map(item => (
             <div key={item.id} className="cert-card" onClick={() => setSelected(item)}>
               <div className="cert-card__img">
-                {item.file_url && isImage(item.file_url) ? <img src={item.file_url} alt={item.title} loading="lazy" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} /> : item.file_url && isPdf(item.file_url) ? <div className="cert-card__pdf-icon">📄<span>PDF</span></div> : <div className="cert-card__pdf-icon">🏅</div>}
+                {item.file_url && isImage(item.file_url) 
+                  ? <img src={item.file_url} alt={item.title} loading="lazy" onError={e => { const t = e.target as HTMLImageElement; t.style.display='none'; t.nextElementSibling?.setAttribute('style','display:flex') }} />
+                  : null}
+                {item.file_url && isPdf(item.file_url) 
+                  ? <div className="cert-card__pdf-icon">📄<span>PDF</span></div>
+                  : !item.file_url || (!isImage(item.file_url) && !isPdf(item.file_url))
+                    ? <div className="cert-card__no-img"><div className="cert-card__no-img-icon">🏅</div><div className="cert-card__no-img-title">{item.title}</div><div className="cert-card__no-img-issuer">{item.issued_by}</div></div>
+                    : null}
                 <div className="ne-card__overlay"><span className="ne-card__view">Click to View →</span></div>
               </div>
               <div className="cert-card__body">

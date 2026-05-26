@@ -46,7 +46,12 @@ function NewsEventsInner({ onBack }: Props) {
       <div className="ne-detail">
         <button className="ne-back" onClick={() => setSelected(null)}>← Back to News & Events</button>
         <div className="ne-detail__wrap">
-          {selected.image_url && <div className="ne-detail__img"><img src={selected.image_url} alt={selected.title} onError={e => { (e.target as HTMLImageElement).parentElement!.style.display = 'none' }} /></div>}
+          <div className="ne-detail__img">
+            {selected.image_url 
+              ? <img src={selected.image_url} alt={selected.title} onError={e => { const t = e.target as HTMLImageElement; t.style.display='none'; t.nextElementSibling?.setAttribute('style','display:flex') }} />
+              : null}
+            <div className="ne-detail__img-placeholder" style={{display: selected.image_url ? 'none' : 'flex'}}>📰<span>{selected.title}</span></div>
+          </div>
           <div className="ne-detail__info">
             <div className="ne-detail__date">📅 {selected.event_date}</div>
             <h1 className="ne-detail__title">{selected.title}</h1>
@@ -75,7 +80,10 @@ function NewsEventsInner({ onBack }: Props) {
         : <div className="ne-grid">{items.map(item => (
           <div key={item.id} className="ne-card" onClick={() => setSelected(item)}>
             <div className="ne-card__img">
-              {item.image_url ? <img src={item.image_url} alt={item.title} loading="lazy" onError={e => { (e.target as HTMLImageElement).style.display = 'none' }} /> : <div className="ne-card__img-placeholder">📰</div>}
+              {item.image_url 
+              ? <img src={item.image_url} alt={item.title} loading="lazy" onError={e => { const t = e.target as HTMLImageElement; t.style.display='none'; t.parentElement!.querySelector('.ne-card__img-placeholder')?.setAttribute('style','display:flex') }} />
+              : null}
+            <div className="ne-card__img-placeholder" style={{display: item.image_url ? 'none' : 'flex'}}>📰</div>
               <div className="ne-card__overlay"><span className="ne-card__view">Click to View Details →</span></div>
             </div>
             <div className="ne-card__body">
