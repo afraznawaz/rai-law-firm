@@ -1780,26 +1780,27 @@ ul { list-style: none; }
 .ra-3d-scene {
   position: relative; height: 420px; width: 420px;
   display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  flex-shrink: 0; margin: 0 auto;
 }
 .ra-3d-card {
   width: 200px; height: 260px;
-  perspective: 1000px;
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
   margin: 0;
+  pointer-events: none;
 }
 .ra-3d-card__inner {
   width: 100%; height: 100%;
-  background: linear-gradient(145deg, rgba(13,61,30,0.9), rgba(10,42,18,0.95));
-  border: 1px solid rgba(201,168,76,0.4);
-  border-radius: 20px; padding: 28px 20px;
+  background: linear-gradient(145deg, rgba(13,61,30,0.92), rgba(10,42,18,0.97));
+  border: 1px solid rgba(201,168,76,0.45);
+  border-radius: 20px; padding: 24px 18px;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,168,76,0.1);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(201,168,76,0.12), inset 0 1px 0 rgba(201,168,76,0.15);
   animation: floatCard 4s ease-in-out infinite;
   position: relative; overflow: hidden;
+  text-align: center;
 }
 @keyframes floatCard {
   0%, 100% { transform: translateY(0px); }
@@ -1854,8 +1855,8 @@ ul { list-style: none; }
   pointer-events: none;
   transform-origin: center center;
 }
-.ra-3d-ring--1 { width: 300px; height: 300px; transform: translate(-50%, -50%); animation: spin 20s linear infinite; }
-.ra-3d-ring--2 { width: 390px; height: 390px; transform: translate(-50%, -50%); animation: spin 30s linear infinite reverse; border-style: dashed; }
+.ra-3d-ring--1 { width: 300px; height: 300px; transform: translate(-50%, -50%) rotate(0deg); animation: spin 20s linear infinite; }
+.ra-3d-ring--2 { width: 390px; height: 390px; transform: translate(-50%, -50%) rotate(0deg); animation: spin 30s linear infinite reverse; border-style: dashed; }
 @keyframes spin { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)} }
 
 /* Particles */
@@ -1903,10 +1904,21 @@ ul { list-style: none; }
 .ra-wa-float__icon { width: 24px; height: 24px; flex-shrink: 0; }
 @keyframes waPulse { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.45)} 50%{box-shadow:0 4px 28px rgba(37,211,102,0.7)} }
 
+@media (max-width: 1024px) {
+  .ra-3d-scene { width: 360px; height: 360px; }
+  .ra-3d-ring--1 { width: 240px; height: 240px; }
+  .ra-3d-ring--2 { width: 320px; height: 320px; }
+}
 @media (max-width: 768px) {
   .ra-3d-section { grid-template-columns: 1fr; padding: 48px 24px; gap: 32px; }
-  .ra-3d-scene { height: 300px; }
-  .ra-3d-card { width: 200px; height: 260px; }
+  .ra-3d-scene { width: 300px; height: 300px; }
+  .ra-3d-card { width: 160px; height: 210px; }
+  .ra-3d-ring--1 { width: 200px; height: 200px; }
+  .ra-3d-ring--2 { width: 270px; height: 270px; }
+  .ra-3d-float--1 { top: 10px; left: 10px; }
+  .ra-3d-float--2 { top: 10px; right: 10px; }
+  .ra-3d-float--3 { bottom: 10px; left: 10px; }
+  .ra-3d-float--4 { bottom: 10px; right: 10px; }
   .ra-wa-float__text { display: none; }
   .ra-wa-float { padding: 12px; border-radius: 50%; }
 }
