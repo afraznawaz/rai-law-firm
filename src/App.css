@@ -1778,11 +1778,17 @@ ul { list-style: none; }
   pointer-events: none;
 }
 .ra-3d-scene {
-  position: relative; height: 400px; display: flex; align-items: center; justify-content: center;
+  position: relative; height: 420px; width: 420px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
 .ra-3d-card {
-  width: 260px; height: 320px;
-  perspective: 1000px; position: relative; z-index: 2;
+  width: 220px; height: 280px;
+  perspective: 1000px;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
 }
 .ra-3d-card__inner {
   width: 100%; height: 100%;
@@ -1816,8 +1822,8 @@ ul { list-style: none; }
   color: rgba(255,255,255,0.6);
 }
 @keyframes float3d {
-  0%, 100% { transform: translateY(0px) rotateY(-5deg) rotateX(3deg); }
-  50% { transform: translateY(-16px) rotateY(5deg) rotateX(-3deg); }
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
 }
 @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -1828,10 +1834,10 @@ ul { list-style: none; }
   padding: 10px 16px; display: flex; flex-direction: column; align-items: center;
   backdrop-filter: blur(8px);
 }
-.ra-3d-float--1 { top: 30px; left: 0; animation: floatA 3s ease-in-out infinite; }
-.ra-3d-float--2 { top: 30px; right: 0; animation: floatB 3.5s ease-in-out infinite; }
-.ra-3d-float--3 { bottom: 60px; left: 10px; animation: floatA 4s ease-in-out infinite 0.5s; }
-.ra-3d-float--4 { bottom: 60px; right: 10px; animation: floatB 3.2s ease-in-out infinite 1s; }
+.ra-3d-float--1 { top: 20px; left: 20px; animation: floatA 3s ease-in-out infinite; }
+.ra-3d-float--2 { top: 20px; right: 20px; animation: floatB 3.5s ease-in-out infinite; }
+.ra-3d-float--3 { bottom: 20px; left: 20px; animation: floatA 4s ease-in-out infinite 0.5s; }
+.ra-3d-float--4 { bottom: 20px; right: 20px; animation: floatB 3.2s ease-in-out infinite 1s; }
 .ra-3d-float__num { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 900; color: var(--gold); }
 .ra-3d-float__lbl { font-size: 0.65rem; color: rgba(255,255,255,0.55); letter-spacing: 0.05em; margin-top: 2px; }
 @keyframes floatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
@@ -1839,12 +1845,14 @@ ul { list-style: none; }
 
 /* Orbiting rings */
 .ra-3d-ring {
-  position: absolute; border-radius: 50%;
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
   border: 1px solid rgba(201,168,76,0.15);
   pointer-events: none;
 }
-.ra-3d-ring--1 { width: 300px; height: 300px; animation: spin 20s linear infinite; }
-.ra-3d-ring--2 { width: 380px; height: 380px; animation: spin 30s linear infinite reverse; border-style: dashed; }
+.ra-3d-ring--1 { width: 300px; height: 300px; margin-top: -150px; margin-left: -150px; animation: spin 20s linear infinite; }
+.ra-3d-ring--2 { width: 390px; height: 390px; margin-top: -195px; margin-left: -195px; animation: spin 30s linear infinite reverse; border-style: dashed; }
 @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 
 /* Particles */

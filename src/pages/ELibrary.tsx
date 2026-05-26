@@ -414,20 +414,34 @@ export default function ELibrary({ onBack }: { onBack: () => void }) {
     setDownloading(title)
     setDlError(null)
     try {
+      // Try proxy first
       const response = await fetch(`/api/proxy-pdf?url=${encodeURIComponent(url)}`)
-      if (!response.ok) throw new Error('Could not fetch PDF')
-      const blob = await response.blob()
-      if (blob.size < 1000) throw new Error('Invalid PDF received')
+      if (response.ok) {
+        const blob = await response.blob()
+        if (blob.size > 1000 && blob.type.includes('pdf')) {
+          const link = document.createElement('a')
+          link.href = URL.createObjectURL(blob)
+          link.download = title.replace(/[^a-z0-9\s]/gi, '').trim().substring(0, 60) + '.pdf'
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          setTimeout(() => URL.revokeObjectURL(link.href), 5000)
+          setDownloading(null)
+          return
+        }
+      }
+      // Fallback: open PDF directly in new tab for download
       const link = document.createElement('a')
-      link.href = URL.createObjectURL(blob)
+      link.href = url
+      link.target = '_blank'
+      link.rel = 'noopener noreferrer'
       link.download = title.replace(/[^a-z0-9\s]/gi, '').trim().substring(0, 60) + '.pdf'
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-      setTimeout(() => URL.revokeObjectURL(link.href), 5000)
     } catch (err: any) {
-      setDlError('Download failed. Please try again.')
-      setTimeout(() => setDlError(null), 4000)
+      // Final fallback: just open in new tab
+      window.open(url, '_blank', 'noopener,noreferrer')
     } finally {
       setDownloading(null)
     }
