@@ -53,11 +53,46 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'GET') {
+      const { action } = req.query;
+
+      // Admin: list all lawyers
+      if (action === 'list') {
+        const token = req.headers.authorization?.replace('Bearer ', '');
+        if (!token) return res.status(401).json({ error: 'Unauthorized' });
+        const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
+        if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
+        const { data, error } = await supabase
+          .from('lawyer_profiles')
+          .select('id,full_name,phone,email,city,specialization,experience_years,bar_council,bar_number,bio,profile_photo_url,status,approved,created_at')
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        return res.status(200).json(data);
+      }
+
+      // Public: approved lawyers only
       const { data, error } = await supabase
         .from('lawyer_profiles')
         .select('id,full_name,city,specialization,experience_years,bar_council,bar_number,bio,profile_photo_url,court_levels,languages,current_firm,designation,fee_range,available_for_consultation,created_at')
         .eq('approved', true)
         .order('created_at', { ascending: false });
+      if (error) throw error;
+      return res.status(200).json(data);
+    }
+
+    if (req.method === 'PUT') {
+      const token = req.headers.authorization?.replace('Bearer ', '');
+      if (!token) return res.status(401).json({ error: 'Unauthorized' });
+      const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
+      if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
+
+      const { id, status } = req.body;
+      const approved = status === 'approved';
+      const { data, error } = await supabase
+        .from('lawyer_profiles')
+        .update({ status, approved })
+        .eq('id', id)
+        .select()
+        .single();
       if (error) throw error;
       return res.status(200).json(data);
     }

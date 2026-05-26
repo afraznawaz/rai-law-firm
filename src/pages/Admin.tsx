@@ -19,7 +19,7 @@ const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 const TIME_OPTIONS = ['09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM']
 
-type View = 'list'|'edit'|'new'|'bookings'|'slots'|'notifications'|'leads'|'chatbot'|'export'|'certificates'|'news-events'
+type View = 'list'|'edit'|'new'|'bookings'|'slots'|'notifications'|'leads'|'chatbot'|'export'|'certificates'|'news-events'|'messages'|'lawyers'
 
 export default function Admin() {
   const [user, setUser]             = useState<any>(null)
@@ -55,6 +55,15 @@ export default function Admin() {
   const [certMsg, setCertMsg]             = useState('')
   const [certUploading, setCertUploading] = useState(false)
 
+  // Messages
+  const [messages, setMessages]           = useState<any[]>([])
+  const [msgFilter, setMsgFilter]         = useState<'all'|'unread'|'read'>('all')
+
+  // Lawyers
+  const [lawyers, setLawyers]             = useState<any[]>([])
+  const [lawyerFilter, setLawyerFilter]   = useState<'all'|'pending'|'approved'|'rejected'>('all')
+  const [lawyerMsg, setLawyerMsg]         = useState('')
+
   // News & Events
   const [news, setNews]                   = useState<any[]>([])
   const [newsForm, setNewsForm]           = useState<any>({ id:0, title:'', type:'news', description:'', content:'', event_date:'', location:'', file_url:'', file_name:'', file_type:'', published:true })
@@ -69,8 +78,24 @@ export default function Admin() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => { if (user) { fetchPosts(); fetchBookings(); fetchSettings(); fetchSlots(); fetchCerts(); fetchNews() } }, [user])
+  useEffect(() => { if (user) { fetchPosts(); fetchBookings(); fetchSettings(); fetchSlots(); fetchCerts(); fetchNews(); fetchMessages(); fetchLawyers() } }, [user])
 
+  const fetchMessages = async () => {
+    try { const token = await getToken(); const res = await fetch('/api/messages',{headers:{Authorization:`Bearer ${token}`}}); const d = await res.json(); setMessages(Array.isArray(d)?d:[]) } catch(e) {}
+  }
+  const fetchLawyers = async () => {
+    try { const token = await getToken(); const res = await fetch('/api/lawyer-auth?action=list',{headers:{Authorization:`Bearer ${token}`}}); const d = await res.json(); setLawyers(Array.isArray(d)?d:[]) } catch(e) {}
+  }
+  const handleMarkRead = async (id: number, read: boolean) => {
+    try { const token = await getToken(); await fetch('/api/messages',{method:'PUT',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id,read})}); await fetchMessages() } catch(e) {}
+  }
+  const handleDeleteMsg = async (id: number) => {
+    try { const token = await getToken(); await fetch('/api/messages',{method:'DELETE',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id})}); await fetchMessages() } catch(e) {}
+  }
+  const handleLawyerStatus = async (id: number, status: string) => {
+    setLawyerMsg('')
+    try { const token = await getToken(); const res = await fetch('/api/lawyer-auth',{method:'PUT',headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},body:JSON.stringify({id,status})}); if(!res.ok) throw new Error('Failed'); setLawyerMsg('✅ Status updated!'); await fetchLawyers(); setTimeout(()=>setLawyerMsg(''),2000) } catch(e:any){setLawyerMsg('❌ '+e.message)}
+  }
   const fetchCerts = async () => {
     try { const res = await fetch('/api/certificates'); const d = await res.json(); setCerts(Array.isArray(d)?d:[]) } catch(e) {}
   }
@@ -356,6 +381,16 @@ export default function Admin() {
           <button className={`adm-sidebar__link ${view==='certificates'?'active':''}`} onClick={() => { navTo('certificates'); setCertView('list') }}>🏆 Certificates</button>
           <button className={`adm-sidebar__link ${view==='news-events'?'active':''}`} onClick={() => { navTo('news-events'); setNewsView('list') }}>📰 News & Events</button>
 
+          <div className="adm-sidebar__section-label" style={{marginTop:'12px'}}>INBOX</div>
+          <button className={`adm-sidebar__link ${view==='messages'?'active':''}`} onClick={() => navTo('messages')}>
+            💬 Messages
+            {messages.filter(m=>!m.read).length > 0 && <span className="adm-sidebar__badge">{messages.filter(m=>!m.read).length}</span>}
+          </button>
+          <div className="adm-sidebar__section-label" style={{marginTop:'12px'}}>LAWYERS</div>
+          <button className={`adm-sidebar__link ${view==='lawyers'?'active':''}`} onClick={() => navTo('lawyers')}>
+            ⚖️ Lawyer Registrations
+            {lawyers.filter((l:any)=>l.status==='pending').length > 0 && <span className="adm-sidebar__badge">{lawyers.filter((l:any)=>l.status==='pending').length}</span>}
+          </button>
           <div className="adm-sidebar__section-label" style={{marginTop:'12px'}}>SITE</div>
           <a href="/" className="adm-sidebar__link">🌐 View Website</a>
         </nav>
@@ -900,6 +935,107 @@ export default function Admin() {
                 </div>
               </form>
             )}
+          </div>
+        )}
+
+        {/* ── MESSAGES ── */}
+        {view === 'messages' && (
+          <div>
+            <div className="adm-header">
+              <div><h1 className="adm-header__title">💬 Contact Messages</h1><p className="adm-header__sub">{messages.filter(m=>!m.read).length} unread · {messages.length} total</p></div>
+              <div style={{display:'flex',gap:'8px'}}>
+                {(['all','unread','read'] as const).map(f => (
+                  <button key={f} className={`adm-btn adm-btn--sm ${msgFilter===f?'adm-btn--gold':'adm-btn--outline'}`} onClick={()=>setMsgFilter(f)}>
+                    {f==='all'?'All':f==='unread'?'Unread':'Read'}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="adm-messages-list">
+              {messages.filter(m => msgFilter==='all' ? true : msgFilter==='unread' ? !m.read : m.read).length === 0 ? (
+                <div className="adm-loading">No messages yet.</div>
+              ) : messages.filter(m => msgFilter==='all' ? true : msgFilter==='unread' ? !m.read : m.read).map((m:any) => (
+                <div key={m.id} className={`adm-msg-card ${!m.read?'adm-msg-card--unread':''}`}>
+                  <div className="adm-msg-card__left">
+                    <div className="adm-msg-card__avatar">{m.name?.charAt(0).toUpperCase()}</div>
+                  </div>
+                  <div className="adm-msg-card__body">
+                    <div className="adm-msg-card__top">
+                      <span className="adm-msg-card__name">{m.name}</span>
+                      {!m.read && <span className="adm-msg-card__new">NEW</span>}
+                      <span className="adm-msg-card__date">{new Date(m.created_at).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'})}</span>
+                    </div>
+                    <div className="adm-msg-card__contact">
+                      {m.phone && <a href={`tel:${m.phone}`}>📞 {m.phone}</a>}
+                      {m.email && <a href={`mailto:${m.email}`}>✉️ {m.email}</a>}
+                      {m.subject && <span>📌 {m.subject}</span>}
+                    </div>
+                    <p className="adm-msg-card__text">{m.message}</p>
+                  </div>
+                  <div className="adm-msg-card__actions">
+                    {m.phone && <a href={`https://wa.me/92${m.phone.replace(/^0/,'')}`} target="_blank" rel="noopener noreferrer" className="adm-btn adm-btn--sm" style={{background:'#25d366',color:'white'}}>💬</a>}
+                    {m.phone && <a href={`tel:${m.phone}`} className="adm-btn adm-btn--sm adm-btn--outline">📞</a>}
+                    <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={()=>handleMarkRead(m.id,!m.read)}>{m.read?'Mark Unread':'Mark Read'}</button>
+                    <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={()=>handleDeleteMsg(m.id)}>🗑️</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── LAWYERS ── */}
+        {view === 'lawyers' && (
+          <div>
+            <div className="adm-header">
+              <div><h1 className="adm-header__title">⚖️ Lawyer Registrations</h1><p className="adm-header__sub">{lawyers.filter((l:any)=>l.status==='pending').length} pending · {lawyers.length} total</p></div>
+              <div style={{display:'flex',gap:'8px'}}>
+                {(['all','pending','approved','rejected'] as const).map(f => (
+                  <button key={f} className={`adm-btn adm-btn--sm ${lawyerFilter===f?'adm-btn--gold':'adm-btn--outline'}`} onClick={()=>setLawyerFilter(f)}>
+                    {f==='all'?'All':f==='pending'?'⏳ Pending':f==='approved'?'✅ Approved':'❌ Rejected'}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {lawyerMsg && <div className="adm-save-msg" style={{marginBottom:'16px'}}>{lawyerMsg}</div>}
+            <div className="adm-lawyers-list">
+              {lawyers.filter((l:any) => lawyerFilter==='all' ? true : l.status===lawyerFilter).length === 0 ? (
+                <div className="adm-loading">No lawyer registrations yet.</div>
+              ) : lawyers.filter((l:any) => lawyerFilter==='all' ? true : l.status===lawyerFilter).map((l:any) => (
+                <div key={l.id} className={`adm-lawyer-card adm-lawyer-card--${l.status||'pending'}`}>
+                  <div className="adm-lawyer-card__avatar">
+                    {l.profile_photo_url ? <img src={l.profile_photo_url} alt={l.full_name} /> : <span>{l.full_name?.charAt(0)}</span>}
+                  </div>
+                  <div className="adm-lawyer-card__info">
+                    <div className="adm-lawyer-card__name">{l.full_name}</div>
+                    <div className="adm-lawyer-card__meta">
+                      {l.bar_council && <span>🏛️ {l.bar_council}</span>}
+                      {l.bar_number && <span>Reg: {l.bar_number}</span>}
+                      {l.experience_years && <span>⏱️ {l.experience_years} yrs</span>}
+                      {l.city && <span>📍 {l.city}</span>}
+                    </div>
+                    {l.specialization && <div className="adm-lawyer-card__spec">⚖️ {l.specialization}</div>}
+                    <div className="adm-lawyer-card__contact">
+                      {l.phone && <a href={`tel:${l.phone}`}>📞 {l.phone}</a>}
+                      {l.email && <a href={`mailto:${l.email}`}>✉️ {l.email}</a>}
+                    </div>
+                    {l.bio && <p className="adm-lawyer-card__bio">{l.bio?.substring(0,120)}...</p>}
+                    <div className="adm-lawyer-card__status-row">
+                      <span className={`adm-lawyer-card__badge adm-lawyer-card__badge--${l.status||'pending'}`}>
+                        {l.status==='approved'?'✅ Approved':l.status==='rejected'?'❌ Rejected':'⏳ Pending'}
+                      </span>
+                      <span className="adm-lawyer-card__date">{new Date(l.created_at).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'})}</span>
+                    </div>
+                  </div>
+                  <div className="adm-lawyer-card__actions">
+                    {l.status !== 'approved' && <button className="adm-btn adm-btn--sm" style={{background:'#16a34a',color:'white'}} onClick={()=>handleLawyerStatus(l.id,'approved')}>✅ Approve</button>}
+                    {l.status !== 'rejected' && <button className="adm-btn adm-btn--sm adm-btn--danger" onClick={()=>handleLawyerStatus(l.id,'rejected')}>❌ Reject</button>}
+                    {l.status !== 'pending' && <button className="adm-btn adm-btn--sm adm-btn--outline" onClick={()=>handleLawyerStatus(l.id,'pending')}>⏳ Reset</button>}
+                    {l.phone && <a href={`https://wa.me/92${l.phone.replace(/^0/,'')}`} target="_blank" rel="noopener noreferrer" className="adm-btn adm-btn--sm" style={{background:'#25d366',color:'white'}}>💬</a>}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
