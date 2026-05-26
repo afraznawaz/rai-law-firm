@@ -49,7 +49,7 @@ export default function Admin() {
 
   // Certificates
   const [certs, setCerts]                 = useState<any[]>([])
-  const [certForm, setCertForm]           = useState<any>({ id:0, title:'', description:'', file_url:'', file_name:'', file_type:'', issued_by:'', issued_date:'', published:true })
+  const [certForm, setCertForm]           = useState<any>({ id:0, title:'', description:'', file_url:'', file_name:'', file_type:'', issued_by:'', issued_date:'' })
   const [certView, setCertView]           = useState<'list'|'new'|'edit'>('list')
   const [certSaving, setCertSaving]       = useState(false)
   const [certMsg, setCertMsg]             = useState('')
@@ -784,7 +784,7 @@ export default function Admin() {
           <div>
             <div className="adm-header">
               <div><h1 className="adm-header__title">🏆 Certificates</h1><p className="adm-header__sub">{certs.length} certificates total</p></div>
-              {certView === 'list' && <button className="adm-btn adm-btn--gold" onClick={() => { setCertForm({ id:0, title:'', description:'', file_url:'', file_name:'', file_type:'', issued_by:'', issued_date:'', published:true }); setCertMsg(''); setCertView('new') }}>+ Add Certificate</button>}
+              {certView === 'list' && <button className="adm-btn adm-btn--gold" onClick={() => { setCertForm({ id:0, title:'', description:'', file_url:'', file_name:'', file_type:'', issued_by:'', issued_date:'' }); setCertMsg(''); setCertView('new') }}>+ Add Certificate</button>}
               {certView !== 'list' && <button className="adm-btn adm-btn--outline" onClick={() => setCertView('list')}>← Back</button>}
             </div>
             {certView === 'list' && (
@@ -793,7 +793,7 @@ export default function Admin() {
                 {certs.map(c => (
                   <div key={c.id} className="adm-post-card">
                     <div className="adm-post-card__left">
-                      <span className={`adm-post-card__status ${c.published?'published':'draft'}`}>{c.published?'🟢 Published':'🟡 Draft'}</span>
+                      <span className="adm-post-card__status published">🟢 Live on Website</span>
                       <h3 className="adm-post-card__title">🏆 {c.title}</h3>
                       <div className="adm-post-card__meta">
                         {c.issued_by && <span>Issued by: {c.issued_by}</span>}
@@ -845,8 +845,8 @@ export default function Admin() {
                   </div>
                   <div className="adm-editor__sidebar">
                     <div className="adm-editor__panel">
-                      <h3>Settings</h3>
-                      <div className="adm-form__group"><label>Status</label><select value={certForm.published?'published':'draft'} onChange={e => setCertForm({...certForm, published: e.target.value==='published'})}><option value="published">🟢 Published</option><option value="draft">🟡 Draft</option></select></div>
+                      <h3>Save Certificate</h3>
+                      <p style={{fontSize:'0.82rem',color:'#666',marginBottom:'16px'}}>Certificate will appear live on the website after saving.</p>
                       {certMsg && <div className="adm-save-msg">{certMsg}</div>}
                       <button type="submit" className="adm-btn adm-btn--gold adm-btn--full" disabled={certSaving}>{certSaving ? 'Saving...' : certView==='new' ? '🚀 Add Certificate' : '💾 Save Changes'}</button>
                     </div>

@@ -17,6 +17,7 @@ import LawyerDashboard from './pages/LawyerDashboard'
 import './styles/dashboard.css'
 import LawyerList from './pages/LawyerList'
 import SectionPreview from './components/SectionPreview'
+import CertificatesSection from './components/CertificatesSection'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
 
 
@@ -1046,80 +1047,7 @@ export default function App() {
             <p className="ra-section__subtitle">Official bar memberships, registrations and professional certifications</p>
           </div>
 
-          <div className="ra-certs__grid">
-            <div className="ra-cert-card">
-              <div className="ra-cert-card__badge">🏛️</div>
-              <h3 className="ra-cert-card__title">Punjab Bar Council</h3>
-              <p className="ra-cert-card__num">Registration No. 144840</p>
-              <p className="ra-cert-card__desc">Licensed Advocate — Punjab Bar Council, Pakistan. Authorized to practice law across all courts in Punjab.</p>
-            </div>
-            <div className="ra-cert-card">
-              <div className="ra-cert-card__badge">⚖️</div>
-              <h3 className="ra-cert-card__title">Lahore Tax Bar Association</h3>
-              <p className="ra-cert-card__num">Active Member</p>
-              <p className="ra-cert-card__desc">Specialized member of the Lahore Tax Bar Association — Tax Law, FBR Disputes & Tribunal Practice.</p>
-            </div>
-            <div className="ra-cert-card">
-              <div className="ra-cert-card__badge">🏦</div>
-              <h3 className="ra-cert-card__title">Lahore High Court</h3>
-              <p className="ra-cert-card__num">Enrolled Advocate</p>
-              <p className="ra-cert-card__desc">Authorized to appear and argue before the Lahore High Court in civil, criminal, and constitutional matters.</p>
-            </div>
-            <div className="ra-cert-card">
-              <div className="ra-cert-card__badge">🏢</div>
-              <h3 className="ra-cert-card__title">District Courts Punjab</h3>
-              <p className="ra-cert-card__num">Enrolled Advocate</p>
-              <p className="ra-cert-card__desc">Registered advocate before all District & Sessions Courts across Punjab including Lahore, Gujranwala, and Faisalabad.</p>
-            </div>
-            <div className="ra-cert-card">
-              <div className="ra-cert-card__badge">📋</div>
-              <h3 className="ra-cert-card__title">Appellate Tribunal Inland Revenue</h3>
-              <p className="ra-cert-card__num">Authorized Representative</p>
-              <p className="ra-cert-card__desc">Authorized to represent taxpayers before the ATIR — Pakistan's apex tax appellate tribunal for income tax and sales tax disputes.</p>
-            </div>
-            <div className="ra-cert-card">
-              <div className="ra-cert-card__badge">🔍</div>
-              <h3 className="ra-cert-card__title">FIA Cybercrime Wing</h3>
-              <p className="ra-cert-card__num">Defense Counsel</p>
-              <p className="ra-cert-card__desc">Experienced defense counsel in FIA cybercrime investigations and PECA 2016 cases before the Cybercrime Courts.</p>
-            </div>
-            <div className="ra-cert-card">
-              <div className="ra-cert-card__badge">📜</div>
-              <h3 className="ra-cert-card__title">R&A Law Firm</h3>
-              <p className="ra-cert-card__num">Est. 1993 — Lahore</p>
-              <p className="ra-cert-card__desc">Founding firm established in 1993. 3-Fane Road, Tehreem Building, Lahore. Over 30 years of legal excellence.</p>
-            </div>
-            <div className="ra-cert-card">
-              <div className="ra-cert-card__badge">🌐</div>
-              <h3 className="ra-cert-card__title">IPO Pakistan — Trademark Agent</h3>
-              <p className="ra-cert-card__num">Registered Agent</p>
-              <p className="ra-cert-card__desc">Registered Trademark & IP Agent with Intellectual Property Organization (IPO) Pakistan for trademark and patent filings.</p>
-            </div>
-            <div className="ra-cert-card ra-cert-card--harvard">
-              <div className="ra-cert-card__badge">🎓</div>
-              <h3 className="ra-cert-card__title">HarvardX — Harvard University</h3>
-              <p className="ra-cert-card__num">Verified Certificate of Achievement</p>
-              <p className="ra-cert-card__desc">HLS2X: Contract Law — From Trust to Promise to Contract. Issued August 20, 2024 by Harvard Law School.</p>
-            </div>
-            <div className="ra-cert-card ra-cert-card--stanford">
-              <div className="ra-cert-card__badge">🏆</div>
-              <h3 className="ra-cert-card__title">Yale Law School — Online</h3>
-              <p className="ra-cert-card__num">Certificate of Completion</p>
-              <p className="ra-cert-card__desc">Constitutional Law & Fundamental Rights — Yale Law School Online Continuing Legal Education Program.</p>
-            </div>
-            <div className="ra-cert-card ra-cert-card--intl">
-              <div className="ra-cert-card__badge">🌍</div>
-              <h3 className="ra-cert-card__title">Association of International Lawyers</h3>
-              <p className="ra-cert-card__num">Certified Member</p>
-              <p className="ra-cert-card__desc">Certified Member of the Association of International Lawyers — Global Legal Network & International Law Practice.</p>
-            </div>
-            <div className="ra-cert-card">
-              <div className="ra-cert-card__badge">💼</div>
-              <h3 className="ra-cert-card__title">Pakistan Bar Council</h3>
-              <p className="ra-cert-card__num">Enrolled Advocate</p>
-              <p className="ra-cert-card__desc">Enrolled with the Pakistan Bar Council — eligible to practice before the Supreme Court of Pakistan and all Federal Courts.</p>
-            </div>
-          </div>
+          <CertificatesSection />
         </div>
       </section>
       </SectionPreview>

@@ -4352,6 +4352,19 @@ ul { list-style: none; }
   .svc-body { padding: 32px 16px 60px; }
 }
 
+.ra-cert-card--dynamic {
+  border: 2px solid rgba(201,168,76,0.4);
+  background: linear-gradient(135deg, #fff9ee, #ffffff);
+}
+.ra-cert-card__download {
+  display: inline-block; margin-top: 10px;
+  padding: 5px 12px; border-radius: 6px;
+  background: var(--green-dark); color: var(--gold);
+  font-size: 0.78rem; font-weight: 700; text-decoration: none;
+  transition: all 0.2s;
+}
+.ra-cert-card__download:hover { background: var(--green-mid); }
+
 /* ===== ADMIN CMS ===== */
 .adm-login {
   min-height: 100vh; display: flex; align-items: center; justify-content: center;
