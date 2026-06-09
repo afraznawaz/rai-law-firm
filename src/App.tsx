@@ -197,6 +197,7 @@ export default function App() {
 
   const [showELibrary, setShowELibrary] = useState(false)
   const [blogFilter, setBlogFilter] = useState('All')
+  const [showInstallMenu, setShowInstallMenu] = useState(false)
   const [reviews, setReviews] = useState<any[]>([])
   const [reviewsLoading, setReviewsLoading] = useState(true)
   const [activeReview, setActiveReview] = useState(0)
@@ -559,26 +560,7 @@ export default function App() {
       {/* HERO */}
       <section id="home" className="ra-hero">
         <div className="ra-hero__overlay" />
-        {/* 3D LEFT SIDE */}
-        <div className="ra-hero__3d ra-hero__3d--left">
-          <div className="ra-hero3d__scene">
-            <div className="ra-hero3d__ring ra-hero3d__ring--outer" />
-            <div className="ra-hero3d__ring ra-hero3d__ring--mid" />
-            <div className="ra-hero3d__card">
-              <div className="ra-hero3d__card-glow" />
-              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-hero3d__logo" />
-              <div className="ra-hero3d__firm">RAI & ASSOCIATES</div>
-              <div className="ra-hero3d__est">Est. 1993 · Lahore</div>
-              <div className="ra-hero3d__divider" />
-              <div className="ra-hero3d__tagline">⚖️ Committed to Justice</div>
-            </div>
-            <div className="ra-hero3d__badge ra-hero3d__badge--1"><span>30+</span><small>Years</small></div>
-            <div className="ra-hero3d__badge ra-hero3d__badge--2"><span>100s+</span><small>Cases</small></div>
-            <div className="ra-hero3d__badge ra-hero3d__badge--3"><span>98%</span><small>Success</small></div>
-            <div className="ra-hero3d__badge ra-hero3d__badge--4"><span>⚖️</span><small>Justice</small></div>
-            {[...Array(8)].map((_, i) => <div key={i} className={`ra-hero3d__particle ra-hero3d__particle--${i+1}`} />)}
-          </div>
-        </div>
+
         <div className="ra-hero__content">
           <div className="ra-hero__badge">Established Since 1993</div>
           <h1 className="ra-hero__title"><span className="ra-hero__title-gold">RAI & ASSOCIATES</span><br />Law Firm</h1>
@@ -590,10 +572,23 @@ export default function App() {
             <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-hero__mobile-icon" title="Mobile App">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 2h-3a5 5 0 00-5 5v3H7v4h2v10h4V14h3l1-4h-4V7a1 1 0 011-1h3V2z"/></svg>
             </a>
-            <button className="ra-hero__install-app" onClick={() => window.open('https://wa.me/923164371096','_blank')}>
+            <button className="ra-hero__install-app" onClick={() => setShowInstallMenu(!showInstallMenu)}>
               <span className="ra-hero__install-icon">📲</span>
               <span>Install App</span>
             </button>
+            {showInstallMenu && (
+              <div className="ra-install-menu">
+                <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-install-menu__item">
+                  <span>💬</span> Chat on WhatsApp
+                </a>
+                <a href="tel:+923044840937" className="ra-install-menu__item">
+                  <span>📞</span> Call Now
+                </a>
+                <a href="#contact" onClick={() => { setShowInstallMenu(false); scrollTo('contact'); }} className="ra-install-menu__item">
+                  <span>📝</span> Book Consultation
+                </a>
+              </div>
+            )}
           </div>
           <div className="ra-hero__bar">
             <span>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</span>
