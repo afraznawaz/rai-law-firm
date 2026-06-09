@@ -4356,6 +4356,13 @@ ul { list-style: none; }
   border: 2px solid rgba(201,168,76,0.4);
   background: linear-gradient(135deg, #fff9ee, #ffffff);
 }
+.ra-cert-card__img-wrap {
+  width: 100%; border-radius: 8px; overflow: hidden; margin-bottom: 12px;
+  border: 1px solid rgba(201,168,76,0.2); max-height: 160px;
+}
+.ra-cert-card__img {
+  width: 100%; height: 160px; object-fit: cover; display: block;
+}
 .ra-cert-card__download {
   display: inline-block; margin-top: 10px;
   padding: 5px 12px; border-radius: 6px;
@@ -4536,6 +4543,28 @@ ul { list-style: none; }
 }
 .adm-upload-btn:hover { background: var(--green-mid); }
 .adm-upload-msg { margin-top: 10px; font-size: 0.82rem; color: var(--green-mid); font-weight: 600; }
+
+/* Post Image Upload */
+.adm-post-img-upload { }
+.adm-post-img-drop {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 24px 16px; border: 2px dashed #ccc; border-radius: 8px;
+  cursor: pointer; transition: all 0.2s; background: #fafafa;
+}
+.adm-post-img-drop:hover { border-color: var(--green-mid); background: #f5f9f6; }
+.adm-post-img-icon { font-size: 2rem; }
+.adm-post-img-drop span:nth-child(2) { font-size: 0.85rem; color: #555; font-weight: 600; }
+.adm-post-img-preview {
+  position: relative; display: inline-block;
+}
+.adm-post-img-preview img {
+  max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #ddd;
+}
+.adm-post-img-remove {
+  position: absolute; top: 4px; right: 4px;
+  background: rgba(220,38,38,0.9); color: white; border: none;
+  padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;
+}
 .adm-docs-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
 .adm-doc-item {
   display: flex; align-items: center; gap: 10px;
@@ -6298,9 +6327,9 @@ ul { list-style: none; }
 }
 
 /* Upload message */
-.adm-upload-msg { padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; margin: 12px 0; }
-.adm-upload-msg.success { background: #f0faf4; color: #16a34a; border: 1px solid #c6e8d0; }
-.adm-upload-msg.error { background: #fff0f0; color: #dc2626; border: 1px solid #fecaca; }
+.adm-upload-msg { padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; margin: 12px 0; background: #f0faf4; color: #16a34a; border: 1px solid #c6e8d0; }
+.adm-upload-msg--success { background: #f0faf4; color: #16a34a; border: 1px solid #c6e8d0; }
+.adm-upload-msg--error { background: #fff0f0; color: #dc2626; border: 1px solid #fecaca; }
 .adm-upload-box--pdf { border-color: #fee2e2; background: #fff8f8; }
 .adm-upload-box--pdf .adm-upload-box__title { color: #dc2626; }
 .adm-upload-box__file-preview { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 10px; background: #f8f8f0; border-radius: 6px; border: 1px solid #e8e0d0; flex-wrap: wrap; }

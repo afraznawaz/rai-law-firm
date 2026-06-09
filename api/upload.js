@@ -38,40 +38,53 @@ export default async function handler(req, res) {
     const uniqueName = `${Date.now()}-${fileName.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
 
     // Ensure bucket exists (create if not)
-    const BUCKET = 'certificates';
-    await supabase.storage.createBucket(BUCKET, { public: true }).catch(() => {});
+    // Try multiple buckets for reliability
+    const BUCKETS = ['certificates', 'uploads', 'public'];
+    let uploadedUrl = null;
+    let lastErr = null;
 
-    // Upload to Supabase Storage
-    const { data: uploadData, error: uploadErr } = await supabase.storage
-      .from(BUCKET)
-      .upload(uniqueName, filePart.data, {
-        contentType: mimeType,
-        upsert: false
-      });
+    for (const BUCKET of BUCKETS) {
+      // Ensure bucket exists and is public
+      await supabase.storage.createBucket(BUCKET, { public: true }).catch(() => {});
+      // Try to make it public if it exists
+      await supabase.storage.updateBucket(BUCKET, { public: true }).catch(() => {});
 
-    if (uploadErr) {
-      console.error('Storage upload error:', uploadErr.message);
-      // Fallback: store as base64 data URL
-      const base64 = filePart.data.toString('base64');
-      const dataUrl = `data:${mimeType};base64,${base64}`;
+      const { data: uploadData, error: uploadErr } = await supabase.storage
+        .from(BUCKET)
+        .upload(uniqueName, filePart.data, {
+          contentType: mimeType,
+          upsert: true
+        });
+
+      if (!uploadErr) {
+        const { data: { publicUrl } } = supabase.storage
+          .from(BUCKET)
+          .getPublicUrl(uniqueName);
+        uploadedUrl = publicUrl;
+        break;
+      }
+      lastErr = uploadErr;
+      console.error(`Bucket ${BUCKET} failed:`, uploadErr.message);
+    }
+
+    if (uploadedUrl) {
       return res.status(200).json({
-        url: dataUrl,
+        url: uploadedUrl,
         name: fileName,
         type: ext,
-        storage: 'base64'
+        storage: 'supabase'
       });
     }
 
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from(BUCKET)
-      .getPublicUrl(uniqueName);
-
+    // Final fallback: base64 data URL (always works)
+    console.error('All storage buckets failed, using base64 fallback');
+    const base64 = filePart.data.toString('base64');
+    const dataUrl = `data:${mimeType};base64,${base64}`;
     return res.status(200).json({
-      url: publicUrl,
+      url: dataUrl,
       name: fileName,
       type: ext,
-      storage: 'supabase'
+      storage: 'base64'
     });
 
   } catch (err) {

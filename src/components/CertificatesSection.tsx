@@ -61,20 +61,33 @@ export default function CertificatesSection() {
         </div>
       ))}
 
-      {/* Dynamic certs from admin panel */}
-      {!loading && dbCerts.map(c => (
-        <div key={`db-${c.id}`} className="ra-cert-card ra-cert-card--dynamic">
-          <div className="ra-cert-card__badge">{getIcon(c.title)}</div>
-          <h3 className="ra-cert-card__title">{c.title}</h3>
-          {c.issued_by && <p className="ra-cert-card__num">{c.issued_by}{c.issued_date ? ` · ${c.issued_date}` : ''}</p>}
-          {c.description && <p className="ra-cert-card__desc">{c.description}</p>}
-          {c.file_url && (
-            <a href={c.file_url} target="_blank" rel="noopener noreferrer" className="ra-cert-card__download">
-              {c.file_type === 'pdf' ? '📄' : c.file_type === 'docx' || c.file_type === 'doc' ? '📝' : '🖼️'} View Document
-            </a>
-          )}
-        </div>
-      ))}
+      {/* Dynamic certs from admin panel — only show if file_url is a valid http/data URL */}
+      {!loading && dbCerts
+        .filter(c => c.file_url && (c.file_url.startsWith('http') || c.file_url.startsWith('data:')))
+        .map(c => {
+          const isImg = ['jpg','jpeg','png','gif','webp'].includes((c.file_type||'').toLowerCase())
+          const isPdf = c.file_type === 'pdf'
+          const isDoc = ['doc','docx'].includes((c.file_type||'').toLowerCase())
+          return (
+            <div key={`db-${c.id}`} className="ra-cert-card ra-cert-card--dynamic">
+              {isImg && (
+                <div className="ra-cert-card__img-wrap">
+                  <img src={c.file_url} alt={c.title}
+                    className="ra-cert-card__img"
+                    onError={e => { (e.target as HTMLImageElement).parentElement!.style.display='none' }} />
+                </div>
+              )}
+              <div className="ra-cert-card__badge">{getIcon(c.title)}</div>
+              <h3 className="ra-cert-card__title">{c.title}</h3>
+              {c.issued_by && <p className="ra-cert-card__num">{c.issued_by}{c.issued_date ? ` · ${c.issued_date}` : ''}</p>}
+              {c.description && <p className="ra-cert-card__desc">{c.description}</p>}
+              <a href={c.file_url} target="_blank" rel="noopener noreferrer" className="ra-cert-card__download">
+                {isPdf ? '📄 View PDF' : isDoc ? '📝 View Document' : '🖼️ View Certificate'}
+              </a>
+            </div>
+          )
+        })
+      }
     </div>
   )
 }

@@ -15,7 +15,7 @@ interface TimeSlot {
 }
 
 const CATEGORIES = ['Tax Law','Cybercrime & FIA','Intellectual Property','Corporate Law','Civil Litigation','Criminal Law','Family Law','Environmental Law','Revenue Law','Constitutional Law','Case Law','General Legal Advice']
-const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:'', author:'Rai Afraz (Advocate)', published:true, video_links: [] as string[], documents: [] as {name:string,url:string,type:string,size:number}[] }
+const EMPTY_POST = { title:'', slug:'', category:'Tax Law', excerpt:'', content:'', author:'Rai Afraz (Advocate)', published:true, video_links: [] as string[], documents: [] as {name:string,url:string,type:string,size:number}[], image_url:'' }
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 const TIME_OPTIONS = ['09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM']
 
@@ -53,6 +53,7 @@ export default function Admin() {
   const [certView, setCertView]           = useState<'list'|'new'|'edit'>('list')
   const [certSaving, setCertSaving]       = useState(false)
   const [certMsg, setCertMsg]             = useState('')
+  const [certUploadMsg, setCertUploadMsg] = useState('')
   const [certUploading, setCertUploading] = useState(false)
 
   // Messages
@@ -104,18 +105,20 @@ export default function Admin() {
   }
   const handleCertFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return;
-    setCertUploading(true); setCertMsg('⏳ Uploading...')
+    if (file.size > 10 * 1024 * 1024) { setCertUploadMsg('❌ File too large — max 10MB'); e.target.value=''; return; }
+    setCertUploading(true); setCertUploadMsg('⏳ Uploading ' + file.name + '...')
     try {
       const token = await getToken()
       const fd = new FormData()
       fd.append('file', file)
       const res = await fetch('/api/upload', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: fd })
-      if (!res.ok) throw new Error('Upload failed — ' + res.statusText)
+      if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.error || 'Upload failed — ' + res.statusText) }
       const doc = await res.json()
+      if (!doc.url) throw new Error('No URL returned from server')
       setCertForm((p:any) => ({ ...p, file_url: doc.url, file_name: doc.name || file.name, file_type: doc.type || file.name.split('.').pop()?.toLowerCase() || 'bin' }))
-      setCertMsg('✅ ' + file.name + ' uploaded successfully!')
+      setCertUploadMsg('✅ ' + file.name + ' uploaded! Now click Save.')
     } catch(err:any) {
-      setCertMsg('❌ ' + err.message)
+      setCertUploadMsg('❌ ' + err.message)
     }
     setCertUploading(false)
     e.target.value = ''
@@ -227,12 +230,30 @@ export default function Admin() {
     e.target.value = ''
   }
 
+  // ── Blog Post Image Upload ──
+  const handlePostImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; if (!file) return
+    if (!['image/jpeg','image/png','image/gif','image/webp'].includes(file.type)) { setUploadMsg('❌ Only images allowed (JPG, PNG, GIF, WebP)'); e.target.value=''; return }
+    if (file.size > 5 * 1024 * 1024) { setUploadMsg('❌ Image too large — max 5MB'); e.target.value=''; return; }
+    setUploading(true); setUploadMsg('⏳ Uploading image...')
+    try {
+      const token = await getToken()
+      const fd = new FormData(); fd.append('file', file)
+      const res = await fetch('/api/upload', { method:'POST', headers:{Authorization:`Bearer ${token}`}, body:fd })
+      if (!res.ok) throw new Error('Upload failed')
+      const doc = await res.json()
+      setEditPost((prev:any)=>({...prev, image_url: doc.url}))
+      setUploadMsg('✅ Image uploaded!')
+    } catch(err:any){setUploadMsg('❌ '+err.message)}
+    setUploading(false); e.target.value=''
+  }
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault(); setSaving(true); setSaveMsg('')
     try {
       const token = await getToken()
       const method = view === 'new' ? 'POST' : 'PUT'
-      const payload = { ...editPost, video_links: JSON.stringify(editPost.video_links || []), documents: JSON.stringify(editPost.documents || []) }
+      const payload = { ...editPost, video_links: JSON.stringify(editPost.video_links || []), documents: JSON.stringify(editPost.documents || []), image_url: editPost.image_url || '' }
       const res = await fetch('/api/blog', { method, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(payload) })
       if (!res.ok) throw new Error('Save failed')
       setSaveMsg('✅ Saved!')
@@ -466,6 +487,27 @@ export default function Admin() {
               <div className="adm-editor__grid">
                 <div className="adm-editor__main">
                   <div className="adm-form__group"><label>Post Title *</label><input required placeholder="Title..." value={editPost.title} onChange={e => setEditPost({...editPost, title: e.target.value, slug: generateSlug(e.target.value)})} /></div>
+
+                  {/* POST IMAGE UPLOAD */}
+                  <div className="adm-form__group">
+                    <label>📷 Post Cover Image</label>
+                    <div className="adm-post-img-upload">
+                      {editPost.image_url ? (
+                        <div className="adm-post-img-preview">
+                          <img src={editPost.image_url} alt="Cover" />
+                          <button type="button" className="adm-post-img-remove" onClick={() => setEditPost((prev:any)=>({...prev, image_url:''}))}>✕ Remove</button>
+                        </div>
+                      ) : (
+                        <label className="adm-post-img-drop">
+                          <span className="adm-post-img-icon">📷</span>
+                          <span>Click or drag to upload cover image</span>
+                          <span style={{fontSize:'0.72rem',color:'#999'}}>JPG, PNG, GIF, WebP — Max 5MB</span>
+                          <input type="file" accept=".jpg,.jpeg,.png,.gif,.webp" onChange={handlePostImageUpload} style={{display:'none'}} />
+                        </label>
+                      )}
+                    </div>
+                    {(uploadMsg && (uploadMsg.includes('Image') || uploadMsg.includes('image') || editPost.image_url)) && <div className="adm-upload-msg">{uploadMsg}</div>}
+                  </div>
                   <div className="adm-form__group"><label>Short Summary *</label><textarea rows={3} required placeholder="Brief summary..." value={editPost.excerpt} onChange={e => setEditPost({...editPost, excerpt: e.target.value})} /></div>
                   <div className="adm-form__group">
                     <label>Full Article Content *</label>
@@ -863,7 +905,7 @@ export default function Admin() {
                         <input type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp" onChange={handleCertFileUpload} style={{display:'none'}} />
                         {certUploading ? '⏳ Uploading...' : '📁 Choose File to Upload'}
                       </label>
-                      {certMsg && <div className="adm-upload-msg">{certMsg}</div>}
+                      {certUploadMsg && <div className={`adm-upload-msg ${certUploadMsg.startsWith('❌') ? 'adm-upload-msg--error' : certUploadMsg.startsWith('✅') ? 'adm-upload-msg--success' : ''}`}>{certUploadMsg}</div>}
                       {certForm.file_url && (
                         <div style={{marginTop:'12px'}}>
                           {['jpg','jpeg','png','gif','webp'].includes((certForm.file_type||'').toLowerCase()) ? (
