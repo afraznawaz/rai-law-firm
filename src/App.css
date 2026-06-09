@@ -836,6 +836,28 @@ ul { list-style: none; }
 .ra-hero__web-link { color: var(--gold-light); text-decoration: underline; }
 .ra-hero__web-link:hover { color: var(--gold); }
 
+/* Hero Mobile Icon & Install App */
+.ra-hero__mobile-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(201,168,76,0.4);
+  color: var(--gold-light); transition: all 0.25s; flex-shrink: 0;
+}
+.ra-hero__mobile-icon svg { width: 20px; height: 20px; }
+.ra-hero__mobile-icon:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); transform: translateY(-2px); }
+
+.ra-hero__install-app {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 12px 20px; border-radius: 4px;
+  background: linear-gradient(135deg, #1a7a3e, #155a2e);
+  border: 1.5px solid rgba(26,122,62,0.5);
+  color: var(--white); font-weight: 700; font-size: 0.85rem;
+  letter-spacing: 0.04em; transition: all 0.25s; flex-shrink: 0;
+  cursor: pointer; text-decoration: none;
+}
+.ra-hero__install-icon { font-size: 1.15rem; }
+.ra-hero__install-app:hover { background: linear-gradient(135deg, #1a8f48, #176b35); border-color: #1a8f48; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(26,122,62,0.35); }
+
 /* ===== SERVICES ===== */
 .ra-services { background: var(--off-white); }
 .ra-services__grid {
@@ -1449,6 +1471,15 @@ ul { list-style: none; }
   background: rgba(13,61,30,0.08); color: var(--green-mid);
   font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em;
   margin: 16px 16px 0; align-self: flex-start;
+}
+.ra-blog-card__no-img {
+  height: 180px; background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px;
+}
+.ra-blog-card__no-img-icon { font-size: 2.5rem; }
+.ra-blog-card__no-img span:last-child {
+  font-size: 0.8rem; color: var(--gold-light); font-weight: 700; letter-spacing: 0.08em;
 }
 .ra-blog-card__body { padding: 16px 20px 20px; display: flex; flex-direction: column; flex: 1; }
 .ra-blog-card__title {

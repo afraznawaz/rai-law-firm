@@ -29,7 +29,7 @@ export default function CaseLaws({ onBack }: { onBack: () => void }) {
   const [openCase, setOpenCase] = useState<CaseLaw | null>(null)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
+    supabase.auth.getSession().then((d: any) => { const s = d.data?.session; setUser(s?.user ?? null) })
     fetchCases()
   }, [])
 

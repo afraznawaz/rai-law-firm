@@ -1,23 +1,5 @@
 import supabase from './_supabase.js';
 
-function getCategoryImage(category) {
-  const map = {
-    'Case Law': '/images/blog/case-law.png',
-    'Tax Law': '/images/blog/tax-law.png',
-    'Corporate Law': '/images/blog/corporate-law.png',
-    'Intellectual Property': '/images/blog/intellectual-property.png',
-    'Constitutional Law': '/images/blog/constitutional-law.png',
-    'Revenue Law': '/images/blog/revenue-law.png',
-    'Civil Litigation': '/images/blog/civil-litigation.png',
-    'Cybercrime & FIA': '/images/blog/cybercrime.png',
-    'Family Law': '/images/blog/family-law.png',
-    'Criminal Law': '/images/blog/criminal-law.png',
-    'Environmental Law': '/images/blog/environmental-law.png',
-    'General Legal Advice': '/images/blog/general-legal.png',
-  };
-  return map[category] || '/images/blog/case-law.png';
-}
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -27,61 +9,66 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
       const { id, slug, admin } = req.query;
-
       if (id) {
-        // Track view
-        await supabase.from('post_views').insert({ post_id: parseInt(id) });
         const { data, error } = await supabase.from('blog_posts').select('*').eq('id', id).single();
         if (error) throw error;
-        // Get view count
-        const { count } = await supabase.from('post_views').select('*', { count: 'exact', head: true }).eq('post_id', parseInt(id));
-        // Get comments
-        const { data: comments } = await supabase.from('post_comments').select('*').eq('post_id', parseInt(id)).eq('approved', true).order('created_at', { ascending: false });
-        return res.status(200).json({ ...data, image_url: getCategoryImage(data.category), views: count || 0, comments: comments || [] });
+        return res.status(200).json(data);
       }
-
       if (slug) {
         const { data, error } = await supabase.from('blog_posts').select('*').eq('slug', slug).single();
         if (error) throw error;
-        // Track view
-        await supabase.from('post_views').insert({ post_id: data.id });
-        const { count } = await supabase.from('post_views').select('*', { count: 'exact', head: true }).eq('post_id', data.id);
-        const { data: comments } = await supabase.from('post_comments').select('*').eq('post_id', data.id).eq('approved', true).order('created_at', { ascending: false });
-        return res.status(200).json({ ...data, image_url: getCategoryImage(data.category), views: count || 0, comments: comments || [] });
+        return res.status(200).json(data);
       }
-
-      // List all posts with view counts
       let query = supabase.from('blog_posts').select('*').order('created_at', { ascending: false });
       if (!admin) query = query.eq('published', true);
       const { data, error } = await query;
       if (error) throw error;
+      return res.status(200).json(data || []);
+    }
 
-      // Add images and view counts
-      const postsWithMeta = await Promise.all(data.map(async (post) => {
-        const { count } = await supabase.from('post_views').select('*', { count: 'exact', head: true }).eq('post_id', post.id);
-        return { ...post, image_url: getCategoryImage(post.category), views: count || 0 };
-      }));
-
-      return res.status(200).json(postsWithMeta);
+    // Helper: upload base64 image to Supabase Storage
+    async function uploadImage(base64Data, fileName) {
+      if (!base64Data || !base64Data.startsWith('data:image')) return null;
+      try {
+        const matches = base64Data.match(/^data:(.+);base64,(.+)$/);
+        if (!matches) return null;
+        const mimeType = matches[1];
+        const ext = mimeType.split('/')[1] || 'jpg';
+        const fullName = `${fileName}.${ext}`;
+        const buffer = Buffer.from(matches[2], 'base64');
+        const { error } = await supabase.storage
+          .from('blog-covers')
+          .upload(fullName, buffer, { contentType: mimeType });
+        if (error) { console.error('Storage upload error:', error); return null; }
+        const { data } = supabase.storage.from('blog-covers').getPublicUrl(fullName);
+        return data.publicUrl;
+      } catch (e) { console.error('Image processing error:', e); return null; }
     }
 
     if (req.method === 'POST') {
-      // Handle comment submission (no auth needed)
-      if (req.body.type === 'comment') {
-        const { post_id, user_name, user_email, comment } = req.body;
-        if (!post_id || !comment || !user_name) return res.status(400).json({ error: 'Missing fields' });
-        const { data, error } = await supabase.from('post_comments').insert({ post_id, user_name, user_email, comment, approved: true }).select().single();
-        if (error) throw error;
-        return res.status(201).json(data);
-      }
-
-      // Blog post creation (auth required)
       const token = req.headers.authorization?.replace('Bearer ', '');
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { title, slug, category, excerpt, content, author, published } = req.body;
-      const { data, error } = await supabase.from('blog_posts').insert({ title, slug, category, excerpt, content, author, published }).select().single();
+
+      const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+      const { title, slug, category, excerpt, content, author, published, cover_image_base64, image_url } = body;
+
+      // Upload cover image — from base64 or direct URL
+      let finalCoverUrl = image_url || null;
+      if (cover_image_base64) {
+        const safeSlug = (slug || 'post').replace(/[^a-z0-9]/g, '-').substring(0, 30);
+        finalCoverUrl = await uploadImage(cover_image_base64, `cover-${safeSlug}-${Date.now()}`);
+      }
+
+      const { data, error } = await supabase.from('blog_posts')
+        .insert({
+          title, slug, category, excerpt, content,
+          author: author || 'Rai Afraz (Advocate)',
+          published: published !== false,
+          cover_image: finalCoverUrl
+        })
+        .select().single();
       if (error) throw error;
       return res.status(201).json(data);
     }
@@ -91,8 +78,31 @@ export default async function handler(req, res) {
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { id, title, slug, category, excerpt, content, author, published } = req.body;
-      const { data, error } = await supabase.from('blog_posts').update({ title, slug, category, excerpt, content, author, published, updated_at: new Date().toISOString() }).eq('id', id).select().single();
+
+      const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+      const { id, title, slug, category, excerpt, content, author, published, cover_image_base64, image_url } = body;
+
+      let finalCoverUrl = image_url || body.cover_image_url || null;
+      if (cover_image_base64) {
+        const safeSlug = (slug || 'post').replace(/[^a-z0-9]/g, '-').substring(0, 30);
+        finalCoverUrl = await uploadImage(cover_image_base64, `cover-${safeSlug}-${Date.now()}`);
+      }
+
+      const updateData = {};
+      if (title !== undefined) updateData.title = title;
+      if (slug !== undefined) updateData.slug = slug;
+      if (category !== undefined) updateData.category = category;
+      if (excerpt !== undefined) updateData.excerpt = excerpt;
+      if (content !== undefined) updateData.content = content;
+      if (author !== undefined) updateData.author = author;
+      if (published !== undefined) updateData.published = published;
+      if (finalCoverUrl !== null && finalCoverUrl !== undefined) updateData.cover_image = finalCoverUrl;
+
+      const { data, error } = await supabase.from('blog_posts')
+        .update({ ...updateData, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .select()
+        .single();
       if (error) throw error;
       return res.status(200).json(data);
     }
@@ -102,7 +112,8 @@ export default async function handler(req, res) {
       if (!token) return res.status(401).json({ error: 'Unauthorized' });
       const { data: { user }, error: authErr } = await supabase.auth.getUser(token);
       if (authErr || !user) return res.status(401).json({ error: 'Invalid token' });
-      const { id } = req.body;
+
+      const { id } = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
       const { error } = await supabase.from('blog_posts').delete().eq('id', id);
       if (error) throw error;
       return res.status(200).json({ ok: true });

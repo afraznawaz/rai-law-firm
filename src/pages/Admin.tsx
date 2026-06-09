@@ -74,8 +74,8 @@ export default function Admin() {
   const [newsUploading, setNewsUploading] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => setUser(session?.user ?? null))
+    supabase.auth.getSession().then((d: any) => { const s = d.data?.session; setUser(s?.user ?? null) })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_: any, s: any) => setUser(s?.user ?? null))
     return () => subscription.unsubscribe()
   }, [])
 

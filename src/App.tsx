@@ -155,7 +155,7 @@ const STATS = [
 interface Post {
   id: number; title: string; slug: string; category: string
   excerpt: string; author: string; published: boolean; created_at: string
-  image_url?: string; views?: number
+  image_url?: string; cover_image?: string; views?: number
 }
 
 export default function App() {
@@ -587,6 +587,13 @@ export default function App() {
           <div className="ra-hero__actions">
             <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Book Consultation</button>
             <button className="ra-btn ra-btn--outline" onClick={() => scrollTo('services')}>Our Services</button>
+            <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-hero__mobile-icon" title="Mobile App">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 2h-3a5 5 0 00-5 5v3H7v4h2v10h4V14h3l1-4h-4V7a1 1 0 011-1h3V2z"/></svg>
+            </a>
+            <button className="ra-hero__install-app" onClick={() => window.open('https://wa.me/923164371096','_blank')}>
+              <span className="ra-hero__install-icon">📲</span>
+              <span>Install App</span>
+            </button>
           </div>
           <div className="ra-hero__bar">
             <span>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</span>
@@ -862,15 +869,21 @@ export default function App() {
             </div>
           ) : (
             <div className="ra-blog__grid">
-              {filteredPosts.map(post => (
+              {filteredPosts.map(post => {
+                const coverImg = post.cover_image || post.image_url || null;
+                return (
                 <div key={post.id} className="ra-blog-card" onClick={() => openBlogPost(post.slug)}>
-                  {post.image_url && (
+                  {coverImg ? (
                     <div className="ra-blog-card__img-wrap">
-                      <img src={post.image_url} alt={post.title} className="ra-blog-card__img" />
+                      <img src={coverImg} alt={post.title} className="ra-blog-card__img" />
                       <span className="ra-blog-card__cat-badge">{post.category}</span>
                     </div>
+                  ) : (
+                    <div className="ra-blog-card__no-img">
+                      <span className="ra-blog-card__no-img-icon">⚖️</span>
+                      <span>{post.category}</span>
+                    </div>
                   )}
-                  {!post.image_url && <div className="ra-blog-card__cat">{post.category}</div>}
                   <div className="ra-blog-card__body">
                     <h3 className="ra-blog-card__title">{post.title}</h3>
                     <p className="ra-blog-card__excerpt">{post.excerpt}</p>
@@ -884,7 +897,8 @@ export default function App() {
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
           {!postsLoading && filteredPosts.length === 0 && (

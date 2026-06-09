@@ -53,8 +53,8 @@ export default function ELibraryPost({ slug, onBack }: { slug: string; onBack: (
   const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => setUser(session?.user ?? null))
+    supabase.auth.getSession().then((d: any) => { const s = d.data?.session; setUser(s?.user ?? null) })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e: any, session: any) => setUser(session?.user ?? null))
     return () => subscription.unsubscribe()
   }, [])
 

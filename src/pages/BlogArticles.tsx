@@ -42,8 +42,8 @@ export default function BlogArticles({ onBack }: { onBack: () => void }) {
 
   useEffect(() => {
     fetch('/api/blog-articles').then(r => r.json()).then(d => { setArticles(Array.isArray(d) ? d : []); setLoading(false) }).catch(() => setLoading(false))
-    supabase.auth.getSession().then(({ data: { session } }) => setUser(session?.user ?? null))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, s) => setUser(s?.user ?? null))
+    supabase.auth.getSession().then((d: any) => { const s = d.data?.session; setUser(s?.user ?? null) })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_: any, s: any) => setUser(s?.user ?? null))
     return () => subscription.unsubscribe()
   }, [])
 

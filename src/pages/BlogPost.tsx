@@ -19,6 +19,7 @@ interface Post {
   published: boolean
   created_at: string
   image_url?: string
+  cover_image?: string
   views?: number
   comments?: Comment[]
 }
@@ -85,9 +86,9 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
 
       <article className="blog-post-wrap">
         {/* Hero Image */}
-        {post.image_url && (
+        {(post.cover_image || post.image_url) && (
           <div className="blog-post-hero">
-            <img src={post.image_url} alt={post.title} className="blog-post-hero__img" />
+            <img src={post.cover_image || post.image_url} alt={post.title} className="blog-post-hero__img" />
             <div className="blog-post-hero__overlay" />
             <div className="blog-post-hero__content">
               <span className="blog-post-cat">{post.category}</span>

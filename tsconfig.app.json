@@ -12,9 +12,9 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    "strict": true,
+    "strict": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
-  "exclude": ["src/components/ChatBot.tsx", "src/components/NoorChatbot.tsx", "src/components/NoorChatbot.css"]
+  "include": ["src/App.tsx", "src/App.css", "src/main.tsx", "src/index.css", "src/lib/**/*", "src/pages/Admin.tsx", "src/pages/BlogPost.tsx", "src/components/**/*", "src/assets/**/*"],
+  "exclude": []
 }

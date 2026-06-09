@@ -32,7 +32,8 @@ export default function LawyerDashboard({ onLogout }: { onLogout: () => void }) 
   const [showNotif, setShowNotif] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then((d: any) => {
+      const session = d.data?.session
       setUser(session?.user ?? null)
       if (session?.user) fetchData(session.access_token)
     })
