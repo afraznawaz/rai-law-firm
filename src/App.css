@@ -745,6 +745,17 @@ ul { list-style: none; }
   .ra-3d-card { width: 160px; height: 200px; }
 }
 
+/* Admin nav icon */
+.ra-nav__admin-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(201,168,76,0.15); border: 1.5px solid rgba(201,168,76,0.4);
+  color: var(--gold); transition: all 0.2s; flex-shrink: 0;
+  text-decoration: none;
+}
+.ra-nav__admin-icon svg { width: 18px; height: 18px; }
+.ra-nav__admin-icon:hover { background: rgba(201,168,76,0.3); border-color: var(--gold); transform: scale(1.08); }
+
 /* ===== ABOUT EXTRAS ===== */
 .ra-about__tagline {
   font-family: var(--font-serif); font-style: italic;

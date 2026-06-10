@@ -522,7 +522,14 @@ export default function App() {
           <div className="ra-nav__right">
             <button className="ra-nav__lawyer-btn" onClick={() => setShowLawyerLogin(true)}>Login as Lawyer</button>
             <button className="ra-nav__lawyer-btn ra-nav__lawyer-btn--reg" onClick={() => setShowLawyerRegister(true)}>Register</button>
-
+            <a href="/admin" className="ra-nav__admin-icon" title="Admin Panel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+                <circle cx="19" cy="6" r="3" fill="var(--gold)" stroke="none"/>
+                <text x="16.5" y="9" fontSize="4" fill="white" fontWeight="bold">A</text>
+              </svg>
+            </a>
             <button className={`ra-nav__burger ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
               <span /><span /><span />
             </button>
@@ -547,6 +554,7 @@ export default function App() {
               ))}
               <button className="ra-nav__mobile-link" onClick={() => { setShowLawyerLogin(true); setMenuOpen(false) }}>🔐 Login as Lawyer</button>
               <button className="ra-nav__mobile-link" onClick={() => { setShowLawyerRegister(true); setMenuOpen(false) }}>📝 Register as Lawyer</button>
+              <a href="/admin" className="ra-nav__mobile-link" style={{display:'flex',alignItems:'center',gap:'8px'}}>⚙️ Admin Panel</a>
 
               <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-nav__mobile-wa">
                 💬 WhatsApp: 0316-4371096
