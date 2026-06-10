@@ -2,5 +2,12 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  ],
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://utsywqriqdwongxqktpo.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_V9DWo3Dd2g3f_mCa-lPeRQ_BWM1Fkv7",
+    "SUPABASE_SERVICE_ROLE_KEY": "sb_secret_56qYb1s3EJ_-wtT5X2xEzQ_WxWHqRIa",
+    "VITE_SUPABASE_URL": "https://utsywqriqdwongxqktpo.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "sb_publishable_V9DWo3Dd2g3f_mCa-lPeRQ_BWM1Fkv7"
+  }
 }
