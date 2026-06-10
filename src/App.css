@@ -228,9 +228,7 @@ ul { list-style: none; }
 .ra-hero::before {
   content: '';
   position: absolute; inset: 0;
-  background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.05) 0%, transparent 50%);
+  background-image: radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.05) 0%, transparent 50%);
   pointer-events: none;
 }
 .ra-hero__overlay {
@@ -1678,11 +1676,7 @@ ul { list-style: none; }
   border-radius: 20px;
   padding: 32px 24px 28px;
   display: flex; flex-direction: column; align-items: center; gap: 10px;
-  box-shadow:
-    0 0 0 1px rgba(201,168,76,0.15),
-    0 20px 60px rgba(0,0,0,0.5),
-    0 0 40px rgba(201,168,76,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.1);
+  box-shadow: 0 0 0 1px rgba(201,168,76,0.15), 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(201,168,76,0.08), inset 0 1px 0 rgba(255,255,255,0.1);
   backdrop-filter: blur(10px);
   animation: ra3dFloat 4s ease-in-out infinite;
   transform-style: preserve-3d;
@@ -5161,10 +5155,7 @@ ul { list-style: none; }
   -webkit-text-stroke: 1px rgba(201,168,76,0.55);
   text-stroke: 1px rgba(201,168,76,0.55);
   /* 3D effect */
-  text-shadow:
-    1px 1px 0 rgba(201,168,76,0.15),
-    2px 2px 0 rgba(201,168,76,0.1),
-    3px 3px 6px rgba(0,0,0,0.3);
+  text-shadow: 1px 1px 0 rgba(201,168,76,0.15), 2px 2px 0 rgba(201,168,76,0.1), 3px 3px 6px rgba(0,0,0,0.3);
   transform: perspective(400px) rotateY(8deg);
   filter: drop-shadow(0 0 8px rgba(201,168,76,0.2));
 }
