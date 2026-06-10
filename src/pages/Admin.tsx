@@ -189,8 +189,23 @@ export default function Admin() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault(); setAuthLoading(true); setAuthError('')
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) setAuthError(error.message)
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
+      if (error) {
+        // Try to give friendlier error messages
+        if (error.message.includes('Invalid login') || error.message.includes('invalid_credentials')) {
+          setAuthError('Incorrect email or password. Please try again.')
+        } else if (error.message.includes('Email not confirmed')) {
+          setAuthError('Please confirm your email first.')
+        } else {
+          setAuthError(error.message)
+        }
+      } else if (data?.user) {
+        setAuthError('')
+      }
+    } catch(err: any) {
+      setAuthError('Login failed. Please check your connection and try again.')
+    }
     setAuthLoading(false)
   }
 

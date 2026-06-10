@@ -442,6 +442,75 @@ ul { list-style: none; }
 .ra-btn--outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
 .ra-btn--full { width: 100%; }
 
+/* Install App Button */
+.ra-btn--install {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 28px; font-weight: 700; font-size: 0.9rem;
+  border-radius: 4px; letter-spacing: 0.04em; transition: all 0.25s;
+  border: 2px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+}
+.ra-btn--install:hover {
+  background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.5);
+  transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Install Modal */
+.ra-install-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.ra-install-modal {
+  background: var(--white); border-radius: 20px;
+  padding: 40px 36px; max-width: 420px; width: 100%;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+  position: relative; text-align: center;
+  animation: fadeInUp 0.3s ease;
+}
+.ra-install-modal__close {
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #f0f0f0; color: #666; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.ra-install-modal__close:hover { background: #e0e0e0; color: #333; }
+.ra-install-modal__logo img {
+  width: 72px; height: 72px; object-fit: contain;
+  border-radius: 16px; margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(13,61,30,0.2);
+}
+.ra-install-modal__title {
+  font-family: var(--font-serif); font-size: 1.3rem; font-weight: 900;
+  color: var(--green-dark); margin-bottom: 20px;
+}
+.ra-install-modal__desc {
+  font-size: 0.9rem; color: var(--text-mid); margin-bottom: 16px;
+}
+.ra-install-modal__steps { text-align: left; margin-bottom: 24px; }
+.ra-install-modal__step {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid #f0f0f0;
+  font-size: 0.9rem; color: var(--text-mid); line-height: 1.5;
+}
+.ra-install-modal__step:last-child { border-bottom: none; }
+.ra-install-modal__num {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: var(--green-dark); font-weight: 900; font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.ra-install-modal__btn {
+  width: 100%; padding: 13px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  color: var(--green-dark); font-weight: 900; font-size: 0.95rem;
+  border-radius: 8px; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(201,168,76,0.3);
+}
+.ra-install-modal__btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+
 /* ===== STATS ===== */
 .ra-stats {
   background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-dark));

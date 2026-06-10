@@ -184,6 +184,35 @@ export default function App() {
   const [openPost, setOpenPost] = useState<string | null>(null)
   const [openCerts, setOpenCerts] = useState(false)
   const [openNews, setOpenNews] = useState(false)
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
+  const [showInstallBtn, setShowInstallBtn] = useState(false)
+  const [showInstallModal, setShowInstallModal] = useState(false)
+  const [installModalType, setInstallModalType] = useState<'ios'|'android'|'fallback'>('fallback')
+
+  useEffect(() => {
+    const handler = (e: any) => { e.preventDefault(); setDeferredPrompt(e); setShowInstallBtn(true) }
+    window.addEventListener('beforeinstallprompt', handler as any)
+    window.addEventListener('appinstalled', () => setShowInstallBtn(false))
+    if (!(window.navigator as any).standalone && /iPhone|iPad|iPod/i.test(navigator.userAgent)) setShowInstallBtn(true)
+    return () => window.removeEventListener('beforeinstallprompt', handler as any)
+  }, [])
+
+  const handleInstallClick = async () => {
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+    const isAndroid = /Android/i.test(navigator.userAgent)
+    if (deferredPrompt) {
+      deferredPrompt.prompt()
+      const { outcome } = await deferredPrompt.userChoice
+      if (outcome === 'accepted') setShowInstallBtn(false)
+      setDeferredPrompt(null)
+    } else if (isIOS) {
+      setInstallModalType('ios'); setShowInstallModal(true)
+    } else if (isAndroid) {
+      setInstallModalType('android'); setShowInstallModal(true)
+    } else {
+      setInstallModalType('fallback'); setShowInstallModal(true)
+    }
+  }
 
   const openBlogPost = (slug: string) => {
     window.history.pushState({}, '', `/blog/${slug}`)
@@ -595,6 +624,10 @@ export default function App() {
           <div className="ra-hero__actions">
             <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Book Consultation</button>
             <button className="ra-btn ra-btn--outline" onClick={() => scrollTo('services')}>Our Services</button>
+            <button className="ra-btn ra-btn--install" onClick={handleInstallClick}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{marginRight:'6px',flexShrink:0}}><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Install App
+            </button>
           </div>
           <div className="ra-hero__bar">
             <span>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</span>
@@ -1483,6 +1516,44 @@ export default function App() {
         </a>
         <div className="ra-side-social__line" />
       </div>
+
+      {/* INSTALL MODAL */}
+      {showInstallModal && (
+        <div className="ra-install-overlay" onClick={() => setShowInstallModal(false)}>
+          <div className="ra-install-modal" onClick={e => e.stopPropagation()}>
+            <button className="ra-install-modal__close" onClick={() => setShowInstallModal(false)}>✕</button>
+            <div className="ra-install-modal__logo">
+              <img src="/uploads/upload_1.PNG" alt="RAI" />
+            </div>
+            <h3 className="ra-install-modal__title">Install RAI & Associates App</h3>
+            {installModalType === 'ios' && (
+              <div className="ra-install-modal__steps">
+                <p className="ra-install-modal__desc">Add to your iPhone Home Screen in 3 easy steps:</p>
+                <div className="ra-install-modal__step"><span className="ra-install-modal__num">1</span><span>Tap the <strong>Share</strong> button <span style={{fontSize:'1.2em'}}>⎙</span> at the bottom of Safari</span></div>
+                <div className="ra-install-modal__step"><span className="ra-install-modal__num">2</span><span>Scroll down and tap <strong>"Add to Home Screen"</strong></span></div>
+                <div className="ra-install-modal__step"><span className="ra-install-modal__num">3</span><span>Tap <strong>"Add"</strong> — Done! ✅</span></div>
+              </div>
+            )}
+            {installModalType === 'android' && (
+              <div className="ra-install-modal__steps">
+                <p className="ra-install-modal__desc">Add to your Android Home Screen:</p>
+                <div className="ra-install-modal__step"><span className="ra-install-modal__num">1</span><span>Tap the <strong>Menu ⋮</strong> in your browser</span></div>
+                <div className="ra-install-modal__step"><span className="ra-install-modal__num">2</span><span>Tap <strong>"Add to Home Screen"</strong></span></div>
+                <div className="ra-install-modal__step"><span className="ra-install-modal__num">3</span><span>Tap <strong>"Add"</strong> — Done! ✅</span></div>
+              </div>
+            )}
+            {installModalType === 'fallback' && (
+              <div className="ra-install-modal__steps">
+                <p className="ra-install-modal__desc">Access our app instantly from your browser:</p>
+                <div className="ra-install-modal__step"><span className="ra-install-modal__num">1</span><span>Open this site in <strong>Chrome</strong> or <strong>Edge</strong></span></div>
+                <div className="ra-install-modal__step"><span className="ra-install-modal__num">2</span><span>Click the <strong>Install ⊕</strong> icon in the address bar</span></div>
+                <div className="ra-install-modal__step"><span className="ra-install-modal__num">3</span><span>Click <strong>"Install"</strong> — Done! ✅</span></div>
+              </div>
+            )}
+            <button className="ra-install-modal__btn" onClick={() => setShowInstallModal(false)}>Got It!</button>
+          </div>
+        </div>
+      )}
 
       {/* WHATSAPP FLOATING BUTTON */}
       <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float" title="Chat on WhatsApp">

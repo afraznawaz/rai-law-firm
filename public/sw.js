@@ -1,39 +1,38 @@
 const CACHE_NAME = 'rai-associates-v1';
 const STATIC_ASSETS = [
   '/',
-  '/manifest.json',
+  '/index.html',
   '/uploads/upload_1.PNG',
-  '/uploads/rai-afraz.jpg',
+  '/favicon.svg',
   '/images/legal-bg.png'
 ];
 
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
+    caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS).catch(() => {});
     })
   );
   self.skipWaiting();
 });
 
-self.addEventListener('activate', event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
+    caches.keys().then((keys) =>
       Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   );
   self.clients.claim();
 });
 
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   if (event.request.url.includes('/api/')) return;
-
   event.respondWith(
     fetch(event.request)
-      .then(response => {
+      .then((response) => {
         const clone = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         return response;
       })
       .catch(() => caches.match(event.request))
