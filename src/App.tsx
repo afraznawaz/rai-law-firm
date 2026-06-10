@@ -155,7 +155,7 @@ const STATS = [
 interface Post {
   id: number; title: string; slug: string; category: string
   excerpt: string; author: string; published: boolean; created_at: string
-  image_url?: string; cover_image?: string; views?: number
+  image_url?: string; views?: number
 }
 
 export default function App() {
@@ -197,7 +197,6 @@ export default function App() {
 
   const [showELibrary, setShowELibrary] = useState(false)
   const [blogFilter, setBlogFilter] = useState('All')
-  const [showInstallMenu, setShowInstallMenu] = useState(false)
   const [reviews, setReviews] = useState<any[]>([])
   const [reviewsLoading, setReviewsLoading] = useState(true)
   const [activeReview, setActiveReview] = useState(0)
@@ -560,7 +559,26 @@ export default function App() {
       {/* HERO */}
       <section id="home" className="ra-hero">
         <div className="ra-hero__overlay" />
-
+        {/* 3D LEFT SIDE */}
+        <div className="ra-hero__3d ra-hero__3d--left">
+          <div className="ra-hero3d__scene">
+            <div className="ra-hero3d__ring ra-hero3d__ring--outer" />
+            <div className="ra-hero3d__ring ra-hero3d__ring--mid" />
+            <div className="ra-hero3d__card">
+              <div className="ra-hero3d__card-glow" />
+              <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-hero3d__logo" />
+              <div className="ra-hero3d__firm">RAI & ASSOCIATES</div>
+              <div className="ra-hero3d__est">Est. 1993 · Lahore</div>
+              <div className="ra-hero3d__divider" />
+              <div className="ra-hero3d__tagline">⚖️ Committed to Justice</div>
+            </div>
+            <div className="ra-hero3d__badge ra-hero3d__badge--1"><span>30+</span><small>Years</small></div>
+            <div className="ra-hero3d__badge ra-hero3d__badge--2"><span>100s+</span><small>Cases</small></div>
+            <div className="ra-hero3d__badge ra-hero3d__badge--3"><span>98%</span><small>Success</small></div>
+            <div className="ra-hero3d__badge ra-hero3d__badge--4"><span>⚖️</span><small>Justice</small></div>
+            {[...Array(8)].map((_, i) => <div key={i} className={`ra-hero3d__particle ra-hero3d__particle--${i+1}`} />)}
+          </div>
+        </div>
         <div className="ra-hero__content">
           <div className="ra-hero__badge">Established Since 1993</div>
           <h1 className="ra-hero__title"><span className="ra-hero__title-gold">RAI & ASSOCIATES</span><br />Law Firm</h1>
@@ -569,26 +587,6 @@ export default function App() {
           <div className="ra-hero__actions">
             <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Book Consultation</button>
             <button className="ra-btn ra-btn--outline" onClick={() => scrollTo('services')}>Our Services</button>
-            <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-hero__mobile-icon" title="Mobile App">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 2h-3a5 5 0 00-5 5v3H7v4h2v10h4V14h3l1-4h-4V7a1 1 0 011-1h3V2z"/></svg>
-            </a>
-            <button className="ra-hero__install-app" onClick={() => setShowInstallMenu(!showInstallMenu)}>
-              <span className="ra-hero__install-icon">📲</span>
-              <span>Install App</span>
-            </button>
-            {showInstallMenu && (
-              <div className="ra-install-menu">
-                <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-install-menu__item">
-                  <span>💬</span> Chat on WhatsApp
-                </a>
-                <a href="tel:+923044840937" className="ra-install-menu__item">
-                  <span>📞</span> Call Now
-                </a>
-                <a href="#contact" onClick={() => { setShowInstallMenu(false); scrollTo('contact'); }} className="ra-install-menu__item">
-                  <span>📝</span> Book Consultation
-                </a>
-              </div>
-            )}
           </div>
           <div className="ra-hero__bar">
             <span>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</span>
@@ -615,34 +613,7 @@ export default function App() {
         <div className="ra-firm-banner__sub">⚖️ Committed to Justice &nbsp;·&nbsp; Est. 1993 &nbsp;·&nbsp; Lahore, Pakistan</div>
       </section>
 
-      {/* 3D SHOWCASE */}
-      <section className="ra-3d-section">
-        <div className="ra-3d-scene">
-          <div className="ra-3d-card">
-            <div className="ra-3d-card__inner">
-              <div className="ra-3d-card__front">
-                <div className="ra-3d-card__glow" />
-                <img src="/uploads/upload_1.PNG" alt="RAI & Associates" className="ra-3d-card__logo" />
-                <div className="ra-3d-card__firm">RAI & Associates</div>
-                <div className="ra-3d-card__sub">Law Firm — Est. 1993</div>
-                <div className="ra-3d-card__line" />
-                <div className="ra-3d-card__tagline">Committed to Justice</div>
-              </div>
-            </div>
-          </div>
-          {[...Array(12)].map((_, i) => <div key={i} className={`ra-3d-particle ra-3d-particle--${i+1}`} />)}
-          <div className="ra-3d-float ra-3d-float--1"><span className="ra-3d-float__num">30+</span><span className="ra-3d-float__lbl">Years</span></div>
-          <div className="ra-3d-float ra-3d-float--2"><span className="ra-3d-float__num">5K+</span><span className="ra-3d-float__lbl">Cases Won</span></div>
-          <div className="ra-3d-float ra-3d-float--3"><span className="ra-3d-float__num">⚖️</span><span className="ra-3d-float__lbl">Justice</span></div>
-          <div className="ra-3d-float ra-3d-float--4"><span className="ra-3d-float__num">98%</span><span className="ra-3d-float__lbl">Success</span></div>
-          <div className="ra-3d-ring ra-3d-ring--1" /><div className="ra-3d-ring ra-3d-ring--2" />
-        </div>
-        <div className="ra-3d-text">
-          <h2 className="ra-3d-text__title">Trusted Legal Excellence</h2>
-          <p className="ra-3d-text__desc">Pakistan's premier law firm delivering justice with integrity, expertise, and dedication since 1993.</p>
-          <button className="ra-btn ra-btn--gold" onClick={() => scrollTo('contact')}>Get Free Consultation →</button>
-        </div>
-      </section>
+
 
       {/* STATS */}
       <section className="ra-stats">
@@ -891,21 +862,15 @@ export default function App() {
             </div>
           ) : (
             <div className="ra-blog__grid">
-              {filteredPosts.map(post => {
-                const coverImg = post.cover_image || post.image_url || null;
-                return (
+              {filteredPosts.map(post => (
                 <div key={post.id} className="ra-blog-card" onClick={() => openBlogPost(post.slug)}>
-                  {coverImg ? (
+                  {post.image_url && (
                     <div className="ra-blog-card__img-wrap">
-                      <img src={coverImg} alt={post.title} className="ra-blog-card__img" />
+                      <img src={post.image_url} alt={post.title} className="ra-blog-card__img" />
                       <span className="ra-blog-card__cat-badge">{post.category}</span>
                     </div>
-                  ) : (
-                    <div className="ra-blog-card__no-img">
-                      <span className="ra-blog-card__no-img-icon">⚖️</span>
-                      <span>{post.category}</span>
-                    </div>
                   )}
+                  {!post.image_url && <div className="ra-blog-card__cat">{post.category}</div>}
                   <div className="ra-blog-card__body">
                     <h3 className="ra-blog-card__title">{post.title}</h3>
                     <p className="ra-blog-card__excerpt">{post.excerpt}</p>
@@ -919,8 +884,7 @@ export default function App() {
                     </div>
                   </div>
                 </div>
-                );
-              })}
+              ))}
             </div>
           )}
           {!postsLoading && filteredPosts.length === 0 && (

@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(async () => {
-  const plugins: any[] = [react()]
+  const plugins: any[] = [react(), tailwindcss()]
   try {
     const m = await import('./.vite-source-tags.js' as any)
     plugins.push(m.sourceTags())
