@@ -10,7 +10,10 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
       const { name, email, phone, subject, message } = req.body;
       if (!name || !phone || !message) return res.status(400).json({ error: 'Name, phone and message are required' });
-      const { data, error } = await supabase.from('contact_messages').insert({ name, email, phone, subject, message }).select().single();
+      // Save to messages table (admin panel visible)
+      const { data, error } = await supabase.from('messages')
+        .insert({ name, email, phone, subject, message })
+        .select().single();
       if (error) throw error;
       return res.status(201).json({ ok: true, id: data.id });
     }

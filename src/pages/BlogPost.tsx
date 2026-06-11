@@ -20,6 +20,7 @@ interface Post {
   created_at: string
   image_url?: string
   cover_image?: string
+  video_url?: string
   views?: number
   comments?: Comment[]
 }
@@ -108,6 +109,29 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
 
           {/* Content */}
           <div className="blog-post-body" dangerouslySetInnerHTML={{ __html: renderContent(post.content) }} />
+
+          {/* Embedded Video */}
+          {post.video_url && (() => {
+            const ytMatch = post.video_url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?\s]+)/)
+            const isFb = post.video_url.includes('facebook.com') || post.video_url.includes('fb.watch')
+            if (ytMatch) return (
+              <div className="blog-post-video">
+                <h3 className="blog-post-video__title">🎬 Watch Video</h3>
+                <div className="blog-post-video__wrap">
+                  <iframe className="blog-post-video__frame" src={`https://www.youtube.com/embed/${ytMatch[1]}`} allowFullScreen title="YouTube video" />
+                </div>
+              </div>
+            )
+            if (isFb) return (
+              <div className="blog-post-video">
+                <h3 className="blog-post-video__title">🎬 Watch Video</h3>
+                <div className="blog-post-video__wrap">
+                  <iframe className="blog-post-video__frame" src={`https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(post.video_url!)}&width=700&show_text=false`} allowFullScreen title="Facebook video" />
+                </div>
+              </div>
+            )
+            return null
+          })()}
 
           {/* Follow Us */}
           <div className="blog-post-follow">

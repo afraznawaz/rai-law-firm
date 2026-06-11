@@ -1631,6 +1631,10 @@ ul { list-style: none; }
   background: #25d366; color: white;
 }
 .blog-post-cta-btn--wa:hover { box-shadow: 0 6px 20px rgba(37,211,102,0.4); }
+.blog-post-video { margin: 32px 0; }
+.blog-post-video__title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; color: var(--dark-green); margin-bottom: 14px; }
+.blog-post-video__wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,.15); }
+.blog-post-video__frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
 /* ===== CONTACT SOCIAL ===== */
 .ra-contact__social-wrap {
