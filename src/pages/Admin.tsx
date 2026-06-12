@@ -488,6 +488,7 @@ export default function Admin() {
     supabase.auth.getSession().then(({ data: { session } }: any) => {
       setUser(session?.user ?? null)
       setToken(session?.access_token ?? '')
+      if (!session) { /* try auto-login with demo account */ }
     })
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_: any, s: any) => {
       setUser(s?.user ?? null)

@@ -21,7 +21,7 @@ import CertificatesSection from './components/CertificatesSection'
 import { FacebookIcon, TikTokIcon, InstagramIcon, YouTubeIcon, WhatsAppIcon, LinkedInIcon } from './components/SocialIcons'
 
 
-const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blogs', 'Reviews', 'Certificates', 'News & Events', 'E-Library', 'Lawyers', 'Contact']
+const NAV_LINKS = ['Home', 'About', 'Services', 'Expert', 'Blogs', 'Reviews', 'Certificates', 'E-Library', 'Lawyers', 'Contact']
 const NAV_LINKS_DISPLAY = NAV_LINKS
 
 const CASE_LAWS = [
@@ -274,7 +274,7 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'smooth' })
       return
     }
-    if (lower === 'news' || lower === 'news & events') {
+    if (false) {
       setShowNews(true)
       setShowCerts(false)
       setShowELibrary(false)
@@ -541,7 +541,7 @@ export default function App() {
                   className={`ra-nav__link ${activeSection === link.toLowerCase() ? 'ra-nav__link--active' : ''}`}
                   onClick={() => {
                     if (link === 'Certificates') { setOpenCerts(true); window.scrollTo(0,0) }
-                    else if (link === 'News & Events') { setOpenNews(true); window.scrollTo(0,0) }
+                    else if (link === 'E-Library') { setOpenNews(true); window.scrollTo(0,0) }
                     else scrollTo(link.toLowerCase())
                   }}>{link}</button>
               ))}
@@ -577,7 +577,7 @@ export default function App() {
               {NAV_LINKS.map(link => (
                 <button key={link} className="ra-nav__mobile-link" onClick={() => {
                   if (link === 'Certificates') { setOpenCerts(true); setMenuOpen(false); window.scrollTo(0,0) }
-                  else if (link === 'News & Events') { setOpenNews(true); setMenuOpen(false); window.scrollTo(0,0) }
+                  else if (link === 'E-Library') { setOpenNews(true); setMenuOpen(false); window.scrollTo(0,0) }
                   else scrollTo(link.toLowerCase())
                 }}>{link}</button>
               ))}
