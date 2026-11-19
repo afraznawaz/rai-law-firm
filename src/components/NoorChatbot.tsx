@@ -72,7 +72,7 @@ export default function NoorChatbot({ enabled = true }: { enabled?: boolean }) {
       const data = await res.json()
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply, time: formatTime() }])
     } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Network issue. Please contact us:\n\n💬 **WhatsApp:** 0316-4371096\n📞 **Call:** 0304-4840937', time: formatTime() }])
+      setMessages(prev => [...prev, { role: 'assistant', content: 'Network issue. Please contact us:\n\n💬 **WhatsApp:** 03394249807\n📞 **Call:** 0304-4840937', time: formatTime() }])
     } finally { setLoading(false) }
   }
 
@@ -111,7 +111,7 @@ export default function NoorChatbot({ enabled = true }: { enabled?: boolean }) {
                 <div className="noor-msg__time">{msg.time}</div>
                 {msg.role === 'assistant' && (msg.content.toLowerCase().includes('contact') || msg.content.toLowerCase().includes('consultation')) && i > 0 && (
                   <div className="noor-contact-btns">
-                    <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="noor-contact-btn noor-contact-btn--wa">💬 WhatsApp</a>
+                    <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="noor-contact-btn noor-contact-btn--wa">💬 WhatsApp</a>
                     <a href="tel:+923044840937" className="noor-contact-btn noor-contact-btn--call">📞 Call</a>
                   </div>
                 )}

@@ -25,7 +25,7 @@ export default function Disclaimer() {
               <p><strong>RAI & Associates Law Firm</strong></p>
               <p>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</p>
               <p>📞 <a href="tel:+923044840937">+92 304 484 0937</a></p>
-              <p>💬 <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer">WhatsApp: +92 316 437 1096</a></p>
+              <p>💬 <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer">WhatsApp: +92 339 424 9807</a></p>
             </div>
           </section>
         </div>

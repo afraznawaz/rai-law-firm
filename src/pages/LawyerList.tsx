@@ -95,7 +95,7 @@ export default function LawyerList({ onBack, onRegister }: { onBack: () => void;
             <div className="ll-detail__sidebar">
               <div className="ll-detail__contact-card">
                 <h3>📞 Get in Touch</h3>
-                <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ll-contact-btn ll-contact-btn--wa">
+                <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ll-contact-btn ll-contact-btn--wa">
                   💬 WhatsApp Consultation
                 </a>
                 <a href="tel:+923044840937" className="ll-contact-btn ll-contact-btn--call">

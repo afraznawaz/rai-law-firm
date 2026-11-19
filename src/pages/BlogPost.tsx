@@ -31,7 +31,7 @@ const SOCIAL_LINKS = [
   { icon: '▶', label: 'YouTube', href: 'https://www.youtube.com/@raiandassociates', color: '#ff0000', bg: '#ff0000' },
   { icon: '♪', label: 'TikTok', href: 'https://www.tiktok.com/@rai_associates', color: '#010101', bg: '#333' },
   { icon: '◉', label: 'Instagram', href: 'https://www.instagram.com/rai_associates10', color: '#e1306c', bg: '#e1306c' },
-  { icon: '💬', label: 'WhatsApp', href: 'https://wa.me/923164371096', color: '#25d366', bg: '#25d366' },
+  { icon: '💬', label: 'WhatsApp', href: 'https://wa.me/923394249807', color: '#25d366', bg: '#25d366' },
 ]
 
 function renderContent(text: string) {
@@ -142,7 +142,7 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
               <a href="https://www.youtube.com/@raiandassociates" target="_blank" rel="noopener noreferrer" className="bpf-btn bpf-btn--yt">▶️ YouTube</a>
               <a href="https://www.tiktok.com/@rai_associates" target="_blank" rel="noopener noreferrer" className="bpf-btn bpf-btn--tt">🎵 TikTok</a>
               <a href="https://www.instagram.com/rai_associates10" target="_blank" rel="noopener noreferrer" className="bpf-btn bpf-btn--ig">📸 Instagram</a>
-              <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="bpf-btn bpf-btn--wa">💬 WhatsApp</a>
+              <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="bpf-btn bpf-btn--wa">💬 WhatsApp</a>
             </div>
           </div>
 
@@ -152,7 +152,7 @@ export default function BlogPost({ slug, onBack }: { slug: string; onBack: () =>
             <p>Contact Rai & Associates for a free consultation today.</p>
             <div className="blog-post-cta__btns">
               <a href="tel:+923044840937" className="blog-post-cta-btn">📞 Call: +92 304 484 0937</a>
-              <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="blog-post-cta-btn blog-post-cta-btn--wa">💬 WhatsApp Us</a>
+              <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="blog-post-cta-btn blog-post-cta-btn--wa">💬 WhatsApp Us</a>
             </div>
           </div>
 

@@ -141,7 +141,7 @@ const SOCIAL_LINKS = [
   { Icon: TikTokIcon, label: 'TikTok', href: 'https://www.tiktok.com/@rai_associates', color: '#010101' },
   { Icon: InstagramIcon, label: 'Instagram', href: 'https://www.instagram.com/rai_associates10', color: '#e1306c' },
   { Icon: YouTubeIcon, label: 'YouTube', href: 'https://www.youtube.com/@raiandassociates', color: '#ff0000' },
-  { Icon: WhatsAppIcon, label: 'WhatsApp', href: 'https://wa.me/923164371096', color: '#25d366' },
+  { Icon: WhatsAppIcon, label: 'WhatsApp', href: 'https://wa.me/923394249807', color: '#25d366' },
   { Icon: LinkedInIcon, label: 'LinkedIn', href: 'https://www.linkedin.com/in/rai-afraz-aa5304217/', color: '#0077b5' },
 ]
 
@@ -585,8 +585,8 @@ export default function App() {
               <button className="ra-nav__mobile-link" onClick={() => { setShowLawyerRegister(true); setMenuOpen(false) }}>📝 Register as Lawyer</button>
               <a href="/admin" className="ra-nav__mobile-link" style={{display:'flex',alignItems:'center',gap:'8px'}}>⚙️ Admin Panel</a>
 
-              <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-nav__mobile-wa">
-                💬 WhatsApp: 0316-4371096
+              <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-nav__mobile-wa">
+                💬 WhatsApp: 03394249807
               </a>
             </div>
           </>
@@ -832,7 +832,7 @@ export default function App() {
                 </div>
                 <div className="ra-expert-solo__actions">
                   <a href="tel:+923044840937" className="ra-btn ra-btn--gold">📞 Call Now</a>
-                  <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-btn ra-btn--outline">💬 WhatsApp</a>
+                  <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-btn ra-btn--outline">💬 WhatsApp</a>
                 </div>
               </div>
             </div>
@@ -872,7 +872,7 @@ export default function App() {
                   <div className="ra-expert-solo__ach"><span>💼</span><span>Tax Tribunals, LHC & Supreme Court</span></div>
                 </div>
                 <div className="ra-expert-solo__actions">
-                  <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-btn ra-btn--gold">💬 WhatsApp</a>
+                  <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-btn ra-btn--gold">💬 WhatsApp</a>
                   <a href="tel:+923044840937" className="ra-btn ra-btn--outline">📞 Call Now</a>
                 </div>
               </div>
@@ -951,7 +951,7 @@ export default function App() {
               <a href="https://www.youtube.com/@raiandassociates" target="_blank" rel="noopener noreferrer" className="ra-blog__sicon" style={{'--sc':'#ff0000'} as React.CSSProperties} title="YouTube">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
               </a>
-              <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-blog__sicon" style={{'--sc':'#25d366'} as React.CSSProperties} title="WhatsApp">
+              <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-blog__sicon" style={{'--sc':'#25d366'} as React.CSSProperties} title="WhatsApp">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
               </a>
             </div>
@@ -1152,7 +1152,7 @@ export default function App() {
                 <div className="ra-contact__detail"><div className="ra-contact__detail-icon">📍</div><div><div className="ra-contact__detail-label">R&A Law Firm</div><div className="ra-contact__detail-value">3-Fane Road, Tehreem Building, Lahore</div></div></div>
                 <div className="ra-contact__detail"><div className="ra-contact__detail-icon">📍</div><div><div className="ra-contact__detail-label">Tax Consultancy Office</div><div className="ra-contact__detail-value">Near Eiffel Tower, Bahria Town, Lahore</div></div></div>
                 <div className="ra-contact__detail"><div className="ra-contact__detail-icon">📞</div><div><div className="ra-contact__detail-label">Call</div><a href="tel:+923044840937" className="ra-contact__detail-value ra-contact__link">+92 304 484 0937</a></div></div>
-                <div className="ra-contact__detail"><div className="ra-contact__detail-icon">💬</div><div><div className="ra-contact__detail-label">WhatsApp</div><a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-contact__detail-value ra-contact__link">+92 316 437 1096</a></div></div>
+                <div className="ra-contact__detail"><div className="ra-contact__detail-icon">💬</div><div><div className="ra-contact__detail-label">WhatsApp</div><a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-contact__detail-value ra-contact__link">+92 339 424 9807</a></div></div>
                 <div className="ra-contact__detail"><div className="ra-contact__detail-icon">✉️</div><div><div className="ra-contact__detail-label">Email</div><a href="mailto:afrazrai4457@gmail.com" className="ra-contact__detail-value ra-contact__link">afrazrai4457@gmail.com</a></div></div>
 
                 <div className="ra-contact__detail"><div className="ra-contact__detail-icon">🕐</div><div><div className="ra-contact__detail-label">Office Hours</div><div className="ra-contact__detail-value">Mon – Sat: 9:00 AM – 6:00 PM</div></div></div>
@@ -1208,7 +1208,7 @@ export default function App() {
                 <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                 <span>YouTube</span>
               </a>
-              <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-contact__social-btn ra-contact__social-btn--wa">
+              <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-contact__social-btn ra-contact__social-btn--wa">
                 <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 <span>WhatsApp</span>
               </a>
@@ -1372,7 +1372,7 @@ export default function App() {
               { q: 'How do I respond to an FBR tax notice?', a: 'Do NOT ignore any FBR notice. Contact a tax lawyer immediately. RAI & Associates specializes in responding to FBR notices under Section 114, 122, and 176 of the Income Tax Ordinance. Call Advocate Rai Afraz at 0304-4840937 for urgent tax notice assistance.' },
               { q: 'Can RAI & Associates help with FIA cybercrime cases?', a: 'Yes. RAI & Associates specializes in FIA cybercrime defense under PECA 2016. We handle online harassment, digital fraud, social media cases, PECA Section 19 & 20 cases, and all FIA Cybercrime Wing matters across Pakistan.' },
               { q: 'How to register a trademark in Pakistan?', a: 'Trademark registration is done through IPO Pakistan. RAI & Associates handles the complete process — trademark search, classification, TM-1 application filing, examination response, and registration certificate. Contact us at 0304-4840937 for a free consultation.' },
-              { q: 'Where is RAI & Associates Law Firm located?', a: 'RAI & Associates has two offices in Lahore: (1) R&A Law Firm, 3-Fane Road, Tehreem Building, near Lahore High Court; (2) Tax Consultancy Office, near Eiffel Tower, Bahria Town, Lahore. Call: 0304-4840937 or WhatsApp: 0316-4371096.' },
+              { q: 'Where is RAI & Associates Law Firm located?', a: 'RAI & Associates has two offices in Lahore: (1) R&A Law Firm, 3-Fane Road, Tehreem Building, near Lahore High Court; (2) Tax Consultancy Office, near Eiffel Tower, Bahria Town, Lahore. Call: 0304-4840937 or WhatsApp: 03394249807.' },
               { q: 'What legal services does RAI & Associates offer?', a: 'We offer: Tax Law & FBR disputes, FIA Cybercrime defense, Corporate Law & SECP registration, Trademark & IP registration, Civil Litigation, Family Law & divorce, Criminal defense, Constitutional Law & writ petitions, Revenue Law, Property disputes, Environmental Law, and Labour Law.' },
               { q: 'How to get bail in a criminal case in Pakistan?', a: 'Contact RAI & Associates immediately after arrest. We apply for pre-arrest bail (anticipatory bail) before arrest or post-arrest bail after. Bail applications are filed in the Sessions Court or High Court depending on the offense. Call 0304-4840937 for urgent criminal matters.' },
               { q: 'How to file a writ petition in Lahore High Court?', a: 'A writ petition under Article 199 of the Constitution is filed when a fundamental right is violated or a public authority acts illegally. RAI & Associates has extensive experience filing writ petitions in the Lahore High Court for illegal detention, service matters, and government authority abuse.' },
@@ -1416,7 +1416,7 @@ export default function App() {
                 <div className="ra-branch-card__city">{b.city}</div>
                 {b.main && <div className="ra-branch-card__badge">Head Office</div>}
                 <div className="ra-branch-card__desc">{b.desc}</div>
-                <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-branch-card__btn">
+                <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-branch-card__btn">
                   💬 WhatsApp
                 </a>
               </div>
@@ -1450,7 +1450,7 @@ export default function App() {
                 <li>📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore</li>
                 <li>📍 Near Eiffel Tower, Bahria Town, Lahore</li>
                 <li><a href="tel:+923044840937">📞 +92 304 484 0937</a></li>
-                <li><a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer">💬 +92 316 437 1096</a></li>
+                <li><a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer">💬 +92 339 424 9807</a></li>
                 <li><a href="mailto:afrazrai4457@gmail.com">✉️ afrazrai4457@gmail.com</a></li>
                 <li><a href="https://www.raiandassociates.com.pk" target="_blank" rel="noopener noreferrer">🌐 www.raiandassociates.com.pk</a></li>
               </ul>
@@ -1479,7 +1479,7 @@ export default function App() {
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             </a>
             {/* WhatsApp */}
-            <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-footer__soc-btn ra-footer__soc-btn--wa" title="WhatsApp">
+            <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-footer__soc-btn ra-footer__soc-btn--wa" title="WhatsApp">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             </a>
           </div>
@@ -1556,7 +1556,7 @@ export default function App() {
       )}
 
       {/* WHATSAPP FLOATING BUTTON */}
-      <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-wa-float" title="Chat on WhatsApp">
+      <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-wa-float" title="Chat on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
