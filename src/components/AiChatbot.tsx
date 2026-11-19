@@ -14,7 +14,7 @@ const QUICK_QUESTIONS = [
 ]
 
 const BOT_RESPONSES: Record<string, string> = {
-  default: `Asalam o Alaikum! Main **RAI AI** hoon — Rai & Associates ka legal assistant. Aap mujhe apna legal masla batayein, main guide karunga.\n\n📞 Direct baat ke liye: **0304-4840937**\n💬 WhatsApp: **0316-4371096**`,
+  default: `Asalam o Alaikum! Main **RAI AI** hoon — Rai & Associates ka legal assistant. Aap mujhe apna legal masla batayein, main guide karunga.\n\n📞 Direct baat ke liye: **0304-4840937**\n💬 WhatsApp: **03394249807**`,
   tax: `**Tax Law Matters:**\n\nRai Afraz sahab Lahore Tax Bar Association ke member hain aur tax cases mein expert hain.\n\n✅ FBR notices ka jawab\n✅ Tax tribunal representation\n✅ Income & sales tax disputes\n✅ Tax planning\n\n📞 Abhi call karein: **0304-4840937**`,
   fia: `**FIA / Cybercrime Matters:**\n\nFIA notice ya cybercrime case mein FORAN lawyer se milein.\n\n✅ FIA notice ka jawab\n✅ Pre-arrest bail\n✅ PECA 2016 defense\n✅ Digital rights protection\n\n⚠️ Koi baat FIA ko bina lawyer ke mat karein!\n\n📞 Emergency: **0304-4840937**`,
   trademark: `**Trademark / IPO Registration:**\n\n✅ Trademark search\n✅ IPO Pakistan mein filing\n✅ Brand protection\n✅ Infringement cases\n\nRegistration process 12-18 mahine ka hai. Jaldi shuru karein!\n\n📞 Call: **0304-4840937**`,
@@ -22,9 +22,9 @@ const BOT_RESPONSES: Record<string, string> = {
   family: `**Family Law:**\n\n✅ Divorce (Talaq / Khula)\n✅ Child custody\n✅ Maintenance (Nafqa)\n✅ Inheritance disputes\n\nHum sensitive matters mein poori privacy ke saath kaam karte hain.\n\n📞 **0304-4840937**`,
   criminal: `**Criminal Law Defense:**\n\n✅ FIR ke baad foran lawyer lein\n✅ Pre-arrest bail\n✅ Post-arrest bail\n✅ Trial representation\n\n⚠️ Arrest se pehle humse rabta karein!\n\n📞 Emergency: **0304-4840937**`,
   corporate: `**Corporate Law:**\n\n✅ Company registration (SECP)\n✅ SMC formation\n✅ Partnership deeds\n✅ Corporate compliance\n\n📞 **0304-4840937**\n🌐 raiandassociates.com.pk`,
-  consultation: `**Free Consultation:**\n\nHaan! Rai & Associates FREE initial consultation deta hai.\n\n📞 Call: **0304-4840937**\n💬 WhatsApp: **0316-4371096**\n✉️ afrazrai4457@gmail.com\n\n📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore\n⏰ Mon-Sat: 9AM - 6PM`,
-  fees: `**Legal Fees:**\n\nFees case ki complexity ke hisaab se hoti hain. Initial consultation FREE hai.\n\n📞 Details ke liye: **0304-4840937**\n💬 WhatsApp: **0316-4371096**`,
-  contact: `**Contact Rai & Associates:**\n\n📞 Call: **0304-4840937**\n💬 WhatsApp: **0316-4371096**\n✉️ afrazrai4457@gmail.com\n\n📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore\n📍 Tax Office: Near Eiffel Tower, Bahria Town\n\n⏰ Mon-Sat: 9AM - 6PM`,
+  consultation: `**Free Consultation:**\n\nHaan! Rai & Associates FREE initial consultation deta hai.\n\n📞 Call: **0304-4840937**\n💬 WhatsApp: **03394249807**\n✉️ afrazrai4457@gmail.com\n\n📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore\n⏰ Mon-Sat: 9AM - 6PM`,
+  fees: `**Legal Fees:**\n\nFees case ki complexity ke hisaab se hoti hain. Initial consultation FREE hai.\n\n📞 Details ke liye: **0304-4840937**\n💬 WhatsApp: **03394249807**`,
+  contact: `**Contact Rai & Associates:**\n\n📞 Call: **0304-4840937**\n💬 WhatsApp: **03394249807**\n✉️ afrazrai4457@gmail.com\n\n📍 R&A Law Firm, 3-Fane Road, Tehreem Building, Lahore\n📍 Tax Office: Near Eiffel Tower, Bahria Town\n\n⏰ Mon-Sat: 9AM - 6PM`,
 }
 
 function getBotResponse(input: string): string {
@@ -39,7 +39,7 @@ function getBotResponse(input: string): string {
   if (msg.includes('consultation') || msg.includes('free') || msg.includes('consult') || msg.includes('milna') || msg.includes('meet')) return BOT_RESPONSES.consultation
   if (msg.includes('fee') || msg.includes('cost') || msg.includes('price') || msg.includes('charge') || msg.includes('kitna')) return BOT_RESPONSES.fees
   if (msg.includes('contact') || msg.includes('number') || msg.includes('address') || msg.includes('office') || msg.includes('call')) return BOT_RESPONSES.contact
-  return `Aapka masla samajh aa gaya. Rai Afraz sahab se seedha baat karein:\n\n📞 **0304-4840937**\n💬 WhatsApp: **0316-4371096**\n\nYa apna masla thoda detail mein likhein — main help karunga! ⚖️`
+  return `Aapka masla samajh aa gaya. Rai Afraz sahab se seedha baat karein:\n\n📞 **0304-4840937**\n💬 WhatsApp: **03394249807**\n\nYa apna masla thoda detail mein likhein — main help karunga! ⚖️`
 }
 
 function renderBotText(text: string) {

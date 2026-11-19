@@ -170,7 +170,7 @@ export default function LawyerAuth({ mode, onBack, onSuccess }: { mode: 'login' 
                       </div>
                       <div className="la-form__group">
                         <label>WhatsApp Number</label>
-                        <input placeholder="0316-4371096" value={form.whatsapp} onChange={e => f('whatsapp', e.target.value)} />
+                        <input placeholder="03394249807" value={form.whatsapp} onChange={e => f('whatsapp', e.target.value)} />
                       </div>
                     </div>
                     <div className="la-form__group">

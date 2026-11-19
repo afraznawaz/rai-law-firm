@@ -179,7 +179,7 @@ export default function LawyerDashboard({ onLogout }: { onLogout: () => void }) 
               )}
             </div>
             {/* WhatsApp */}
-            <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ld-topbar__wa">💬</a>
+            <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ld-topbar__wa">💬</a>
           </div>
         </header>
 
@@ -401,7 +401,7 @@ export default function LawyerDashboard({ onLogout }: { onLogout: () => void }) 
                 <h4>Appointment System Coming Soon</h4>
                 <p>Online booking, hearing reminders, and calendar management will be available in the next update.</p>
                 <p>For now, clients can contact you via WhatsApp or phone directly.</p>
-                <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--gold">💬 Contact Admin</a>
+                <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--gold">💬 Contact Admin</a>
               </div>
             </div>
           )}
@@ -452,7 +452,7 @@ export default function LawyerDashboard({ onLogout }: { onLogout: () => void }) 
                       <li>✅ Article publishing</li>
                       <li>✅ WhatsApp quick connect</li>
                     </ul>
-                    <a href="https://wa.me/923164371096?text=I want to upgrade to Professional plan" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--gold">Upgrade Now</a>
+                    <a href="https://wa.me/923394249807?text=I want to upgrade to Professional plan" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--gold">Upgrade Now</a>
                   </div>
                   <div className="ld-plan">
                     <div className="ld-plan__badge ld-plan__badge--green">Elite</div>
@@ -466,7 +466,7 @@ export default function LawyerDashboard({ onLogout }: { onLogout: () => void }) 
                       <li>✅ Monthly analytics report</li>
                       <li>✅ Direct admin support</li>
                     </ul>
-                    <a href="https://wa.me/923164371096?text=I want Senior Partner plan" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--outline">Contact Us</a>
+                    <a href="https://wa.me/923394249807?text=I want Senior Partner plan" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--outline">Contact Us</a>
                   </div>
                 </div>
               </div>
@@ -512,7 +512,7 @@ export default function LawyerDashboard({ onLogout }: { onLogout: () => void }) 
               {profile?.verification_status !== 'verified' && (
                 <div className="ld-verify-action">
                   <p>To complete verification, send your Bar License document to:</p>
-                  <a href="https://wa.me/923164371096?text=I want to submit documents for lawyer verification" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--gold">💬 Send Documents via WhatsApp</a>
+                  <a href="https://wa.me/923394249807?text=I want to submit documents for lawyer verification" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--gold">💬 Send Documents via WhatsApp</a>
                   <a href="mailto:afrazrai4457@gmail.com?subject=Lawyer Verification Documents" className="ld-btn ld-btn--outline">✉️ Send via Email</a>
                 </div>
               )}
@@ -563,7 +563,7 @@ export default function LawyerDashboard({ onLogout }: { onLogout: () => void }) 
                     <div className="ld-settings__label">Support</div>
                     <div className="ld-settings__sub">Contact admin for help</div>
                   </div>
-                  <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--wa ld-btn--sm">💬 WhatsApp</a>
+                  <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ld-btn ld-btn--wa ld-btn--sm">💬 WhatsApp</a>
                 </div>
               </div>
             </div>

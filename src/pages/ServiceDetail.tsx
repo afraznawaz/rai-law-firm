@@ -475,7 +475,7 @@ export default function ServiceDetail({ serviceKey, onBack, onContact }: Service
           <p className="svc-cta__desc">Contact Rai & Associates for a free consultation. We are here to protect your rights.</p>
           <div className="svc-cta__actions">
             <button className="ra-btn ra-btn--gold" onClick={onContact}>Book Free Consultation</button>
-            <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="ra-btn ra-btn--wa">💬 WhatsApp Us</a>
+            <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="ra-btn ra-btn--wa">💬 WhatsApp Us</a>
             <a href="tel:+923044840937" className="ra-btn ra-btn--call">📞 Call Now</a>
           </div>
         </div>

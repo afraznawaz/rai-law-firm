@@ -174,7 +174,7 @@ export default function Chatbot() {
                 <div className="cb-actions">
                   <button className="cb-actions__book" onClick={() => setView('booking')}>📅 Book Consultation</button>
                   <a href="tel:+923044840937" className="cb-actions__call">📞 Call</a>
-                  <a href="https://wa.me/923164371096" target="_blank" rel="noopener noreferrer" className="cb-actions__wa">💬 WhatsApp</a>
+                  <a href="https://wa.me/923394249807" target="_blank" rel="noopener noreferrer" className="cb-actions__wa">💬 WhatsApp</a>
                 </div>
               </>
             )}
